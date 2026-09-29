@@ -5,6 +5,7 @@ using SKS_Blazor.Application.DTOs.Action;
 using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Domain.Entities.Order;
 using SKS_Blazor.Infrastructure.Data;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Application.Services.Action;
 
@@ -216,7 +217,7 @@ public class ActionOrderRequestService : IActionOrderRequestService
             // Port of: Update OrderRequests Set Status = 'APPROVED', ChangedBy = @userId, ChangedDate = @today Where OrderId = @orderId
             order.Status = "APPROVED";
             order.ChangedBy = (eventSender as string) ?? string.Empty;
-            order.ChangedDate = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            order.ChangedDate = LegacyDate.Today();
 
             await db.SaveChangesAsync(ct);
             await transaction.CommitAsync(ct);
@@ -298,7 +299,7 @@ public class ActionOrderRequestService : IActionOrderRequestService
             // Port of: Update OrderRequests Set Status = 'CANCELLED', ChangedBy = @userId, ChangedDate = @today Where OrderId = @orderId
             order.Status = "CANCELLED";
             order.ChangedBy = (eventSender as string) ?? string.Empty;
-            order.ChangedDate = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            order.ChangedDate = LegacyDate.Today();
 
             await db.SaveChangesAsync(ct);
             await transaction.CommitAsync(ct);

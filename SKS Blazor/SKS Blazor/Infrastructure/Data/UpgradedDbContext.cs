@@ -10,7 +10,7 @@ namespace SKS_Blazor.Infrastructure.Data;
 
 /// <summary>
 /// Port of legacy `main` database (Upgraded module). EF Core database-first DbContext
-/// mapping to the existing SQL Server database tables used by the WinForms application.
+/// mapping to the existing SQLite database (Orders.db) used by the WinForms application.
 /// </summary>
 public class UpgradedDbContext : DbContext
 {
@@ -36,6 +36,17 @@ public class UpgradedDbContext : DbContext
     public DbSet<Stocks> Stocks { get; set; } = null!;
     public DbSet<Users> Users { get; set; } = null!;
     public DbSet<Warehouses> Warehouses { get; set; } = null!;
+
+    /// <summary>
+    /// Orders.db stores every money/quantity column as REAL. EF Core's SQLite provider supports only
+    /// equality on decimal (ordering, comparison, Min/Max need client evaluation), so map decimal and
+    /// decimal? properties to double model-wide while the entities keep decimal.
+    /// </summary>
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
+        configurationBuilder.Properties<decimal>().HaveConversion<double>();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

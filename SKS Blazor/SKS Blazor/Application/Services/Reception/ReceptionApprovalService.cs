@@ -6,6 +6,7 @@ using SKS_Blazor.Infrastructure.Data;
 using SKS_Blazor.Domain.Entities.Order;
 using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Application.DTOs.Core;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Application.Services.Reception;
 
@@ -73,7 +74,7 @@ public class ReceptionApprovalService : IReceptionApprovalService
         {
             var provName = filter.ProviderName;
             query = query.Where(x => x.Provider.ProviderName != null &&
-                                     x.Provider.ProviderName.Contains(provName));
+                                     EF.Functions.Like(x.Provider.ProviderName, "%" + provName + "%"));
         }
 
         // Filter: p.ContactFirstName LIKE '%{txtContactName}%'
@@ -81,7 +82,7 @@ public class ReceptionApprovalService : IReceptionApprovalService
         {
             var contactFirst = filter.ContactName;
             query = query.Where(x => x.Provider.ContactFirstName != null &&
-                                     x.Provider.ContactFirstName.Contains(contactFirst));
+                                     EF.Functions.Like(x.Provider.ContactFirstName, "%" + contactFirst + "%"));
         }
 
         // Filter: p.ContactLastName LIKE '%{txtContactLastName}%'
@@ -89,7 +90,7 @@ public class ReceptionApprovalService : IReceptionApprovalService
         {
             var contactLast = filter.ContactLastName;
             query = query.Where(x => x.Provider.ContactLastName != null &&
-                                     x.Provider.ContactLastName.Contains(contactLast));
+                                     EF.Functions.Like(x.Provider.ContactLastName, "%" + contactLast + "%"));
         }
 
         // Filter: o.OrderID = {txtOrderID}
@@ -106,7 +107,7 @@ public class ReceptionApprovalService : IReceptionApprovalService
         {
             var prodId = filter.ProductID;
             query = query.Where(x => x.Detail.ProductID != null &&
-                                     x.Detail.ProductID.Contains(prodId));
+                                     EF.Functions.Like(x.Detail.ProductID, "%" + prodId + "%"));
         }
 
         // Filter: o.Status = '{cmbStatus.Text.ToUpper()}'
@@ -130,37 +131,13 @@ public class ReceptionApprovalService : IReceptionApprovalService
             Status = x.Order.Status
         }).ToListAsync(ct);
 
-        // Apply date range filters in memory (legacy: o.OrderDate >= #MM/dd/yyyy# / <= #MM/dd/yyyy#)
-        if (filter.FilterFromDate && filter.FromDate.HasValue)
+        // Date range in memory: OrderDate is TEXT in three legacy shapes (epoch ms, MM/dd/yyyy, M/d/yyyy).
+        // The legacy SQL compared strings (o.OrderDate >= #MM/dd/yyyy#), which cannot order these values.
+        if ((filter.FilterFromDate && filter.FromDate.HasValue) || (filter.FilterToDate && filter.ToDate.HasValue))
         {
-            var fromDate = filter.FromDate.Value.Date;
-            materialized = materialized
-                .Where(r =>
-                {
-                    if (DateTime.TryParse(r.OrderDate, CultureInfo.InvariantCulture,
-                            DateTimeStyles.None, out var parsed))
-                    {
-                        return parsed.Date >= fromDate;
-                    }
-                    return false;
-                })
-                .ToList();
-        }
-
-        if (filter.FilterToDate && filter.ToDate.HasValue)
-        {
-            var toDate = filter.ToDate.Value.Date;
-            materialized = materialized
-                .Where(r =>
-                {
-                    if (DateTime.TryParse(r.OrderDate, CultureInfo.InvariantCulture,
-                            DateTimeStyles.None, out var parsed))
-                    {
-                        return parsed.Date <= toDate;
-                    }
-                    return false;
-                })
-                .ToList();
+            var from = filter.FilterFromDate ? filter.FromDate : null;
+            var to = filter.FilterToDate ? filter.ToDate : null;
+            materialized = materialized.Where(r => LegacyDate.InRange(r.OrderDate, from, to)).ToList();
         }
 
         // Group by: o.orderDate, o.OrderID, p.ProviderName,
@@ -178,7 +155,7 @@ public class ReceptionApprovalService : IReceptionApprovalService
             })
             .Select(g => new ReceptionApprovalGridRowDto
             {
-                OrderDate = g.Key.OrderDate ?? string.Empty,
+                OrderDate = LegacyDate.Display(g.Key.OrderDate),
                 OrderID = g.Key.OrderID,
                 ProviderName = g.Key.ProviderName,
                 ContactName = g.Key.ContactName,

@@ -46,3 +46,25 @@ interfaces never declared, services using DTO members that were never generated)
 - **LINQ join key types** `int?` vs `int` (CS1941) in four joins → cast the non-nullable side to `int?`.
 - **`optionsBuilder.SetCommandTimeout`** does not exist on `DbContextOptionsBuilder`; removed from `OnConfiguring`. The
   120 s timeout moves to the provider options in Phase 2.
+
+## Phase 2 — Runs on SQLite with real data
+
+- **Wrong provider.** EF Core SqlServer was wired against a SQLite file. Now `Microsoft.EntityFrameworkCore.Sqlite`
+  10.0.12, with a relative `Data Source` resolved against the content root and `Mode=ReadWrite`, so a missing file fails
+  at startup instead of silently creating an empty database. Command timeout 120 s is a provider option.
+- **Security patch.** 10.0.0 pulls `SQLitePCLRaw.lib.e_sqlite3` 2.1.11 (GHSA-2m69-gcr7-jv3q, high). 10.0.12 resolves 2.1.12;
+  `dotnet list package --vulnerable` is clean.
+- **decimal on SQLite.** The legacy schema declares money/quantity columns REAL; the entities use `decimal?`. Measured on
+  EF Core 10 without a converter: the store type is TEXT and comparisons/ordering go through `ef_compare()` and the
+  `EF_DECIMAL` collation (the published limitations page, which says they need client evaluation, is out of date).
+  A model-wide `decimal → double` convention gives native `> 0.0` / `ORDER BY` SQL and REAL parameters. Pinned by
+  `UpgradedDbContextSqliteTests`.
+- **Dates.** TEXT columns hold epoch milliseconds (seed rows), `MM/dd/yyyy` and `M/d/yyyy`; the port also wrote
+  `yyyy-MM-dd`. `Infrastructure/Helpers/LegacyDate` is now the single boundary: all writers use `MM/dd/yyyy` invariant
+  (what the legacy app wrote last), and filters parse in memory. The legacy app compared these strings in SQL, which
+  cannot order mixed shapes; the approval searches now implement the evident intent. The DB data is left as-is.
+- **Case-insensitive search.** `.Contains()` translates to `instr()` (case-sensitive); the legacy SQL used `LIKE '%x%'`.
+  The approval services now use `EF.Functions.Like`. Other screens: Phase 4.
+- **Health check** now also requires rows in `Users`, so a wrong file reports Unhealthy.
+- **Verified:** `/health` Healthy; Customers (5), Providers (3), Request approval (17, dates normalised),
+  Reception approval (11) render from SQLite; tests 24/24; `Orders.db` integrity ok and unchanged.

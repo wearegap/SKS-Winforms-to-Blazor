@@ -6,6 +6,7 @@ using SKS_Blazor.Infrastructure.Data;
 using SKS_Blazor.Domain.Entities.Order;
 using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Domain.Entities.Stock;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Application.Services.Action;
 
@@ -239,7 +240,7 @@ public class ActionOrderReceptionService : IActionOrderReceptionService
             .AsNoTracking()
             .ToListAsync(ct);
 
-        var todayStr = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        var todayStr = LegacyDate.Today();
 
         // Transaction boundary: port of legacy multi-statement update
         await using var transaction = await db.Database.BeginTransactionAsync(ct);
@@ -395,7 +396,7 @@ public class ActionOrderReceptionService : IActionOrderReceptionService
         // Note: legacy prompts "Do you want to cancel the order reception?" — that confirmation
         // is the caller's (page's) responsibility via dialog before calling this service method.
 
-        var todayStr = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        var todayStr = LegacyDate.Today();
 
         // Transaction boundary
         await using var transaction = await db.Database.BeginTransactionAsync(ct);

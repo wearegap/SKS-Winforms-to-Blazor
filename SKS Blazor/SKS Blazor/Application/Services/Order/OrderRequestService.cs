@@ -7,6 +7,7 @@ using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Domain.Entities.Order;
 using SKS_Blazor.Domain.Entities.Products;
 using SKS_Blazor.Infrastructure.Data;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Application.Services.Order;
 
@@ -242,9 +243,9 @@ public class OrderRequestService : IOrderRequestService
             {
                 CustomerID = state.CurrentIdCustomer,
                 EmployeeID = string.Empty,
-                OrderDate = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                RequiredByDate = string.Empty,
-                PromisedByDate = string.Empty,
+                OrderDate = LegacyDate.Today(),
+                RequiredByDate = state.RequiredByDate is { } required ? LegacyDate.Format(required) : string.Empty,
+                PromisedByDate = state.PromisedByDate is { } promised ? LegacyDate.Format(promised) : string.Empty,
                 FreightCharge = state.CurrentFreightCharge,
                 SalesTaxRate = state.CurrentTax * 0.01m,
                 Status = "REQUESTED"

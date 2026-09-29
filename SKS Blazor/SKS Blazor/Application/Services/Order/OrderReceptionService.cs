@@ -7,6 +7,7 @@ using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Domain.Entities.Products;
 using SKS_Blazor.Infrastructure.Data;
 using SKS_Blazor.Domain.Entities.Order;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Application.Services.Order;
 
@@ -243,7 +244,7 @@ public class OrderReceptionService : IOrderReceptionService
                 {
                     ProviderID = state.CurrentIdProvider,
                     ReceivedBy = string.Empty, // Set by caller via AppState.CurrentUser
-                    OrderDate = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                    OrderDate = LegacyDate.Today(),
                     Notes = state.TxtNotesText ?? string.Empty,
                     FreightCharge = state.CurrentFreightCharge,
                     SalesTaxRate = state.CurrentTax * 0.01m,
@@ -276,7 +277,7 @@ public class OrderReceptionService : IOrderReceptionService
                     {
                         OrderID = newOrderId,
                         ProductID = line.ProductID,
-                        DateSold = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                        DateSold = LegacyDate.Today(),
                         Quantity = line.Quantity,
                         UnitPrice = line.UnitPrice,
                         SalePrice = linePrice,

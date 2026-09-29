@@ -8,6 +8,7 @@ using SKS_Blazor.Infrastructure.Data;
 using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Domain.Entities.Manual;
 using SKS_Blazor.Domain.Entities.Stock;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Infrastructure.Engines;
 
@@ -104,7 +105,7 @@ public class StockLevelEngine
             var previousStockPrice = stockRecord.StockPrice ?? 0m;
 
             stockRecord.Stock = previousStock + delta;
-            stockRecord.DateModified = DateTime.Today.ToString("MM/dd/yyyy");
+            stockRecord.DateModified = LegacyDate.Today();
 
             db.Stocks.Update(stockRecord);
             await db.SaveChangesAsync();
@@ -116,7 +117,7 @@ public class StockLevelEngine
                 Quantity = delta,
                 Price = 0m, // delta price not computed in this path
                 User = reason,
-                Date = DateTime.Today.ToString("MM/dd/yyyy"),
+                Date = LegacyDate.Today(),
                 Action = delta > 0 ? "ADD" : "MOD"
             };
             db.ManualStocks.Add(manualEntry);
@@ -126,7 +127,7 @@ public class StockLevelEngine
             var logEntry = new Domain.Entities.Stock.StockLog
             {
                 User = reason,
-                Date = DateTime.Today.ToString("MM/dd/yyyy"),
+                Date = LegacyDate.Today(),
                 Quantity = delta,
                 StockPrice = 0m,
                 ProductID = productIdStr,

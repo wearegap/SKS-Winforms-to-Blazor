@@ -7,6 +7,7 @@ using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Domain.Entities.Manual;
 using SKS_Blazor.Domain.Entities.Stock;
 using SKS_Blazor.Infrastructure.Data;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Application.Services.Adjust;
 
@@ -191,7 +192,7 @@ public class AdjustStockManualService : IAdjustStockManualService
 
             stockEntity.StockPrice = changedStockPrice;
             stockEntity.Stock = changedStock;
-            stockEntity.DateModified = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            stockEntity.DateModified = LegacyDate.Today();
 
             // 2. INSERT ManualStocks — log the adjustment (action = "MOD")
             var manualStockEntry = new ManualStocks
@@ -200,7 +201,7 @@ public class AdjustStockManualService : IAdjustStockManualService
                 Quantity = deltaStock,
                 Price = deltaStockPrice,
                 User = eventSender as string ?? string.Empty,
-                Date = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Date = LegacyDate.Today(),
                 Action = "MOD"
             };
             db.ManualStocks.Add(manualStockEntry);
@@ -213,7 +214,7 @@ public class AdjustStockManualService : IAdjustStockManualService
             var stockLogEntry = new StockLog
             {
                 User = eventSender as string ?? string.Empty,
-                Date = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Date = LegacyDate.Today(),
                 Quantity = deltaStock,
                 StockPrice = deltaStockPrice,
                 ProductID = currentIdProduct,

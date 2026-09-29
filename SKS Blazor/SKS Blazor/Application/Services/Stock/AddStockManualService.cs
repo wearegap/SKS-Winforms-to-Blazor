@@ -7,6 +7,7 @@ using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Domain.Entities.Manual;
 using SKS_Blazor.Domain.Entities.Stock;
 using SKS_Blazor.Infrastructure.Data;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Application.Services.Stock;
 
@@ -189,7 +190,7 @@ public class AddStockManualService : IAddStockManualService
         retry:
         try
         {
-            var today = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            var today = LegacyDate.Today();
 
             // 1. Insert into Stocks
             var stockEntity = new SKS_Blazor.Domain.Entities.Core.Stocks

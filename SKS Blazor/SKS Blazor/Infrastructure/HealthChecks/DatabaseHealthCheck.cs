@@ -23,10 +23,13 @@ public class DatabaseHealthCheck : IHealthCheck
         try
         {
             await using var db = await _dbFactory.CreateDbContextAsync(cancellationToken);
-            var canConnect = await db.Database.CanConnectAsync(cancellationToken);
-            return canConnect
+            if (!await db.Database.CanConnectAsync(cancellationToken))
+                return HealthCheckResult.Unhealthy("Cannot connect to the database.");
+
+            // A wrong or empty file still "connects"; the Users table proves it is Orders.db.
+            return await db.Users.AsNoTracking().AnyAsync(cancellationToken)
                 ? HealthCheckResult.Healthy("Database connection is healthy.")
-                : HealthCheckResult.Unhealthy("Cannot connect to the database.");
+                : HealthCheckResult.Unhealthy("Connected, but the Users table is empty.");
         }
         catch (Exception ex)
         {

@@ -6,6 +6,7 @@ using SKS_Blazor.Domain.Entities.Order;
 using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Infrastructure.Data;
 using SKS_Blazor.Application.DTOs.Core;
+using SKS_Blazor.Infrastructure.Helpers;
 
 namespace SKS_Blazor.Application.Services.Request;
 
@@ -78,7 +79,7 @@ public class RequestApprovalService : IRequestApprovalService
         {
             var companyFilter = filter.CompanyNameText;
             query = query.Where(x => x.c.CompanyName != null &&
-                                     x.c.CompanyName.Contains(companyFilter));
+                                     EF.Functions.Like(x.c.CompanyName, "%" + companyFilter + "%"));
         }
 
         // Filter: ContactFirstName LIKE '%...%'
@@ -86,7 +87,7 @@ public class RequestApprovalService : IRequestApprovalService
         {
             var contactFilter = filter.ContactNameText;
             query = query.Where(x => x.c.ContactFirstName != null &&
-                                     x.c.ContactFirstName.Contains(contactFilter));
+                                     EF.Functions.Like(x.c.ContactFirstName, "%" + contactFilter + "%"));
         }
 
         // Filter: ContactLastName LIKE '%...%'
@@ -94,7 +95,7 @@ public class RequestApprovalService : IRequestApprovalService
         {
             var lastNameFilter = filter.ContactLastNameText;
             query = query.Where(x => x.c.ContactLastName != null &&
-                                     x.c.ContactLastName.Contains(lastNameFilter));
+                                     EF.Functions.Like(x.c.ContactLastName, "%" + lastNameFilter + "%"));
         }
 
         // Filter: OrderID exact match
@@ -111,26 +112,7 @@ public class RequestApprovalService : IRequestApprovalService
         {
             var productFilter = filter.ProductIDText;
             query = query.Where(x => x.d.ProductID != null &&
-                                     x.d.ProductID.Contains(productFilter));
-        }
-
-        // Filter: OrderDate >= from date
-        // Legacy stores dates as strings in the OrderDate column (TEXT type).
-        // Legacy comparison: o.OrderDate >= 'MM/dd/yyyy'
-        // We parse the stored date string for comparison.
-        if (filter.FromDateEnabled && filter.FromDate.HasValue)
-        {
-            var fromStr = filter.FromDate.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
-            query = query.Where(x => x.o.OrderDate != null &&
-                                     string.Compare(x.o.OrderDate, fromStr) >= 0);
-        }
-
-        // Filter: OrderDate <= to date
-        if (filter.ToDateEnabled && filter.ToDate.HasValue)
-        {
-            var toStr = filter.ToDate.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
-            query = query.Where(x => x.o.OrderDate != null &&
-                                     string.Compare(x.o.OrderDate, toStr) <= 0);
+                                     EF.Functions.Like(x.d.ProductID, "%" + productFilter + "%"));
         }
 
         // Filter: Status (when not "All" and a selection is made)
@@ -155,6 +137,15 @@ public class RequestApprovalService : IRequestApprovalService
             Status = x.o.Status
         }).ToListAsync(ct);
 
+        // Date range in memory: OrderDate is TEXT in three legacy shapes (epoch ms, MM/dd/yyyy, M/d/yyyy).
+        // The legacy SQL compared strings (o.OrderDate >= 'MM/dd/yyyy'), which cannot order these values.
+        if ((filter.FromDateEnabled && filter.FromDate.HasValue) || (filter.ToDateEnabled && filter.ToDate.HasValue))
+        {
+            var from = filter.FromDateEnabled ? filter.FromDate : null;
+            var to = filter.ToDateEnabled ? filter.ToDate : null;
+            rawRows = rawRows.Where(r => LegacyDate.InRange(r.OrderDate, from, to)).ToList();
+        }
+
         // Group by the same columns as the legacy SQL
         var grouped = rawRows
             .GroupBy(r => new
@@ -168,7 +159,7 @@ public class RequestApprovalService : IRequestApprovalService
             })
             .Select(g => new RequestApprovalGridRowDto
             {
-                OrderDate = g.Key.OrderDate ?? string.Empty,
+                OrderDate = LegacyDate.Display(g.Key.OrderDate),
                 OrderID = g.Key.OrderID,
                 CompanyName = g.Key.CompanyName ?? string.Empty,
                 ContactName = g.Key.ContactName.Trim(),

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Serilog;
@@ -68,13 +69,21 @@ builder.Services.AddSignalR();
 builder.Services.AddLocalization();
 builder.Services.AddAntiforgery();
 
-// ----- Database (existing SQL Server database — database-first, no migrations) -----
+// ----- Database (existing SQLite Orders.db from the legacy app — database-first, no migrations) -----
 // CRITICAL: this is the ONLY DbContext registration for UpgradedDbContext.
 // Every generated service injects IDbContextFactory<UpgradedDbContext> and calls
 // CreateDbContextAsync() — never the bare context type — so AddDbContextFactory alone
 // is sufficient and avoids the "scoped service consumed by singleton" ValidateOnBuild failure.
+// A relative Data Source resolves against the content root, and Mode=ReadWrite fails fast when the
+// file is missing (the default ReadWriteCreate would silently create an empty database).
+var sqlite = new SqliteConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("ConnectionStrings:DefaultConnection is missing."));
+if (!Path.IsPathRooted(sqlite.DataSource))
+    sqlite.DataSource = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, sqlite.DataSource));
+sqlite.Mode = SqliteOpenMode.ReadWrite;
+var connectionString = sqlite.ToString();
 builder.Services.AddDbContextFactory<UpgradedDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(connectionString, o => o.CommandTimeout(120)));
 
 // ----- Health checks (custom check resolves IDbContextFactory<T>, not the bare context) -----
 builder.Services.AddHealthChecks()
