@@ -56,10 +56,10 @@ public class AddProductToService : IAddProductToService
 
         List<SKS_Blazor.Domain.Entities.Core.Products> associatedProducts;
 
-        if (string.Equals(context.Categories, "ProductsByCustomer", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(context.Table, "ProductsByCustomer", StringComparison.OrdinalIgnoreCase))
         {
             associatedProducts = await db.ProductsByCustomers
-                .Where(pb => pb.CustomerID == context.InvoiceDetails)
+                .Where(pb => pb.CustomerID == context.Id)
                 .Join(db.Products,
                     pb => pb.ProductID,
                     p => p.ProductID,
@@ -67,10 +67,10 @@ public class AddProductToService : IAddProductToService
                 .AsNoTracking()
                 .ToListAsync(ct);
         }
-        else if (string.Equals(context.Categories, "ProductsByProvider", StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals(context.Table, "ProductsByProvider", StringComparison.OrdinalIgnoreCase))
         {
             associatedProducts = await db.ProductsByProviders
-                .Where(pb => pb.ProviderID == context.InvoiceDetails)
+                .Where(pb => pb.ProviderID == context.Id)
                 .Join(db.Products,
                     pb => pb.ProductID,
                     p => p.ProductID,
@@ -80,13 +80,13 @@ public class AddProductToService : IAddProductToService
         }
         else
         {
-            _logger.LogWarning("Unknown junction table: {Table}", context.Categories);
+            _logger.LogWarning("Unknown junction table: {Table}", context.Table);
             associatedProducts = new List<SKS_Blazor.Domain.Entities.Core.Products>();
         }
 
         _logger.LogInformation(
             "LoadDataAsync: Found {Count} associated products for {Table} ID={Id}",
-            associatedProducts.Count, context.Categories, context.InvoiceDetails);
+            associatedProducts.Count, context.Table, context.Id);
 
         // Port of legacy loop: populate productsStored and build the display list
         foreach (var p in associatedProducts)
@@ -351,14 +351,14 @@ public class AddProductToService : IAddProductToService
         var context = state.Context;
 
         // Validate table name to prevent unexpected table references
-        if (!string.Equals(context.Categories, "ProductsByCustomer", StringComparison.OrdinalIgnoreCase)
-            && !string.Equals(context.Categories, "ProductsByProvider", StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(context.Table, "ProductsByCustomer", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(context.Table, "ProductsByProvider", StringComparison.OrdinalIgnoreCase))
         {
-            _logger.LogError("SaveAsync: invalid junction table name '{Table}'", context.Categories);
+            _logger.LogError("SaveAsync: invalid junction table name '{Table}'", context.Table);
             state.SaveResult = new SaveResultInfo
             {
                 Success = false,
-                Message = $"An error has occurred: unknown table '{context.Categories}'.",
+                Message = $"An error has occurred: unknown table '{context.Table}'.",
                 Title = "Error"
             };
             return state;
@@ -379,11 +379,11 @@ public class AddProductToService : IAddProductToService
                 {
                     if (string.IsNullOrEmpty(productCode)) continue;
 
-                    if (string.Equals(context.Categories, "ProductsByCustomer", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(context.Table, "ProductsByCustomer", StringComparison.OrdinalIgnoreCase))
                     {
                         db.ProductsByCustomers.Add(new ProductsByCustomer
                         {
-                            CustomerID = context.InvoiceDetails,
+                            CustomerID = context.Id,
                             ProductID = productCode
                         });
                     }
@@ -391,7 +391,7 @@ public class AddProductToService : IAddProductToService
                     {
                         db.ProductsByProviders.Add(new ProductsByProvider
                         {
-                            ProviderID = context.InvoiceDetails,
+                            ProviderID = context.Id,
                             ProductID = productCode
                         });
                     }
@@ -414,10 +414,10 @@ public class AddProductToService : IAddProductToService
                 if (productIdsToDelete.Count > 0)
                 {
                     // Batch load entities to delete (avoid N+1)
-                    if (string.Equals(context.Categories, "ProductsByCustomer", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(context.Table, "ProductsByCustomer", StringComparison.OrdinalIgnoreCase))
                     {
                         var entitiesToRemove = await db.ProductsByCustomers
-                            .Where(pb => pb.CustomerID == context.InvoiceDetails
+                            .Where(pb => pb.CustomerID == context.Id
                                          && pb.ProductID != null
                                          && productIdsToDelete.Contains(pb.ProductID))
                             .ToListAsync(ct);
@@ -426,7 +426,7 @@ public class AddProductToService : IAddProductToService
                     else
                     {
                         var entitiesToRemove = await db.ProductsByProviders
-                            .Where(pb => pb.ProviderID == context.InvoiceDetails
+                            .Where(pb => pb.ProviderID == context.Id
                                          && pb.ProductID != null
                                          && productIdsToDelete.Contains(pb.ProductID))
                             .ToListAsync(ct);
@@ -441,7 +441,7 @@ public class AddProductToService : IAddProductToService
 
             _logger.LogInformation(
                 "SaveAsync: Added {AddCount} and removed {DeleteCount} product associations for {Table} ID={Id}",
-                toAddCount, toDeleteCount, context.Categories, context.InvoiceDetails);
+                toAddCount, toDeleteCount, context.Table, context.Id);
 
             // Legacy: SavedChanges = true; editingData = false;
             state.EditingData = false;
@@ -459,7 +459,7 @@ public class AddProductToService : IAddProductToService
             // LOCKRETRY: retry up to 3 times on concurrency conflicts
             _logger.LogWarning(ex,
                 "Concurrency conflict (attempt {Attempt}) saving product associations for {Table} ID={Id}",
-                retries, context.Categories, context.InvoiceDetails);
+                retries, context.Table, context.Id);
             await Task.Delay(100 * retries, ct);
             goto retry;
         }
@@ -468,7 +468,7 @@ public class AddProductToService : IAddProductToService
             await transaction.RollbackAsync(ct);
             _logger.LogError(ex,
                 "Concurrency error after {MaxRetries} retries saving product associations for {Table} ID={Id}",
-                retries, context.Categories, context.InvoiceDetails);
+                retries, context.Table, context.Id);
 
             // Port of legacy error handler:
             // MessageBox.Show($"An error has occurred adding the data.\nError: ({Err.Number}) {Err.Description}", ...)
@@ -484,7 +484,7 @@ public class AddProductToService : IAddProductToService
             await transaction.RollbackAsync(ct);
             _logger.LogError(ex,
                 "Error saving product associations for {Table} ID={Id}",
-                context.Categories, context.InvoiceDetails);
+                context.Table, context.Id);
 
             state.SaveResult = new SaveResultInfo
             {

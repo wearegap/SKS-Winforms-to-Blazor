@@ -26,4 +26,7 @@ public class OrderRequestStateDto
     public string TxtCompanyNameText { get; set; } = string.Empty;
     public string TxtCustomerContactText { get; set; } = string.Empty;
     public string TxtCustomerCompanyText { get; set; } = string.Empty;
+    public List<OrderRequestProductLineDto> ProductLines { get; set; } = new();
+    public DateTime? RequiredByDate { get; set; }
+    public DateTime? PromisedByDate { get; set; }
 }

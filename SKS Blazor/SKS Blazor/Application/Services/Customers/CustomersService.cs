@@ -97,29 +97,7 @@ public class CustomersService : ICustomersService
 
         var searchValue = value.Trim();
 
-        // Apply field-specific LIKE prefix filter (legacy: field LIKE 'value%')
-        query = field.Trim() switch
-        {
-            "CompanyName" => query.Where(c => c.CompanyName != null && c.CompanyName.StartsWith(searchValue)),
-            "ContactFirstName" => query.Where(c => c.ContactFirstName != null && c.ContactFirstName.StartsWith(searchValue)),
-            "ContactLastName" => query.Where(c => c.ContactLastName != null && c.ContactLastName.StartsWith(searchValue)),
-            "City" => query.Where(c => c.City != null && c.City.StartsWith(searchValue)),
-            "StateOrProvince" => query.Where(c => c.StateOrProvince != null && c.StateOrProvince.StartsWith(searchValue)),
-            "PostalCode" => query.Where(c => c.PostalCode != null && c.PostalCode.StartsWith(searchValue)),
-            "Country/Region" => query.Where(c => c.CountryRegion != null && c.CountryRegion.StartsWith(searchValue)),
-            "BillingAddress" => query.Where(c => c.BillingAddress != null && c.BillingAddress.StartsWith(searchValue)),
-            "PhoneNumber" => query.Where(c => c.PhoneNumber != null && c.PhoneNumber.StartsWith(searchValue)),
-            "FaxNumber" => query.Where(c => c.FaxNumber != null && c.FaxNumber.StartsWith(searchValue)),
-            "EmailAddress" => query.Where(c => c.EmailAddress != null && c.EmailAddress.StartsWith(searchValue)),
-            "CompanyOrDepartment" => query.Where(c => c.CompanyOrDepartment != null && c.CompanyOrDepartment.StartsWith(searchValue)),
-            "ContactTitle" => query.Where(c => c.ContactTitle != null && c.ContactTitle.StartsWith(searchValue)),
-            "Extension" => query.Where(c => c.Extension != null && c.Extension.StartsWith(searchValue)),
-            "Notes" => query.Where(c => c.Notes != null && c.Notes.StartsWith(searchValue)),
-            "CustomerID" => int.TryParse(searchValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var cid)
-                ? query.Where(c => c.CustomerID == cid)
-                : query.Where(c => false), // no match if non-numeric value for int column
-            _ => throw new ArgumentException($"Unknown search field: '{field}'.", nameof(field))
-        };
+        query = FilterByField(query, field, searchValue);
 
         // Materialize rows first, then map to DTOs (avoids EF coalescing issues)
         var entities = await query.OrderBy(c => c.CustomerID).ToListAsync(ct);
@@ -437,6 +415,82 @@ public class CustomersService : ICustomersService
             _logger.LogError(ex, "Failed to delete customer {CustomerID}", customerId);
             throw;
         }
+    }
+
+    /// <inheritdoc />
+    public async Task<List<CustomersDto>> GetAllCustomersAsync(CancellationToken ct = default)
+    {
+        await using var db = await _dbFactory.CreateDbContextAsync(ct);
+        var entities = await db.Customers.AsNoTracking().OrderBy(c => c.CustomerID).ToListAsync(ct);
+        return entities.Select(MapToDto).ToList();
+    }
+
+    /// <inheritdoc />
+    public async Task<List<CustomersDto>> SearchCustomersAsync(string field, string value, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(field))
+            throw new ArgumentException("Search field must not be empty.", nameof(field));
+
+        await using var db = await _dbFactory.CreateDbContextAsync(ct);
+        var query = FilterByField(db.Customers.AsNoTracking(), field, (value ?? string.Empty).Trim());
+        var entities = await query.OrderBy(c => c.CustomerID).ToListAsync(ct);
+        _logger.LogInformation("Customer search by {Field}='{Value}' returned {Count} records", field, value, entities.Count);
+        return entities.Select(MapToDto).ToList();
+    }
+
+    /// <inheritdoc />
+    public Task CreateCustomerAsync(CustomersDto customer, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(customer);
+        customer.CustomerID = 0; // SaveAsync inserts when the id is 0 (legacy Recordset.AddNew)
+        SetCurrentCustomer(customer);
+        return SaveAsync(ct);
+    }
+
+    /// <inheritdoc />
+    public Task UpdateCustomerAsync(CustomersDto customer, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(customer);
+        SetCurrentCustomer(customer);
+        return SaveAsync(ct);
+    }
+
+    /// <inheritdoc />
+    public Task DeleteCustomerAsync(int customerId, CancellationToken ct = default)
+    {
+        SetCurrentCustomer(new CustomersDto { CustomerID = customerId });
+        return DeleteAsync(ct);
+    }
+
+    /// <summary>
+    /// Legacy <c>Select * from Customers where {field} LIKE '{value}%'</c>, whitelisted per column
+    /// instead of string-interpolated SQL.
+    /// </summary>
+    private static IQueryable<SKS_Blazor.Domain.Entities.Core.Customers> FilterByField(
+        IQueryable<SKS_Blazor.Domain.Entities.Core.Customers> query, string field, string searchValue)
+    {
+        return field.Trim() switch
+        {
+            "CompanyName" => query.Where(c => c.CompanyName != null && c.CompanyName.StartsWith(searchValue)),
+            "ContactFirstName" => query.Where(c => c.ContactFirstName != null && c.ContactFirstName.StartsWith(searchValue)),
+            "ContactLastName" => query.Where(c => c.ContactLastName != null && c.ContactLastName.StartsWith(searchValue)),
+            "City" => query.Where(c => c.City != null && c.City.StartsWith(searchValue)),
+            "StateOrProvince" => query.Where(c => c.StateOrProvince != null && c.StateOrProvince.StartsWith(searchValue)),
+            "PostalCode" => query.Where(c => c.PostalCode != null && c.PostalCode.StartsWith(searchValue)),
+            "Country/Region" => query.Where(c => c.CountryRegion != null && c.CountryRegion.StartsWith(searchValue)),
+            "BillingAddress" => query.Where(c => c.BillingAddress != null && c.BillingAddress.StartsWith(searchValue)),
+            "PhoneNumber" => query.Where(c => c.PhoneNumber != null && c.PhoneNumber.StartsWith(searchValue)),
+            "FaxNumber" => query.Where(c => c.FaxNumber != null && c.FaxNumber.StartsWith(searchValue)),
+            "EmailAddress" => query.Where(c => c.EmailAddress != null && c.EmailAddress.StartsWith(searchValue)),
+            "CompanyOrDepartment" => query.Where(c => c.CompanyOrDepartment != null && c.CompanyOrDepartment.StartsWith(searchValue)),
+            "ContactTitle" => query.Where(c => c.ContactTitle != null && c.ContactTitle.StartsWith(searchValue)),
+            "Extension" => query.Where(c => c.Extension != null && c.Extension.StartsWith(searchValue)),
+            "Notes" => query.Where(c => c.Notes != null && c.Notes.StartsWith(searchValue)),
+            "CustomerID" => int.TryParse(searchValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var cid)
+                ? query.Where(c => c.CustomerID == cid)
+                : query.Where(c => false), // no match if non-numeric value for int column
+            _ => throw new ArgumentException($"Unknown search field: '{field}'.", nameof(field))
+        };
     }
 
     /// <summary>

@@ -39,7 +39,7 @@ public class ActionOrderReceptionService : IActionOrderReceptionService
         //   Where o.OrderID = {OrderId} And u.Username = o.ReceivedBy And p.ProviderId = o.ProviderId
         var headerRow = await (from o in db.OrderReceptions.AsNoTracking()
                                join u in db.Users.AsNoTracking() on o.ReceivedBy equals u.Username
-                               join p in db.Providers.AsNoTracking() on o.ProviderID equals p.ProviderID
+                               join p in db.Providers.AsNoTracking() on o.ProviderID equals (int?)p.ProviderID
                                where o.OrderID == orderId
                                select new
                                {
@@ -152,15 +152,15 @@ public class ActionOrderReceptionService : IActionOrderReceptionService
 
             var detail = new ActionOrderReceptionDetailDto
             {
-                Quantity = row.Quantity,
+                Quantity = row.Quantity ?? 0m,
                 ProductID = row.ProductID ?? string.Empty,
                 ProductName = row.ProductName ?? string.Empty,
-                UnitPrice = row.UnitPrice,
-                SalePrice = row.SalePrice,
-                UnitsInStock = row.UnitsInStock,
-                UnitsOnOrder = row.UnitsOnOrder,
-                QuantityPerUnit = qtyPerUnitStr,
-                LineTotal = row.LineTotal
+                UnitPrice = row.UnitPrice ?? 0m,
+                SalePrice = row.SalePrice ?? 0m,
+                UnitsInStock = row.UnitsInStock ?? 0,
+                UnitsOnOrder = row.UnitsOnOrder ?? 0,
+                QuantityPerUnitDisplay = qtyPerUnitStr,
+                LineTotal = row.LineTotal ?? 0m
             };
             state.Details.Add(detail);
 

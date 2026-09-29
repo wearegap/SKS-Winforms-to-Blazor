@@ -341,7 +341,7 @@ public partial class OrderRequest : ComponentBase, IDisposable
     /// Legacy: if CurrentColumnIndex != 0, return; else MakeTextBoxVisible(txtEntry, fgProducts); SelectAll(txtEntry).
     /// In Blazor MudDataGrid EditMode=Cell, clicking Quantity column enters edit mode automatically.
     /// fgProducts_KeyPress legacy checked for digits/period only — MudNumericField handles this natively.</summary>
-    private void OnProductCellClick(DataGridCellClickEventArgs<OrderRequestProductLineDto> args)
+    private void OnProductRowClick(DataGridRowClickEventArgs<OrderRequestProductLineDto> args)
     {
         _editingQuantity = true;
         if (_state != null) _state.EditingQuantity = true;
@@ -438,7 +438,7 @@ public partial class OrderRequest : ComponentBase, IDisposable
     private async Task OnFreightChargeChanged()
     {
         if (_state == null) return;
-        var freightValue = await FunctionsService.DoubleValueAsync(_freightChargeText ?? string.Empty);
+        var freightValue = FunctionsService.DoubleValue(_freightChargeText ?? string.Empty);
         _state.CurrentFreightCharge = (decimal)freightValue;
         _state.TxtFreightChargeText = _freightChargeText ?? string.Empty;
         ReCalculateTotals(0m, 0m);
@@ -453,7 +453,7 @@ public partial class OrderRequest : ComponentBase, IDisposable
     private async Task OnSalesTaxChanged()
     {
         if (_state == null) return;
-        var taxValue = await FunctionsService.DoubleValueAsync(_salesTaxText ?? string.Empty);
+        var taxValue = FunctionsService.DoubleValue(_salesTaxText ?? string.Empty);
         _state.CurrentTax = (decimal)taxValue;
         _state.TxtSalesTaxText = _salesTaxText ?? string.Empty;
         ReCalculateTotals(0m, 0m);

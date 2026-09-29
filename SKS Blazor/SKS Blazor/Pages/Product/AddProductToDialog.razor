@@ -3,9 +3,25 @@
 @* The screen opened as a modal. It is the same component the route renders, so the
    two entry points stay one implementation and cannot drift apart. DynamicComponent
    sidesteps the name collision between a component and the namespace sharing its
-   name, which a plain element reference cannot express. *@
+   name, which a plain element reference cannot express. The caller's parameters are
+   forwarded as-is (legacy frmAddProductTo received them as public fields). *@
 <MudDialog>
     <DialogContent>
-        <DynamicComponent Type="typeof(SKS_Blazor.Pages.Product.AddProductTo)" />
+        <DynamicComponent Type="typeof(SKS_Blazor.Pages.Product.AddProductTo)" Parameters="ForwardedParameters" />
     </DialogContent>
 </MudDialog>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Parameter] public string ObjectReferred { get; set; } = string.Empty;
+    [Parameter] public string Table { get; set; } = string.Empty;
+    [Parameter] public string ColumnName { get; set; } = string.Empty;
+
+    private Dictionary<string, object?> ForwardedParameters => new()
+    {
+        [nameof(Id)] = Id,
+        [nameof(ObjectReferred)] = ObjectReferred,
+        [nameof(Table)] = Table,
+        [nameof(ColumnName)] = ColumnName
+    };
+}

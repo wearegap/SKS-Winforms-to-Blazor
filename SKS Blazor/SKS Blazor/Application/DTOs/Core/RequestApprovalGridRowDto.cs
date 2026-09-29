@@ -8,6 +8,6 @@ public class RequestApprovalGridRowDto
     public string CompanyName { get; set; } = string.Empty;
     public string ContactName { get; set; } = string.Empty;
     public string ReceivedBy { get; set; } = string.Empty;
-    public string Price { get; set; } = string.Empty;
+    public decimal Price { get; set; }
     public string Status { get; set; } = string.Empty;
 }

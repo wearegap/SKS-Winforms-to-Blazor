@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 using Serilog;
 using System.Threading.RateLimiting;
 
@@ -44,7 +45,7 @@ using SKS_Blazor.Pages.Request;
 using SKS_Blazor.Pages.Search;
 using SKS_Blazor.Pages.Splash;
 using SKS_Blazor.Pages.Stock;
-using SKS_Blazor.Pages.Upgraded;
+using SKS_Blazor.Pages.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 

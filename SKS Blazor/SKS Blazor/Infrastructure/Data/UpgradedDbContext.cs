@@ -37,12 +37,6 @@ public class UpgradedDbContext : DbContext
     public DbSet<Users> Users { get; set; } = null!;
     public DbSet<Warehouses> Warehouses { get; set; } = null!;
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.SetCommandTimeout(120);
-        base.OnConfiguring(optionsBuilder);
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

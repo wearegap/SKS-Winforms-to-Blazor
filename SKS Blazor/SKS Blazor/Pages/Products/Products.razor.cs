@@ -412,9 +412,8 @@ public partial class Products : ComponentBase, IDisposable
     {
         var parameters = new DialogParameters<SearchInputDialog>
         {
-            { x => x.TableName, "Products" },
-            { x => x.FieldName, "ProductName" },
-            { x => x.EntityLabel, "product" }
+            { x => x.Title, "Search Products" },
+            { x => x.FieldLabel, "Product name" }
         };
 
         var options = new DialogOptions

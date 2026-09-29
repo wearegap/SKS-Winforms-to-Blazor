@@ -143,6 +143,16 @@ public partial class AddProductTo : ComponentBase, IDisposable
         _checkAll = false;
         _statusMessage = "";
 
+        // Legacy frmAddProductTo received Table/ColumnName/Id/ObjectReferred as public fields;
+        // the service reads them from the context.
+        _state.Context = new AddProductToContextDto
+        {
+            Table = Table,
+            ColumnName = ColumnName,
+            Id = Id,
+            ObjectReferred = ObjectReferred
+        };
+
         // LoadData → delegates to service which queries existing associations
         _state = await AddProductToService.LoadDataAsync(_state);
 
@@ -269,13 +279,13 @@ public partial class AddProductTo : ComponentBase, IDisposable
                 string productIdToDelete = item.ProductID;
 
                 // Mirror the legacy cmdRemove_Click logic exactly:
-                bool existsInStored = await FunctionsService.ExistsAsync(
+                bool existsInStored = FunctionsService.Exists(
                     _state.ProductsStored, productIdToDelete);
 
                 if (existsInStored)
                 {
                     // Product was originally stored in DB
-                    bool existsInToAdd = await FunctionsService.ExistsAsync(
+                    bool existsInToAdd = FunctionsService.Exists(
                         _state.ProductsToAdd, productIdToDelete);
                     if (existsInToAdd)
                     {
@@ -292,7 +302,7 @@ public partial class AddProductTo : ComponentBase, IDisposable
                 else
                 {
                     // Not in stored — was a new addition; remove from toAdd using currentIdProduct
-                    bool existsInToAdd = await FunctionsService.ExistsAsync(
+                    bool existsInToAdd = FunctionsService.Exists(
                         _state.ProductsToAdd, productIdToDelete);
                     if (existsInToAdd)
                     {
@@ -499,13 +509,13 @@ public partial class AddProductTo : ComponentBase, IDisposable
             _state.EditingData = true;
 
             // Track in collections — mirror legacy AddProductToSet logic exactly
-            bool existsInStored = await FunctionsService.ExistsAsync(
+            bool existsInStored = FunctionsService.Exists(
                 _state.ProductsStored, currentId);
 
             if (!existsInStored)
             {
                 // Not originally in DB
-                bool existsInToDelete = await FunctionsService.ExistsAsync(
+                bool existsInToDelete = FunctionsService.Exists(
                     _state.ProductsToDelete, currentId);
                 if (existsInToDelete)
                 {
@@ -522,7 +532,7 @@ public partial class AddProductTo : ComponentBase, IDisposable
             else
             {
                 // Was originally in DB — check if marked for deletion
-                bool existsInToDelete = await FunctionsService.ExistsAsync(
+                bool existsInToDelete = FunctionsService.Exists(
                     _state.ProductsToDelete, currentId);
                 if (existsInToDelete)
                 {

@@ -32,8 +32,8 @@ public class ActionOrderRequestService : IActionOrderRequestService
     {
         await using var db = await _dbFactory.CreateDbContextAsync(ct);
 
-        // Extract OrderID from state (assumed to be set by caller via a property; using CurrentIdCustomer as carrier)
-        int orderId = state?.CurrentIdCustomer ?? 0;
+        // The page sets state.OrderID before calling.
+        int orderId = state?.OrderID ?? 0;
 
         // --- Header query: port of legacy SQL join ---
         // Select o.OrderDate, u.Fullname, o.Status, c.CompanyName,
@@ -45,7 +45,7 @@ public class ActionOrderRequestService : IActionOrderRequestService
         var headerRow = await (
             from o in db.OrderRequests.AsNoTracking()
             join u in db.Users.AsNoTracking() on o.EmployeeID equals u.Username
-            join c in db.Customers.AsNoTracking() on o.CustomerID equals c.CustomerID
+            join c in db.Customers.AsNoTracking() on o.CustomerID equals (int?)c.CustomerID
             where o.OrderID == orderId
             select new
             {
@@ -176,7 +176,7 @@ public class ActionOrderRequestService : IActionOrderRequestService
         await using var db = await _dbFactory.CreateDbContextAsync(ct);
 
         // Extract OrderID from state
-        int orderId = state?.CurrentIdCustomer ?? 0;
+        int orderId = state?.OrderID ?? 0;
 
         // --- PRESAVEVALIDATION: check current status before update ---
         var order = await db.OrderRequests.FirstOrDefaultAsync(o => o.OrderID == orderId, ct);
@@ -258,7 +258,7 @@ public class ActionOrderRequestService : IActionOrderRequestService
         await using var db = await _dbFactory.CreateDbContextAsync(ct);
 
         // Extract OrderID from state
-        int orderId = state?.CurrentIdCustomer ?? 0;
+        int orderId = state?.OrderID ?? 0;
 
         // --- PRESAVEVALIDATION: check current status before update ---
         var order = await db.OrderRequests.FirstOrDefaultAsync(o => o.OrderID == orderId, ct);

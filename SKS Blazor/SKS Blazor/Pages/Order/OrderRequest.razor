@@ -133,12 +133,12 @@
                              FixedHeader="true"
                              Height="100%"
                              EditMode="DataGridEditMode.Cell"
-                             CellClick="OnProductCellClick"
+                             RowClick="OnProductRowClick"
                              CanceledEditingItem="OnCanceledEditingItem"
                              CommittedItemChanges="OnCommittedItemChanges"
                              Loading="_isLoading">
                     <Columns>
-                        <PropertyColumn Property="x => x.Quantity" Title="Quantity" IsEditable="true">
+                        <PropertyColumn Property="x => x.Quantity" Title="Quantity" Editable="true">
                             <EditTemplate>
                                 <MudNumericField T="decimal"
                                                  @bind-Value="context.Item.Quantity"
@@ -148,13 +148,13 @@
                                                  Immediate="true" />
                             </EditTemplate>
                         </PropertyColumn>
-                        <PropertyColumn Property="x => x.ProductCode" Title="Code" IsEditable="false" />
-                        <PropertyColumn Property="x => x.ProductName" Title="Product" IsEditable="false" />
-                        <PropertyColumn Property="x => x.UnitPrice" Title="Unit Price" Format="N2" IsEditable="false" />
-                        <PropertyColumn Property="x => x.LinePrice" Title="Price" Format="N2" IsEditable="false" />
-                        <PropertyColumn Property="x => x.UnitsInStock" Title="Existence" IsEditable="false" />
-                        <PropertyColumn Property="x => x.UnitsOnOrder" Title="Ordered" IsEditable="false" />
-                        <PropertyColumn Property="x => x.QuantityPerUnit" Title="Quantity per unit" IsEditable="false" />
+                        <PropertyColumn Property="x => x.ProductCode" Title="Code" Editable="false" />
+                        <PropertyColumn Property="x => x.ProductName" Title="Product" Editable="false" />
+                        <PropertyColumn Property="x => x.UnitPrice" Title="Unit Price" Format="N2" Editable="false" />
+                        <PropertyColumn Property="x => x.LinePrice" Title="Price" Format="N2" Editable="false" />
+                        <PropertyColumn Property="x => x.UnitsInStock" Title="Existence" Editable="false" />
+                        <PropertyColumn Property="x => x.UnitsOnOrder" Title="Ordered" Editable="false" />
+                        <PropertyColumn Property="x => x.QuantityPerUnit" Title="Quantity per unit" Editable="false" />
                     </Columns>
                 </MudDataGrid>
             </MudPaper>

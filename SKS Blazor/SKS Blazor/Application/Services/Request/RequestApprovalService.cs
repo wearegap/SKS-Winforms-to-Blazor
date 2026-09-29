@@ -62,7 +62,7 @@ public class RequestApprovalService : IRequestApprovalService
                     join d in db.OrderRequestDetails.AsNoTracking()
                         on o.OrderID equals (d.OrderID ?? 0)
                     join c in db.Customers.AsNoTracking()
-                        on o.CustomerID equals c.CustomerID
+                        on o.CustomerID equals (int?)c.CustomerID
                     join u in db.Users.AsNoTracking()
                         on o.EmployeeID equals u.Username
                     select new { o, d, c, u };

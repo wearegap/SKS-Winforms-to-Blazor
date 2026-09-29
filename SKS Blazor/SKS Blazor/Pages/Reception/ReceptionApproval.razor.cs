@@ -3,7 +3,6 @@ using MudBlazor;
 using SKS_Blazor.Application.DTOs.Order;
 using SKS_Blazor.Application.DTOs.Reception;
 using SKS_Blazor.Application.Services.Functions;
-using SKS_Blazor.Application.Services.Order;
 using SKS_Blazor.Application.Services.Reception;
 using SKS_Blazor.Infrastructure;
 using SKS_Blazor.Pages.Action;
@@ -17,7 +16,6 @@ public partial class ReceptionApproval : ComponentBase, IDisposable
 {
     [Inject] private IReceptionApprovalService ReceptionApprovalService { get; set; } = default!;
     [Inject] private IFunctionsService FunctionsService { get; set; } = default!;
-    [Inject] private IOrderReceptionService OrderReceptionService { get; set; } = default!;
     [Inject] private IDialogService DialogService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
@@ -77,7 +75,8 @@ public partial class ReceptionApproval : ComponentBase, IDisposable
         }
     }
 
-    /// <summary>Port of <c>DoSearchReception</c>. Delegates to service and populates grid.</summary>
+    /// <summary>Port of <c>DoSearchReception</c>. The service applies every legacy filter,
+    /// joins Providers/Users and sums LineTotal; the page only maps rows to the grid.</summary>
     private async Task DoSearchReception(int id = -1)
     {
         _isLoading = true;
@@ -86,93 +85,35 @@ public partial class ReceptionApproval : ComponentBase, IDisposable
         {
             if (_state is null) return;
 
-            // Sync state from UI fields
-            _state.TxtProviderNameText = _txtProviderName;
-            _state.TxtContactNameText = _txtContactName;
-            _state.TxtContactLastNameText = _txtContactLastName;
-
-            await ReceptionApprovalService.DoSearchReceptionAsync(_state, id);
-
-            // Build the grid data by querying order receptions with the applied filters
-            // The service populates internal state; we re-query from the order reception service
-            var receptions = await OrderReceptionService.GetOrderReceptionsAsync();
-            var receptionDetails = await OrderReceptionService.GetOrderReceptionDetailsAsync();
-
-            // Apply filters matching legacy DoSearchReception logic
-            var filtered = receptions.AsEnumerable();
-
-            if (id != -1)
+            var filter = new ReceptionApprovalFilterDto
             {
-                filtered = filtered.Where(o => o.ProviderID == id);
-            }
+                ProviderId = id,
+                ProviderName = _txtProviderName,
+                ContactName = _txtContactName,
+                ContactLastName = _txtContactLastName,
+                OrderID = _txtOrderID,
+                ProductID = _txtProductID,
+                Status = _cmbStatusValue,
+                FilterFromDate = _chkFrom,
+                FromDate = _dtFrom,
+                FilterToDate = _chkTo,
+                ToDate = _dtTo
+            };
 
-            if (!string.IsNullOrEmpty(_txtOrderID) && int.TryParse(_txtOrderID, NumberStyles.Integer, CultureInfo.InvariantCulture, out int orderId))
+            await ReceptionApprovalService.DoSearchReceptionAsync(_state, filter);
+
+            _gridRows = _state.GridRows.Select(r => new OrderReceptionGridRow
             {
-                filtered = filtered.Where(o => o.OrderID == orderId);
-            }
-
-            if (!string.IsNullOrEmpty(_txtProductID))
-            {
-                var orderIdsWithProduct = receptionDetails
-                    .Where(d => d.ProductID != null && d.ProductID.Contains(_txtProductID, StringComparison.OrdinalIgnoreCase))
-                    .Select(d => d.OrderID)
-                    .Distinct()
-                    .ToHashSet();
-                filtered = filtered.Where(o => orderIdsWithProduct.Contains(o.OrderID));
-            }
-
-            if (_chkFrom && _dtFrom.HasValue)
-            {
-                filtered = filtered.Where(o =>
-                {
-                    if (DateTime.TryParse(o.OrderDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
-                        return dt >= _dtFrom.Value.Date;
-                    return true;
-                });
-            }
-
-            if (_chkTo && _dtTo.HasValue)
-            {
-                filtered = filtered.Where(o =>
-                {
-                    if (DateTime.TryParse(o.OrderDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
-                        return dt <= _dtTo.Value.Date;
-                    return true;
-                });
-            }
-
-            if (!string.IsNullOrEmpty(_cmbStatusValue) && _cmbStatusValue != "All")
-            {
-                var statusUpper = _cmbStatusValue.ToUpperInvariant();
-                filtered = filtered.Where(o =>
-                    string.Equals(o.Status, statusUpper, StringComparison.OrdinalIgnoreCase));
-            }
-
-            // Group by order and compute line totals — matching legacy SQL:
-            // Select o.OrderDate, o.OrderID, p.ProviderName, ContactName, ReceivedBy, Sum(d.LineTotal), o.Status
-            var filteredList = filtered.ToList();
-
-            var gridRows = new List<OrderReceptionGridRow>();
-            foreach (var order in filteredList)
-            {
-                var details = receptionDetails.Where(d => d.OrderID == order.OrderID).ToList();
-                var totalPrice = details.Sum(d => d.LineTotal ?? 0m);
-
-                gridRows.Add(new OrderReceptionGridRow
-                {
-                    OrderDate = order.OrderDate ?? string.Empty,
-                    OrderID = order.OrderID,
-                    ProviderName = string.Empty, // Provider name would need join with Providers table
-                    ContactName = string.Empty,
-                    ReceivedBy = order.ReceivedBy ?? string.Empty,
-                    Price = totalPrice,
-                    Status = order.Status ?? string.Empty,
-                    ProviderID = order.ProviderID
-                });
-            }
-
-            _gridRows = gridRows;
+                OrderDate = r.OrderDate,
+                OrderID = r.OrderID,
+                ProviderName = r.ProviderName,
+                ContactName = r.ContactName,
+                ReceivedBy = r.ReceivedBy,
+                Price = r.Price,
+                Status = r.Status
+            }).ToList();
             _statusMessage = $"There are {_gridRows.Count} records with the selected criteria";
+            AppState.LogStatus(_statusMessage);
         }
         catch (Exception ex)
         {
@@ -200,7 +141,7 @@ public partial class ReceptionApproval : ComponentBase, IDisposable
         var parameters = new DialogParameters<ActionOrderReception>
         {
             { x => x.OrderId, selectedOrderId },
-            { x => x.Action, action }
+            { x => x.ActionCode, action }
         };
 
         var options = new DialogOptions

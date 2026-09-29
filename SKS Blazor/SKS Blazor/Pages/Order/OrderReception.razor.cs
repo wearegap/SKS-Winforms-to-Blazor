@@ -232,7 +232,7 @@ public partial class OrderReception : IDisposable
             CloseOnEscapeKey = true
         };
 
-        var dialog = await DialogService.ShowAsync<ProvidersDialog>("Providers", dialogOptions);
+        var dialog = await DialogService.ShowAsync<SKS_Blazor.Pages.Providers.ProvidersDialog>("Providers", dialogOptions);
         var result = await dialog.Result;
 
         // After dialog closes, clear search fields and search by selected provider ID
@@ -257,7 +257,7 @@ public partial class OrderReception : IDisposable
             return;
         }
 
-        var parameters = new DialogParameters<AddProductToDialog>
+        var parameters = new DialogParameters<SKS_Blazor.Pages.Product.AddProductToDialog>
         {
             { x => x.Id, _state.CurrentIdProvider },
             { x => x.ObjectReferred, $"Provider {_state.TxtProviderCompanyText}|{_state.TxtProviderContactText}" },
@@ -272,7 +272,7 @@ public partial class OrderReception : IDisposable
             CloseOnEscapeKey = true
         };
 
-        var dialog = await DialogService.ShowAsync<AddProductToDialog>(
+        var dialog = await DialogService.ShowAsync<SKS_Blazor.Pages.Product.AddProductToDialog>(
             $"Add product(s) to Provider {_state.TxtProviderCompanyText}|{_state.TxtProviderContactText}",
             parameters,
             dialogOptions);
@@ -346,7 +346,7 @@ public partial class OrderReception : IDisposable
     private async Task OnFreightChargeChanged()
     {
         // Port of: currentFreightCharge = DoubleValue(txtFreightCharge.Text)
-        decimal val = await FunctionsService.DoubleValueAsync(_state!.TxtFreightChargeText ?? string.Empty);
+        decimal val = (decimal)FunctionsService.DoubleValue(_state!.TxtFreightChargeText ?? string.Empty);
         _state.CurrentFreightCharge = val;
         ReCalculateTotals(0m, 0m);
         _editingData = true;
@@ -358,7 +358,7 @@ public partial class OrderReception : IDisposable
     private async Task OnSalesTaxChanged()
     {
         // Port of: currentTax = DoubleValue(txtSalesTax.Text)
-        decimal val = await FunctionsService.DoubleValueAsync(_state!.TxtSalesTaxText ?? string.Empty);
+        decimal val = (decimal)FunctionsService.DoubleValue(_state!.TxtSalesTaxText ?? string.Empty);
         _state.CurrentTax = val;
         ReCalculateTotals(0m, 0m);
         _editingData = true;

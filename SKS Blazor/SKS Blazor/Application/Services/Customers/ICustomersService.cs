@@ -53,4 +53,19 @@ public interface ICustomersService
     /// Called by the page component to prepare state before SaveAsync/DeleteAsync.
     /// </summary>
     void SetCurrentCustomer(CustomersDto? customer);
+
+    /// <summary>All customers ordered by CustomerID (port of the dcCustomers initial load).</summary>
+    Task<List<CustomersDto>> GetAllCustomersAsync(CancellationToken ct = default);
+
+    /// <summary>Port of <c>SearchCriteriaProducts(field, value)</c> returning customers: <c>{field} LIKE 'value%'</c>.</summary>
+    Task<List<CustomersDto>> SearchCustomersAsync(string field, string value, CancellationToken ct = default);
+
+    /// <summary>Port of "Add" then "Save". Inserts a new customer.</summary>
+    Task CreateCustomerAsync(CustomersDto customer, CancellationToken ct = default);
+
+    /// <summary>Port of "Edit" then "Save". Updates an existing customer.</summary>
+    Task UpdateCustomerAsync(CustomersDto customer, CancellationToken ct = default);
+
+    /// <summary>Port of "Delete". Confirmation is a page concern.</summary>
+    Task DeleteCustomerAsync(int customerId, CancellationToken ct = default);
 }

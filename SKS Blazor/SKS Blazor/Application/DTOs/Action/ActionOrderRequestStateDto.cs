@@ -7,6 +7,8 @@ namespace SKS_Blazor.Application.DTOs.Action;
 /// <summary>ActionOrderRequestState data transfer object (domain: Action).</summary>
 public class ActionOrderRequestStateDto
 {
+    /// <summary>Order being shown or acted on (legacy frmActionOrderRequest.OrderId).</summary>
+    public int OrderID { get; set; }
     public decimal CurrentSubTotal { get; set; }
     public decimal CurrentTotal { get; set; }
     public decimal CurrentTax { get; set; }

@@ -53,11 +53,11 @@ public class ReceptionApprovalService : IReceptionApprovalService
         //         Where o.OrderID = d.OrderID And p.ProviderID = o.ProviderID And u.Username = o.ReceivedBy
         var query = from o in db.OrderReceptions.AsNoTracking()
                     join p in db.Providers.AsNoTracking()
-                        on o.ProviderID equals p.ProviderID
+                        on o.ProviderID equals (int?)p.ProviderID
                     join u in db.Users.AsNoTracking()
                         on o.ReceivedBy equals u.Username
                     join d in db.OrderReceptionDetails.AsNoTracking()
-                        on o.OrderID equals d.OrderID
+                        on (int?)o.OrderID equals d.OrderID
                     select new { Order = o, Detail = d, Provider = p, User = u };
 
         // Apply dynamic filters — mirrors the legacy filter string building exactly

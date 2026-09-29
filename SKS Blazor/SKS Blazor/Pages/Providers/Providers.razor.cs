@@ -244,9 +244,8 @@ public partial class Providers : ComponentBase, IAsyncDisposable
     {
         var parameters = new DialogParameters<SearchInputDialog>
         {
-            { x => x.SearchTable, "Providers" },
-            { x => x.SearchField, "ProviderName" },
-            { x => x.SearchLabel, "Provider" }
+            { x => x.Title, "Search Providers" },
+            { x => x.FieldLabel, "Provider name" }
         };
 
         var options = new DialogOptions

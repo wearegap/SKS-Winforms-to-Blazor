@@ -231,111 +231,110 @@ public class OrderReceptionService : IOrderReceptionService
             return state;
         }
 
-        int retries = 0;
-
-        retry:
-        await using var db = await _dbFactory.CreateDbContextAsync(ct);
-        await using var transaction = await db.Database.BeginTransactionAsync(ct);
-        try
+        // Retry loop replaces the generated `goto retry`, which jumped back over a using declaration (CS8648).
+        for (int retries = 0; ; retries++)
         {
-            // Create the order reception header entity
-            var orderReception = new Domain.Entities.Order.OrderReceptions
+            await using var db = await _dbFactory.CreateDbContextAsync(ct);
+            await using var transaction = await db.Database.BeginTransactionAsync(ct);
+            try
             {
-                ProviderID = state.CurrentIdProvider,
-                ReceivedBy = string.Empty, // Set by caller via AppState.CurrentUser
-                OrderDate = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                Notes = state.TxtNotesText ?? string.Empty,
-                FreightCharge = state.CurrentFreightCharge,
-                SalesTaxRate = state.CurrentTax * 0.01m,
-                Status = "RECEIVED"
-            };
-
-            db.OrderReceptions.Add(orderReception);
-            await db.SaveChangesAsync(ct);
-
-            int newOrderId = orderReception.OrderID;
-
-            // PARAMETERITERATION: iterate product lines to insert detail rows
-            var detailsToAdd = new List<Domain.Entities.Order.OrderReceptionDetails>();
-            foreach (var line in productLines)
-            {
-                if (line.Quantity == 0m)
+                // Create the order reception header entity
+                var orderReception = new Domain.Entities.Order.OrderReceptions
                 {
-                    continue;
-                }
-
-                if (line.UnitPrice < 0m)
-                {
-                    _logger.LogWarning("SaveAsync: Negative unit price for product {ProductID}", line.ProductID);
-                }
-
-                decimal linePrice = line.Quantity * line.UnitPrice;
-                decimal salesTaxRate = state.CurrentTax * 0.01m;
-
-                var detail = new Domain.Entities.Order.OrderReceptionDetails
-                {
-                    OrderID = newOrderId,
-                    ProductID = line.ProductID,
-                    DateSold = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                    Quantity = line.Quantity,
-                    UnitPrice = line.UnitPrice,
-                    SalePrice = linePrice,
-                    SalesTax = salesTaxRate,
-                    LineTotal = linePrice
+                    ProviderID = state.CurrentIdProvider,
+                    ReceivedBy = string.Empty, // Set by caller via AppState.CurrentUser
+                    OrderDate = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                    Notes = state.TxtNotesText ?? string.Empty,
+                    FreightCharge = state.CurrentFreightCharge,
+                    SalesTaxRate = state.CurrentTax * 0.01m,
+                    Status = "RECEIVED"
                 };
-                detailsToAdd.Add(detail);
+
+                db.OrderReceptions.Add(orderReception);
+                await db.SaveChangesAsync(ct);
+
+                int newOrderId = orderReception.OrderID;
+
+                // PARAMETERITERATION: iterate product lines to insert detail rows
+                var detailsToAdd = new List<Domain.Entities.Order.OrderReceptionDetails>();
+                foreach (var line in productLines)
+                {
+                    if (line.Quantity == 0m)
+                    {
+                        continue;
+                    }
+
+                    if (line.UnitPrice < 0m)
+                    {
+                        _logger.LogWarning("SaveAsync: Negative unit price for product {ProductID}", line.ProductID);
+                    }
+
+                    decimal linePrice = line.Quantity * line.UnitPrice;
+                    decimal salesTaxRate = state.CurrentTax * 0.01m;
+
+                    var detail = new Domain.Entities.Order.OrderReceptionDetails
+                    {
+                        OrderID = newOrderId,
+                        ProductID = line.ProductID,
+                        DateSold = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                        Quantity = line.Quantity,
+                        UnitPrice = line.UnitPrice,
+                        SalePrice = linePrice,
+                        SalesTax = salesTaxRate,
+                        LineTotal = linePrice
+                    };
+                    detailsToAdd.Add(detail);
+                }
+
+                db.OrderReceptionDetails.AddRange(detailsToAdd);
+                await db.SaveChangesAsync(ct);
+
+                await transaction.CommitAsync(ct);
+
+                // Update state to reflect successful save
+                state.EditingData = false;
+                state.TxtNotesText = $"Order reception #{newOrderId} saved successfully with {detailsToAdd.Count} line(s).";
+
+                _logger.LogInformation(
+                    "SaveAsync: Order reception {OrderId} created with {DetailCount} lines for provider {ProviderId}",
+                    newOrderId, detailsToAdd.Count, state.CurrentIdProvider);
+
+                // Reset totals after save (legacy clears the form)
+                state.CurrentSubTotal = 0m;
+                state.CurrentTotal = 0m;
+                state.CurrentTotalTax = 0m;
+                state.CurrentFreightCharge = 0m;
+                state.CurrentTax = 0m;
+                state.CurrentIdProvider = 0;
+                state.TxtSubTotalText = "0.00";
+                state.TxtTotalText = "0.00";
+                state.TxtTotalTaxText = "0.00";
+                state.TxtFreightChargeText = string.Empty;
+                state.TxtSalesTaxText = string.Empty;
+                state.TxtEntryText = string.Empty;
+                state.TxtProviderNameText = string.Empty;
+                state.TxtContactLastNameText = string.Empty;
+                state.TxtContactNameText = string.Empty;
+                state.TxtProviderContactText = string.Empty;
+                state.TxtProviderCompanyText = string.Empty;
+
+                return state;
             }
-
-            db.OrderReceptionDetails.AddRange(detailsToAdd);
-            await db.SaveChangesAsync(ct);
-
-            await transaction.CommitAsync(ct);
-
-            // Update state to reflect successful save
-            state.EditingData = false;
-            state.TxtNotesText = $"Order reception #{newOrderId} saved successfully with {detailsToAdd.Count} line(s).";
-
-            _logger.LogInformation(
-                "SaveAsync: Order reception {OrderId} created with {DetailCount} lines for provider {ProviderId}",
-                newOrderId, detailsToAdd.Count, state.CurrentIdProvider);
-
-            // Reset totals after save (legacy clears the form)
-            state.CurrentSubTotal = 0m;
-            state.CurrentTotal = 0m;
-            state.CurrentTotalTax = 0m;
-            state.CurrentFreightCharge = 0m;
-            state.CurrentTax = 0m;
-            state.CurrentIdProvider = 0;
-            state.TxtSubTotalText = "0.00";
-            state.TxtTotalText = "0.00";
-            state.TxtTotalTaxText = "0.00";
-            state.TxtFreightChargeText = string.Empty;
-            state.TxtSalesTaxText = string.Empty;
-            state.TxtEntryText = string.Empty;
-            state.TxtProviderNameText = string.Empty;
-            state.TxtContactLastNameText = string.Empty;
-            state.TxtContactNameText = string.Empty;
-            state.TxtProviderContactText = string.Empty;
-            state.TxtProviderCompanyText = string.Empty;
-
-            return state;
-        }
-        catch (DbUpdateConcurrencyException ex) when (retries < 3)
-        {
-            retries++;
-            _logger.LogWarning(ex,
-                "SaveAsync: Concurrency exception on attempt {Attempt}, retrying", retries);
-            await transaction.RollbackAsync(ct);
-            await Task.Delay(100 * retries, ct);
-            goto retry;
-        }
-        catch (Exception ex)
-        {
-            await transaction.RollbackAsync(ct);
-            state.TxtNotesText = $"An error has occurred adding the data. Error: {ex.Message}";
-            _logger.LogError(ex, "SaveAsync: Failed to save order reception for provider {ProviderId}",
-                state.CurrentIdProvider);
-            return state;
+            catch (DbUpdateConcurrencyException ex) when (retries < 3)
+            {
+                _logger.LogWarning(ex,
+                    "SaveAsync: Concurrency exception on attempt {Attempt}, retrying", retries + 1);
+                await transaction.RollbackAsync(ct);
+                await Task.Delay(100 * (retries + 1), ct);
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(ct);
+                state.TxtNotesText = $"An error has occurred adding the data. Error: {ex.Message}";
+                _logger.LogError(ex, "SaveAsync: Failed to save order reception for provider {ProviderId}",
+                    state.CurrentIdProvider);
+                return state;
+            }
         }
     }
 

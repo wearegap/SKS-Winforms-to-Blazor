@@ -17,17 +17,18 @@ namespace SKS_Blazor.Pages.Action;
 public partial class ActionOrderReception : ComponentBase, IDisposable
 {
     [Inject] private IActionOrderReceptionService ActionOrderReceptionService { get; set; } = default!;
-    [Inject] private IOrderReceptionService OrderReceptionService { get; set; } = default!;
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     [Inject] private IDialogService DialogService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Inject] private AppState AppState { get; set; } = default!;
 
     /// <summary>The order ID to display/act upon — passed via query string.</summary>
+    [Parameter]
     [SupplyParameterFromQuery(Name = "orderId")]
     public int OrderId { get; set; }
 
     /// <summary>Action to auto-execute on load: 0=none, 1=approve, 2=cancel. Port of <c>frmActionOrderReception.Action</c>.</summary>
+    [Parameter]
     [SupplyParameterFromQuery(Name = "action")]
     public int ActionCode { get; set; }
 
@@ -135,8 +136,9 @@ public partial class ActionOrderReception : ComponentBase, IDisposable
     // ─────────────────────── Data Loading ───────────────────────
 
     /// <summary>
-    /// Port of <c>LoadData</c>. Queries via service for the joined header
-    /// (OrderReceptions + Users + Providers) and detail lines, populates UI fields.
+    /// Port of <c>LoadData</c> + <c>LoadDetails</c> + <c>DisplayTotals</c>. The service runs the
+    /// joined header query (OrderReceptions + Users + Providers), the detail query and the totals;
+    /// the page copies the result into its display fields.
     /// </summary>
     private async Task LoadDataAsync()
     {
@@ -144,13 +146,36 @@ public partial class ActionOrderReception : ComponentBase, IDisposable
 
         try
         {
-            // Reset subtotal accumulators
-            _currentSubTotal = 0m;
-            _currentTotalTax = 0m;
+            _state.OrderID = OrderId;
+            _state = await ActionOrderReceptionService.LoadDataAsync(_state);
 
-            await LoadHeaderAsync();
-            await LoadDetailsAsync();
-            DisplayTotals();
+            if (!_state.OrderFound)
+            {
+                LogStatus(_state.ErrorMessage, Severity.Warning);
+                return;
+            }
+
+            _txtOrderID = OrderId.ToString();
+            _txtReceived = _state.OrderDate;
+            _txtReceivedBy = _state.ReceivedByFullname;
+            _txtNotes = _state.Notes;
+            _txtProviderCompany = _state.ProviderCompany;
+            _txtProviderContact = _state.ProviderContact;
+            _txtChanged = _state.ChangedDate;
+            _txtChangedBy = _state.ChangedBy;
+            _showChangedFields = _state.ShowChangedFields;
+            _lblChangedText = _state.ChangedDateLabel;
+            _lblChangedByText = _state.ChangedByLabel;
+
+            _currentFreightCharge = _state.CurrentFreightCharge;
+            _currentTax = _state.CurrentTax;
+            _currentSubTotal = _state.CurrentSubTotal;
+            _currentTotalTax = _state.CurrentTotalTax;
+            _currentTotal = _state.CurrentTotal;
+            _txtFreightCharge = _currentFreightCharge.ToString("N2");
+            _txtSalesTax = _currentTax.ToString("N2");
+
+            _details = _state.Details.ToList();
         }
         catch (Exception ex)
         {
@@ -162,130 +187,14 @@ public partial class ActionOrderReception : ComponentBase, IDisposable
         }
     }
 
-    /// <summary>
-    /// Loads the order reception header fields via service.
-    /// </summary>
-    private async Task LoadHeaderAsync()
-    {
-        var header = await ActionOrderReceptionService.GetOrderReceptionHeaderAsync(OrderId);
-
-        if (header is null)
-        {
-            LogStatus($"The order with the ID '{OrderId}' does not exist", Severity.Warning);
-            return;
-        }
-
-        _txtOrderID = OrderId.ToString();
-        _txtReceived = header.OrderDate ?? string.Empty;
-        _txtReceivedBy = header.ReceivedByFullName ?? string.Empty;
-        _txtNotes = header.Notes ?? string.Empty;
-
-        _currentFreightCharge = header.FreightCharge ?? 0m;
-        _txtFreightCharge = _currentFreightCharge.ToString("N2");
-
-        _currentTax = header.SalesTaxRate ?? 0m;
-        _txtSalesTax = _currentTax.ToString("N2");
-
-        _txtProviderCompany = header.ProviderName ?? string.Empty;
-        _txtProviderContact = header.ProviderContact ?? string.Empty;
-
-        var status = header.Status ?? string.Empty;
-        _state.TxtStatusText = status;
-
-        _txtChanged = header.ChangedDate ?? string.Empty;
-        _txtChangedBy = header.ChangedBy ?? string.Empty;
-
-        bool isReceived = string.Equals(status, "RECEIVED", StringComparison.OrdinalIgnoreCase);
-        _showChangedFields = !isReceived;
-
-        if (string.Equals(status, "APPROVED", StringComparison.OrdinalIgnoreCase))
-        {
-            _lblChangedText = "Approved Date:";
-            _lblChangedByText = "Approved By:";
-        }
-        else
-        {
-            _lblChangedText = "Cancelled Date:";
-            _lblChangedByText = "Cancelled By:";
-        }
-
-        _state.CurrentFreightCharge = _currentFreightCharge;
-        _state.CurrentTax = _currentTax;
-    }
-
-    /// <summary>
-    /// Port of <c>LoadDetails</c>. Loads detail lines via service and iterates
-    /// them to accumulate totals (PARAMETER ITERATION — rule #40).
-    /// </summary>
-    private async Task LoadDetailsAsync()
-    {
-        var rows = await ActionOrderReceptionService.GetOrderReceptionDetailsAsync(OrderId);
-
-        var detailDisplayList = new List<ActionOrderReceptionDetailDto>();
-
-        // PARAMETER ITERATION: iterate over each detail line, accumulate totals
-        foreach (var row in rows)
-        {
-            var detailDto = new ActionOrderReceptionDetailDto
-            {
-                Quantity = row.Quantity ?? 0m,
-                ProductID = row.ProductID ?? string.Empty,
-                ProductName = row.ProductName ?? string.Empty,
-                UnitPrice = row.UnitPrice ?? 0m,
-                SalePrice = row.SalePrice ?? 0m,
-                UnitsInStock = row.UnitsInStock ?? 0,
-                UnitsOnOrder = row.UnitsOnOrder ?? 0,
-                QuantityPerUnitDisplay = row.QuantityPerUnitDisplay ?? string.Empty,
-                LineTotal = row.LineTotal ?? 0m
-            };
-
-            // Accumulate totals — port of AddToTotals
-            AddToTotals(row.LineTotal ?? 0m);
-
-            detailDisplayList.Add(detailDto);
-        }
-
-        _details = detailDisplayList;
-    }
-
-    // ─────────────────────── Totals Calculation ───────────────────────
-
-    /// <summary>Port of <c>AddToTotals(double current)</c>. Accumulates running sub-total, tax, and total.</summary>
-    private void AddToTotals(decimal current)
-    {
-        _currentSubTotal += current;
-        _currentTotalTax = _currentSubTotal * _currentTax;
-        _currentTotal = _currentFreightCharge + _currentSubTotal + _currentTotalTax;
-
-        _state.CurrentSubTotal = _currentSubTotal;
-        _state.CurrentTotalTax = _currentTotalTax;
-        _state.CurrentTotal = _currentTotal;
-        _state.TxtSubTotalText = _currentSubTotal.ToString("#,##0.00");
-        _state.TxtTotalTaxText = _currentTotalTax.ToString("#,##0.00");
-        _state.TxtTotalText = _currentTotal.ToString("#,##0.00");
-    }
-
-    /// <summary>Port of <c>DisplayTotals</c>. Recomputes final total and updates state text fields.</summary>
-    private void DisplayTotals()
-    {
-        _currentTotal = _currentFreightCharge + _currentSubTotal + _currentTotalTax;
-
-        _state.CurrentTotal = _currentTotal;
-        _state.TxtSubTotalText = _currentSubTotal.ToString("#,##0.00");
-        _state.TxtTotalTaxText = _currentTotalTax.ToString("#,##0.00");
-        _state.TxtTotalText = _currentTotal.ToString("#,##0.00");
-    }
-
     // ─────────────────────── Button Handlers ───────────────────────
 
     /// <summary>
-    /// Port of <c>cmdApprove_Click</c>.
-    /// Validates status, calls service to approve order.
-    /// Uses EF Core transaction (TRANSACTION BOUNDARIES — rule #41).
+    /// Port of <c>cmdApprove_Click</c>. The service re-validates the stored status, then in one
+    /// transaction marks the order APPROVED, inserts Stocks + StockLog rows and bumps UnitsInStock.
     /// </summary>
     private async Task OnApproveClickAsync()
     {
-        // PRE-SAVE VALIDATION: check current status before attempting approval
         var currentStatus = (_state.TxtStatusText ?? string.Empty).ToUpperInvariant();
 
         if (currentStatus == "APPROVED")
@@ -304,37 +213,22 @@ public partial class ActionOrderReception : ComponentBase, IDisposable
 
         try
         {
-            var userId = AppState.CurrentUser ?? "system";
-            await ActionOrderReceptionService.ApproveOrderReceptionAsync(OrderId, userId);
+            _state.CurrentUserId = AppState.UserId;
+            await ActionOrderReceptionService.ApproveAsync(_state, AppState.UserId);
 
-            // Reload data after approval to reflect updated status
+            if (!string.IsNullOrEmpty(_state.ErrorMessage))
+            {
+                LogStatus(_state.ErrorMessage, Severity.Warning);
+                return;
+            }
+
             await LoadDataAsync();
-
-            Snackbar.Add("The order was successfully approved", Severity.Success);
+            Snackbar.Add(_state.SuccessMessage is { Length: > 0 } ok ? ok : "The order was successfully approved", Severity.Success);
 
             // Legacy closes the form after approval; navigate back
             NavigationManager.NavigateTo("/upgraded/reception-approval");
         }
-        catch (DbUpdateConcurrencyException)
-        {
-            // LOCK RETRY: retry once on concurrency conflict
-            try
-            {
-                var userId = AppState.CurrentUser ?? "system";
-                await ActionOrderReceptionService.ApproveOrderReceptionAsync(OrderId, userId);
-
-                await LoadDataAsync();
-                Snackbar.Add("The order was successfully approved (after retry)", Severity.Success);
-                NavigationManager.NavigateTo("/upgraded/reception-approval");
-            }
-            // Blazor signals a redirect by throwing NavigationException; catching
-            // everything turns that redirect into an error and the page stays put.
-            catch (Exception retryEx) when (retryEx is not NavigationException)
-            {
-                LogStatus($"An error has occurred adding the data. Error: {retryEx.Message}", Severity.Error);
-            }
-        }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not NavigationException)
         {
             LogStatus($"An error has occurred adding the data. Error: {ex.Message}", Severity.Error);
         }
@@ -345,13 +239,10 @@ public partial class ActionOrderReception : ComponentBase, IDisposable
     }
 
     /// <summary>
-    /// Port of <c>cmdCancel_Click</c>.
-    /// Validates status, confirms with user, calls service to cancel order.
-    /// Uses EF Core transaction (TRANSACTION BOUNDARIES — rule #41).
+    /// Port of <c>cmdCancel_Click</c>. Confirms with the user, then the service marks the order CANCELLED.
     /// </summary>
     private async Task OnCancelClickAsync()
     {
-        // PRE-SAVE VALIDATION: check current status before attempting cancellation
         var currentStatus = (_state.TxtStatusText ?? string.Empty).ToUpperInvariant();
 
         if (currentStatus == "CANCELLED")
@@ -382,36 +273,22 @@ public partial class ActionOrderReception : ComponentBase, IDisposable
 
         try
         {
-            var userId = AppState.CurrentUser ?? "system";
-            await ActionOrderReceptionService.CancelOrderReceptionAsync(OrderId, userId);
+            _state.CurrentUserId = AppState.UserId;
+            await ActionOrderReceptionService.CancelAsync(_state, AppState.UserId);
+
+            if (!string.IsNullOrEmpty(_state.ErrorMessage))
+            {
+                LogStatus(_state.ErrorMessage, Severity.Warning);
+                return;
+            }
 
             await LoadDataAsync();
-
-            Snackbar.Add("The order was successfully cancelled", Severity.Success);
+            Snackbar.Add(_state.SuccessMessage is { Length: > 0 } ok ? ok : "The order was successfully cancelled", Severity.Success);
 
             // Legacy closes the form after cancellation; navigate back
             NavigationManager.NavigateTo("/upgraded/reception-approval");
         }
-        catch (DbUpdateConcurrencyException)
-        {
-            // LOCK RETRY
-            try
-            {
-                var userId = AppState.CurrentUser ?? "system";
-                await ActionOrderReceptionService.CancelOrderReceptionAsync(OrderId, userId);
-
-                await LoadDataAsync();
-                Snackbar.Add("The order was successfully cancelled (after retry)", Severity.Success);
-                NavigationManager.NavigateTo("/upgraded/reception-approval");
-            }
-            // Blazor signals a redirect by throwing NavigationException; catching
-            // everything turns that redirect into an error and the page stays put.
-            catch (Exception retryEx) when (retryEx is not NavigationException)
-            {
-                LogStatus($"An error has occurred adding the data. Error: {retryEx.Message}", Severity.Error);
-            }
-        }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not NavigationException)
         {
             LogStatus($"An error has occurred adding the data. Error: {ex.Message}", Severity.Error);
         }

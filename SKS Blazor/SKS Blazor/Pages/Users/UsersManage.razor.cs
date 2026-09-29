@@ -7,7 +7,7 @@ using SKS_Blazor.Application.Services.Users;
 using SKS_Blazor.Application.Services.Functions;
 using SKS_Blazor.Infrastructure;
 
-namespace SKS_Blazor.Pages.Upgraded;
+namespace SKS_Blazor.Pages.Users;
 
 /// <summary>Port of <c>frmUsersManage</c> (frmUsersManage.cs).</summary>
 public partial class UsersManage : ComponentBase, IDisposable

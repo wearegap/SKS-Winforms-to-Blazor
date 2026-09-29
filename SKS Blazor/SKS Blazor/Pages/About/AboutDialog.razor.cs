@@ -48,9 +48,9 @@ public partial class AboutDialog : IDisposable
     /// Port of <c>cmdOk_Click</c> — closes the About dialog.
     /// Legacy: private void cmdOk_Click(Object eventSender, EventArgs eventArgs) => this.Close();
     /// </summary>
-    private async Task OnCmdOkClick()
+    private void OnCmdOkClick()
     {
-        await MudDialog.CloseAsync(DialogResult.Ok(true));
+        MudDialog.Close(DialogResult.Ok(true));
     }
 
     /// <summary>

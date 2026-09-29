@@ -130,6 +130,7 @@ public partial class ActionOrderRequest : ComponentBase, IDisposable
 
             _state!.CurrentSubTotal = 0;
             _state.CurrentTotalTax = 0;
+            _state.OrderID = OrderId;
 
             // Load the order request header via service
             _state = await ActionOrderRequestService.LoadDataAsync(_state);
