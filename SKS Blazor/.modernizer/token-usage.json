@@ -1,0 +1,48 @@
+{
+  "project": "SKS Blazor",
+  "generatedAt": "2026-09-28T16:25:56.9691653-06:00",
+  "totalEstimatedCostUsd": 32.9739,
+  "estimatedCostUsdLow": 29.5724,
+  "estimatedCostUsdHigh": 32.9739,
+  "perModel": [
+    {
+      "model": "claude-sonnet-5",
+      "apiCalls": 6,
+      "inputTokens": 108431,
+      "outputTokens": 68368,
+      "cacheCreateTokens": 346892,
+      "cacheReadTokens": 17107,
+      "estimatedCostUsd": 1.7712
+    },
+    {
+      "model": "claude-opus-4-6",
+      "apiCalls": 70,
+      "inputTokens": 2041686,
+      "outputTokens": 418969,
+      "cacheCreateTokens": 590225,
+      "cacheReadTokens": 1964490,
+      "estimatedCostUsd": 25.3538
+    },
+    {
+      "model": "claude-haiku-4-5",
+      "apiCalls": 44,
+      "inputTokens": 278116,
+      "outputTokens": 194638,
+      "cacheCreateTokens": 890426,
+      "cacheReadTokens": 830409,
+      "estimatedCostUsd": 2.4474
+    }
+  ],
+  "phases": [
+    {
+      "phase": "Slices",
+      "time": "2026-09-28T16:25:56.9564712-06:00",
+      "apiCalls": 115,
+      "inputTokens": 2406159,
+      "outputTokens": 674145,
+      "cacheCreateTokens": 1827543,
+      "cacheReadTokens": 2812006,
+      "estimatedCostUsd": 32.8722
+    }
+  ]
+}

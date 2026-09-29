@@ -1,0 +1,696 @@
+{
+  "services": [
+    {
+      "interfaceName": "IAboutService",
+      "implementationName": "AboutService",
+      "domain": "About",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAbout.cs",
+      "methodNames": [
+        "InitializeAsync"
+      ],
+      "methods": [
+        {
+          "name": "InitializeAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IActionOrderReceptionService",
+      "implementationName": "ActionOrderReceptionService",
+      "domain": "Action",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmActionOrderReception.cs",
+      "methodNames": [
+        "LoadDataAsync",
+        "ApproveAsync",
+        "CancelAsync",
+        "LoadDetailsAsync"
+      ],
+      "methods": [
+        {
+          "name": "LoadDataAsync",
+          "returnType": "Task\u003CActionOrderReceptionStateDto\u003E",
+          "parameters": "ActionOrderReceptionStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "ApproveAsync",
+          "returnType": "Task",
+          "parameters": "ActionOrderReceptionStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "CancelAsync",
+          "returnType": "Task",
+          "parameters": "ActionOrderReceptionStateDto state, Object eventSender, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": [
+        {
+          "name": "LoadDetailsAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IActionOrderRequestService",
+      "implementationName": "ActionOrderRequestService",
+      "domain": "Action",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmActionOrderRequest.cs",
+      "methodNames": [
+        "LoadDataAsync",
+        "ApproveAsync",
+        "CancelAsync",
+        "LoadDetailsAsync"
+      ],
+      "methods": [
+        {
+          "name": "LoadDataAsync",
+          "returnType": "Task\u003CActionOrderRequestStateDto\u003E",
+          "parameters": "ActionOrderRequestStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "ApproveAsync",
+          "returnType": "Task",
+          "parameters": "ActionOrderRequestStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "CancelAsync",
+          "returnType": "Task",
+          "parameters": "ActionOrderRequestStateDto state, Object eventSender, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": [
+        {
+          "name": "LoadDetailsAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IAddProductToService",
+      "implementationName": "AddProductToService",
+      "domain": "Product",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAddProductTo.cs",
+      "methodNames": [
+        "LoadDataAsync",
+        "DoSearchProductAsync",
+        "AddProductToSetAsync",
+        "RemoveAsync",
+        "SaveAsync",
+        "LoadProductsByIdAsync"
+      ],
+      "methods": [
+        {
+          "name": "LoadDataAsync",
+          "returnType": "Task\u003CAddProductToStateDto\u003E",
+          "parameters": "AddProductToStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "DoSearchProductAsync",
+          "returnType": "Task\u003CList\u003CProductsDto\u003E\u003E",
+          "parameters": "AddProductToStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "AddProductToSetAsync",
+          "returnType": "Task\u003CAddProductToStateDto\u003E",
+          "parameters": "AddProductToStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "RemoveAsync",
+          "returnType": "Task\u003CAddProductToStateDto\u003E",
+          "parameters": "AddProductToStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveAsync",
+          "returnType": "Task\u003CAddProductToStateDto\u003E",
+          "parameters": "AddProductToStateDto state, Object eventSender, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": [
+        {
+          "name": "LoadProductsByIdAsync",
+          "returnType": "Task\u003CProductsDto?\u003E",
+          "parameters": "AddProductToStateDto state, CancellationToken ct = default"
+        }
+      ],
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IAddStockManualService",
+      "implementationName": "AddStockManualService",
+      "domain": "Stock",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAddStockManual.cs",
+      "methodNames": [
+        "DoSearchProductAsync",
+        "RetrieveDataProductAsync",
+        "SaveAsync",
+        "ValuesAsync",
+        "GetStockLogAsync"
+      ],
+      "methods": [
+        {
+          "name": "DoSearchProductAsync",
+          "returnType": "Task\u003CList\u003CProductsDto\u003E\u003E",
+          "parameters": "AddStockManualStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "RetrieveDataProductAsync",
+          "returnType": "Task\u003CProductsDto?\u003E",
+          "parameters": "AddStockManualStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveAsync",
+          "returnType": "Task\u003CAddStockManualStateDto\u003E",
+          "parameters": "AddStockManualStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "ValuesAsync",
+          "returnType": "Task\u003CAddStockManualStateDto\u003E",
+          "parameters": "AddStockManualStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "GetStockLogAsync",
+          "returnType": "Task\u003CList\u003CStockLogDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IAdjustStockManualService",
+      "implementationName": "AdjustStockManualService",
+      "domain": "Adjust",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAdjustStockManual.cs",
+      "methodNames": [
+        "DoSearchProductAsync",
+        "DoSearchStocksAsync",
+        "SaveAsync",
+        "ValuesAsync"
+      ],
+      "methods": [
+        {
+          "name": "DoSearchProductAsync",
+          "returnType": "Task\u003CList\u003CProductsDto\u003E\u003E",
+          "parameters": "AdjustStockManualStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "DoSearchStocksAsync",
+          "returnType": "Task\u003CList\u003CStocksDto\u003E\u003E",
+          "parameters": "AdjustStockManualStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveAsync",
+          "returnType": "Task\u003CAdjustStockManualStateDto\u003E",
+          "parameters": "AdjustStockManualStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "ValuesAsync",
+          "returnType": "Task\u003CAdjustStockManualStateDto\u003E",
+          "parameters": "AdjustStockManualStateDto state, Object eventSender, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "ICustomersService",
+      "implementationName": "CustomersService",
+      "domain": "Customers",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmCustomers.cs",
+      "methodNames": [
+        "InitFormAsync",
+        "SearchCriteriaProductsAsync",
+        "SaveAsync",
+        "DeleteAsync"
+      ],
+      "methods": [
+        {
+          "name": "InitFormAsync",
+          "returnType": "Task\u003CCustomersStateDto\u003E",
+          "parameters": "CustomersStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "SearchCriteriaProductsAsync",
+          "returnType": "Task\u003CList\u003CProductsDto\u003E\u003E",
+          "parameters": "string field, string value, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "DeleteAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "ILoginService",
+      "implementationName": "LoginService",
+      "domain": "Login",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmLogin.cs",
+      "methodNames": [
+        "OkAsync"
+      ],
+      "methods": [
+        {
+          "name": "OkAsync",
+          "returnType": "Task\u003CLoginStateDto\u003E",
+          "parameters": "LoginStateDto state, Object eventSender, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IReceptionApprovalService",
+      "implementationName": "ReceptionApprovalService",
+      "domain": "Reception",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmOrderAproval.cs",
+      "methodNames": [
+        "DoSearchReceptionAsync",
+        "InitGridAsync"
+      ],
+      "methods": [
+        {
+          "name": "DoSearchReceptionAsync",
+          "returnType": "Task",
+          "parameters": "ReceptionApprovalStateDto state, int Id, CancellationToken ct = default"
+        },
+        {
+          "name": "InitGridAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IOrderReceptionService",
+      "implementationName": "OrderReceptionService",
+      "domain": "Order",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmOrderReception.cs",
+      "methodNames": [
+        "DoSearchProviderAsync",
+        "SaveEditsAsync",
+        "LoadProductsByIdAsync",
+        "SaveAsync",
+        "ProductsAsync",
+        "FreightChargeAsync",
+        "SalesTaxAsync",
+        "GetOrderReceptionDetailsAsync",
+        "GetOrderReceptionsAsync",
+        "GetOrderRequestDetailsAsync",
+        "GetOrderRequestsAsync"
+      ],
+      "methods": [
+        {
+          "name": "DoSearchProviderAsync",
+          "returnType": "Task\u003CList\u003CProvidersDto\u003E\u003E",
+          "parameters": "OrderReceptionStateDto state, int Id, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveEditsAsync",
+          "returnType": "Task\u003COrderReceptionStateDto\u003E",
+          "parameters": "OrderReceptionStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "LoadProductsByIdAsync",
+          "returnType": "Task\u003CList\u003CProductsDto\u003E\u003E",
+          "parameters": "OrderReceptionStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveAsync",
+          "returnType": "Task\u003COrderReceptionStateDto\u003E",
+          "parameters": "OrderReceptionStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "ProductsAsync",
+          "returnType": "Task\u003COrderReceptionStateDto\u003E",
+          "parameters": "OrderReceptionStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "FreightChargeAsync",
+          "returnType": "Task\u003COrderReceptionStateDto\u003E",
+          "parameters": "OrderReceptionStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "SalesTaxAsync",
+          "returnType": "Task\u003COrderReceptionStateDto\u003E",
+          "parameters": "OrderReceptionStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "GetOrderReceptionDetailsAsync",
+          "returnType": "Task\u003CList\u003COrderReceptionDetailsDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "GetOrderReceptionsAsync",
+          "returnType": "Task\u003CList\u003COrderReceptionsDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "GetOrderRequestDetailsAsync",
+          "returnType": "Task\u003CList\u003COrderRequestDetailsDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "GetOrderRequestsAsync",
+          "returnType": "Task\u003CList\u003COrderRequestsDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IOrderRequestService",
+      "implementationName": "OrderRequestService",
+      "domain": "Order",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmOrderRequest.cs",
+      "methodNames": [
+        "DoSearchCustomerAsync",
+        "SaveEditsAsync",
+        "LoadProductsByIdAsync",
+        "SaveAsync",
+        "ProductsAsync",
+        "FreightChargeAsync",
+        "SalesTaxAsync"
+      ],
+      "methods": [
+        {
+          "name": "DoSearchCustomerAsync",
+          "returnType": "Task\u003CList\u003CCustomersDto\u003E\u003E",
+          "parameters": "OrderRequestStateDto state, string Id, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveEditsAsync",
+          "returnType": "Task\u003COrderRequestStateDto\u003E",
+          "parameters": "OrderRequestStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "LoadProductsByIdAsync",
+          "returnType": "Task\u003CList\u003CProductsDto\u003E\u003E",
+          "parameters": "OrderRequestStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveAsync",
+          "returnType": "Task\u003COrderRequestStateDto\u003E",
+          "parameters": "OrderRequestStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "ProductsAsync",
+          "returnType": "Task\u003COrderRequestStateDto\u003E",
+          "parameters": "OrderRequestStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "FreightChargeAsync",
+          "returnType": "Task\u003COrderRequestStateDto\u003E",
+          "parameters": "OrderRequestStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "SalesTaxAsync",
+          "returnType": "Task\u003COrderRequestStateDto\u003E",
+          "parameters": "OrderRequestStateDto state, Object eventSender, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IProductsService",
+      "implementationName": "ProductsService",
+      "domain": "Products",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmProducts.cs",
+      "methodNames": [
+        "CategoryAsync",
+        "SaveAsync",
+        "DeleteAsync",
+        "GetProductsByCustomerAsync",
+        "GetProductsByProviderAsync"
+      ],
+      "methods": [
+        {
+          "name": "CategoryAsync",
+          "returnType": "Task\u003CProductsStateDto\u003E",
+          "parameters": "ProductsStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "DeleteAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "GetProductsByCustomerAsync",
+          "returnType": "Task\u003CList\u003CProductsByCustomerDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "GetProductsByProviderAsync",
+          "returnType": "Task\u003CList\u003CProductsByProviderDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IProvidersService",
+      "implementationName": "ProvidersService",
+      "domain": "Providers",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmProviders.cs",
+      "methodNames": [
+        "SaveAsync",
+        "DeleteAsync"
+      ],
+      "methods": [
+        {
+          "name": "SaveAsync",
+          "returnType": "Task\u003CProvidersStateDto\u003E",
+          "parameters": "ProvidersStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "DeleteAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IRequestApprovalService",
+      "implementationName": "RequestApprovalService",
+      "domain": "Request",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmRequestAproval.cs",
+      "methodNames": [
+        "DoSearchRequestAsync",
+        "InitGridAsync"
+      ],
+      "methods": [
+        {
+          "name": "DoSearchRequestAsync",
+          "returnType": "Task",
+          "parameters": "RequestApprovalStateDto state, int Id, CancellationToken ct = default"
+        },
+        {
+          "name": "InitGridAsync",
+          "returnType": "Task",
+          "parameters": "CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "ISearchService",
+      "implementationName": "SearchService",
+      "domain": "Search",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmSearch.cs",
+      "methodNames": [
+        "SearchAsync",
+        "SearchCriteriaCustomersAsync",
+        "SearchCriteriaProductsAsync",
+        "SearchCriteriaProvidersAsync"
+      ],
+      "methods": [
+        {
+          "name": "SearchAsync",
+          "returnType": "Task\u003CSearchStateDto\u003E",
+          "parameters": "SearchStateDto state, string Table, string fieldToSearch, string itemToSearch, CancellationToken ct = default"
+        },
+        {
+          "name": "SearchCriteriaCustomersAsync",
+          "returnType": "Task\u003CList\u003CCustomersDto\u003E\u003E",
+          "parameters": "string field, string value, CancellationToken ct = default"
+        },
+        {
+          "name": "SearchCriteriaProductsAsync",
+          "returnType": "Task\u003CList\u003CProductsDto\u003E\u003E",
+          "parameters": "string field, string value, CancellationToken ct = default"
+        },
+        {
+          "name": "SearchCriteriaProvidersAsync",
+          "returnType": "Task\u003CList\u003CProvidersDto\u003E\u003E",
+          "parameters": "string field, string value, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IUsersManageService",
+      "implementationName": "UsersManageService",
+      "domain": "Users",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmUsersManage.cs",
+      "methodNames": [
+        "LoadUsersAsync",
+        "LoadUsersAvoidingWithAsync",
+        "ClearFieldsAsync",
+        "DeleteAsync",
+        "EditAsync",
+        "SaveAsync",
+        "InitializeAsync"
+      ],
+      "methods": [
+        {
+          "name": "LoadUsersAsync",
+          "returnType": "Task\u003CList\u003CUsersDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "LoadUsersAvoidingWithAsync",
+          "returnType": "Task\u003CList\u003CUsersDto\u003E\u003E",
+          "parameters": "CancellationToken ct = default"
+        },
+        {
+          "name": "ClearFieldsAsync",
+          "returnType": "Task\u003CUsersManageStateDto\u003E",
+          "parameters": "UsersManageStateDto state, CancellationToken ct = default"
+        },
+        {
+          "name": "DeleteAsync",
+          "returnType": "Task",
+          "parameters": "Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "EditAsync",
+          "returnType": "Task\u003CUsersManageStateDto\u003E",
+          "parameters": "UsersManageStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "SaveAsync",
+          "returnType": "Task",
+          "parameters": "UsersManageStateDto state, Object eventSender, CancellationToken ct = default"
+        },
+        {
+          "name": "InitializeAsync",
+          "returnType": "Task\u003CUsersManageStateDto\u003E",
+          "parameters": "UsersManageStateDto state, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": null,
+      "partIndex": 0,
+      "partCount": 0
+    },
+    {
+      "interfaceName": "IFunctionsService",
+      "implementationName": "FunctionsService",
+      "domain": "Functions",
+      "diScope": "Scoped",
+      "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\modFunctions.cs",
+      "methodNames": [
+        "AddToCollectionAsync",
+        "UpCaseAsync",
+        "RcrdIdAsync",
+        "ExecErrAsync",
+        "ExistsAsync",
+        "DoubleValueAsync"
+      ],
+      "methods": [
+        {
+          "name": "AddToCollectionAsync",
+          "returnType": "Task\u003Cbool\u003E",
+          "parameters": "OrderedDictionary col, string Item, CancellationToken ct = default"
+        },
+        {
+          "name": "UpCaseAsync",
+          "returnType": "Task\u003Cint\u003E",
+          "parameters": "int KeyAscii, CancellationToken ct = default"
+        },
+        {
+          "name": "RcrdIdAsync",
+          "returnType": "Task\u003Cstring?\u003E",
+          "parameters": "string Table, string Identifier, string FldNo, CancellationToken ct = default"
+        },
+        {
+          "name": "ExecErrAsync",
+          "returnType": "Task\u003Cstring?\u003E",
+          "parameters": "string Prompt, string PromptFld, string Table, string RcrdFld, string RcrdStr, CancellationToken ct = default"
+        }
+      ],
+      "internalMethods": [
+        {
+          "name": "ExistsAsync",
+          "returnType": "Task\u003Cbool\u003E",
+          "parameters": "OrderedDictionary col, string Index, CancellationToken ct = default"
+        },
+        {
+          "name": "DoubleValueAsync",
+          "returnType": "Task\u003Cdouble\u003E",
+          "parameters": "string strValue, CancellationToken ct = default"
+        }
+      ],
+      "partIndex": 0,
+      "partCount": 0
+    }
+  ]
+}

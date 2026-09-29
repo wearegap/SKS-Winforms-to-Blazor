@@ -1,0 +1,27 @@
+<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+
+    <MudNavGroup Title="Master Data" Icon="@Icons.Material.Filled.Folder" Expanded="true">
+        <MudNavLink Href="/upgraded/customers" Icon="@Icons.Material.Filled.People">Customers</MudNavLink>
+        <MudNavLink Href="/upgraded/products" Icon="@Icons.Material.Filled.Inventory">Products</MudNavLink>
+        <MudNavLink Href="/upgraded/providers" Icon="@Icons.Material.Filled.LocalShipping">Providers</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Orders" Icon="@Icons.Material.Filled.ShoppingCart" Expanded="true">
+        <MudNavLink Href="/upgraded/order-request" Icon="@Icons.Material.Filled.Assignment">New Order Request</MudNavLink>
+        <MudNavLink Href="/upgraded/order-reception" Icon="@Icons.Material.Filled.ShoppingCart">New Order Reception</MudNavLink>
+        <MudNavLink Href="/upgraded/request-approval" Icon="@Icons.Material.Filled.CheckCircle">Request Approvals</MudNavLink>
+        <MudNavLink Href="/upgraded/reception-approval" Icon="@Icons.Material.Filled.CheckCircle">Reception Approvals</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Stock" Icon="@Icons.Material.Filled.Inventory" Expanded="false">
+        <MudNavLink Href="/upgraded/add-stock-manual" Icon="@Icons.Material.Filled.Add">Add Stock Manually</MudNavLink>
+        <MudNavLink Href="/upgraded/adjust-stock-manual" Icon="@Icons.Material.Filled.Tune">Adjust Stock Manually</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Administration" Icon="@Icons.Material.Filled.Settings" Expanded="false">
+        <MudNavLink Href="/upgraded/users-manage" Icon="@Icons.Material.Filled.Group">Manage Users</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavLink Href="/upgraded/search" Icon="@Icons.Material.Filled.Search">Search</MudNavLink>
+</MudNavMenu>

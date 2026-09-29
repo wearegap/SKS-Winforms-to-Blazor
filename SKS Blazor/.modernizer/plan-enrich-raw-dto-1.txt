@@ -1,0 +1,6 @@
+=== DTO_TYPES: ===
+{
+  "IReceptionApprovalService.InitGridAsync": "Task",
+  "IRequestApprovalService.InitGridAsync": "Task"
+}
+=== END DTO_TYPES ===

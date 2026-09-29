@@ -1,0 +1,218 @@
+@page "/upgraded/order-reception"
+@using SKS_Blazor.Application.DTOs.Core
+@using SKS_Blazor.Application.DTOs.Order
+@using SKS_Blazor.Pages.Order
+
+@implements IDisposable
+
+<MudText Typo="Typo.h5" Class="mb-2">Order Reception</MudText>
+
+<MudGrid>
+    @* ── Provider Search Panel ── *@
+    <MudItem xs="12">
+        <MudPaper Class="pa-3 mb-2">
+            <MudText Typo="Typo.subtitle1" Class="mb-2">Search Provider</MudText>
+            <MudGrid>
+                <MudItem xs="12" sm="4">
+                    <MudTextField T="string"
+                                  Label="Provider Name"
+                                  @bind-Value="_state!.TxtProviderNameText"
+                                  @bind-Value:after="OnProviderNameChanged"
+                                  Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="3">
+                    <MudTextField T="string"
+                                  Label="Contact Name"
+                                  @bind-Value="_state!.TxtContactNameText"
+                                  @bind-Value:after="OnContactNameChanged"
+                                  Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="3">
+                    <MudTextField T="string"
+                                  Label="Contact Last Name"
+                                  @bind-Value="_state!.TxtContactLastNameText"
+                                  @bind-Value:after="OnContactLastNameChanged"
+                                  Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="2" Class="d-flex align-end">
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               OnClick="OnProvidersClick"
+                               StartIcon="@Icons.Material.Filled.Search"
+                               Size="Size.Small">
+                        Providers
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+
+    @* ── Providers Grid (lvProviders) ── *@
+    @* Columns: ProviderID, ProviderName, ContactFirstName, ContactLastName, City, StateOrProvince, Country/Region *@
+    <MudItem xs="12">
+        <MudPaper Class="pa-2 mb-2" Style="max-height:220px; overflow:auto;">
+            <MudDataGrid T="ProvidersDto"
+                         Items="@_providersList"
+                         Dense="true"
+                         Hover="true"
+                         RowClick="OnProviderRowClick"
+                         RowStyle="cursor:pointer;"
+                         Loading="@_isLoading"
+                         Striped="true"
+                         FixedHeader="true"
+                         Height="180px">
+                <Columns>
+                    <PropertyColumn Property="x => x.ProviderID" Title="ID" />
+                    <PropertyColumn Property="x => x.ProviderName" Title="Provider Name" />
+                    <PropertyColumn Property="x => x.ContactFirstName" Title="Contact Name" />
+                    <PropertyColumn Property="x => x.ContactLastName" Title="Contact Last Name" />
+                    <PropertyColumn Property="x => x.City" Title="City" />
+                    <PropertyColumn Property="x => x.StateOrProvince" Title="State/Province" />
+                    <PropertyColumn Property="x => x.CountryRegion" Title="Country/Region" />
+                </Columns>
+            </MudDataGrid>
+        </MudPaper>
+    </MudItem>
+
+    @* ── Selected Provider Info ── *@
+    <MudItem xs="12" sm="6">
+        <MudTextField T="string"
+                      Label="Provider Company"
+                      Value="@_state!.TxtProviderCompanyText"
+                      ReadOnly="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense" />
+    </MudItem>
+    <MudItem xs="12" sm="6">
+        <MudTextField T="string"
+                      Label="Provider Contact"
+                      Value="@_state!.TxtProviderContactText"
+                      ReadOnly="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense" />
+    </MudItem>
+
+    @* ── Products Grid (fgProducts) ── *@
+    @* Columns: Quantity, Code, Product, UnitPrice, Price, Existence, Ordered, Quantity per unit *@
+    <MudItem xs="12">
+        <MudPaper Class="pa-2 mb-2">
+            <MudText Typo="Typo.subtitle1" Class="mb-1">Products</MudText>
+            <MudDataGrid T="OrderReceptionProductLineDto"
+                         Items="@_productLines"
+                         Dense="true"
+                         Hover="true"
+                         Striped="true"
+                         FixedHeader="true"
+                         Height="280px"
+                         EditMode="DataGridEditMode.Cell"
+                         CommittedItemChanges="OnProductLineCommitted">
+                <Columns>
+                    <PropertyColumn Property="x => x.Quantity" Title="Quantity" IsEditable="true" Format="N2" />
+                    <PropertyColumn Property="x => x.ProductID" Title="Code" IsEditable="false" />
+                    <PropertyColumn Property="x => x.ProductName" Title="Product" IsEditable="false" />
+                    <PropertyColumn Property="x => x.UnitPrice" Title="UnitPrice" IsEditable="false" Format="N2" />
+                    <PropertyColumn Property="x => x.Price" Title="Price" IsEditable="false" Format="N2" />
+                    <PropertyColumn Property="x => x.UnitsInStock" Title="Existence" IsEditable="false" />
+                    <PropertyColumn Property="x => x.UnitsOnOrder" Title="Ordered" IsEditable="false" />
+                    <PropertyColumn Property="x => x.QuantityPerUnit" Title="Quantity per unit" IsEditable="false" />
+                </Columns>
+            </MudDataGrid>
+        </MudPaper>
+    </MudItem>
+
+    @* ── Financial Summary ── *@
+    <MudItem xs="12">
+        <MudPaper Class="pa-3 mb-2">
+            <MudGrid>
+                <MudItem xs="12" sm="4">
+                    <MudTextField T="string"
+                                  Label="Sales Tax %"
+                                  @bind-Value="_state!.TxtSalesTaxText"
+                                  @bind-Value:after="OnSalesTaxChanged"
+                                  Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  InputType="InputType.Number" />
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudTextField T="string"
+                                  Label="Freight Charge"
+                                  @bind-Value="_state!.TxtFreightChargeText"
+                                  @bind-Value:after="OnFreightChargeChanged"
+                                  Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  InputType="InputType.Number" />
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudTextField T="string"
+                                  Label="Sub Total"
+                                  Value="@_state!.TxtSubTotalText"
+                                  ReadOnly="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudTextField T="string"
+                                  Label="Total Tax"
+                                  Value="@_state!.TxtTotalTaxText"
+                                  ReadOnly="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudTextField T="string"
+                                  Label="Total"
+                                  Value="@_state!.TxtTotalText"
+                                  ReadOnly="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+
+    @* ── Notes ── *@
+    <MudItem xs="12">
+        <MudTextField T="string"
+                      Label="Notes"
+                      @bind-Value="_state!.TxtNotesText"
+                      @bind-Value:after="OnNotesChanged"
+                      Lines="3"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense" />
+    </MudItem>
+
+    @* ── Action Buttons ── *@
+    <MudItem xs="12" Class="d-flex gap-2 justify-end mt-2 mb-4">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   OnClick="OnAddProductsClick"
+                   Disabled="@(!_saveEnabled)"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   Size="Size.Small">
+            Add Products
+        </MudButton>
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Success"
+                   OnClick="OnSaveClick"
+                   Disabled="@(!_saveEnabled)"
+                   StartIcon="@Icons.Material.Filled.Save"
+                   Size="Size.Small">
+            Save
+        </MudButton>
+        <MudButton Variant="Variant.Outlined"
+                   Color="Color.Default"
+                   OnClick="OnCloseClick"
+                   StartIcon="@Icons.Material.Filled.Close"
+                   Size="Size.Small">
+            Close
+        </MudButton>
+    </MudItem>
+</MudGrid>

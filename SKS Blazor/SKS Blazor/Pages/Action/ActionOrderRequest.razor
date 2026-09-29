@@ -1,0 +1,133 @@
+@page "/upgraded/action-order-request"
+
+@using SKS_Blazor.Application.DTOs.Action
+@using SKS_Blazor.Application.DTOs.Order
+
+<!-- Grid columns: Quantity, Code, Product, UnitPrice, Price, Existence, Ordered, Quantity per unit, Line Total -->
+
+<MudPaper Class="pa-4" Elevation="0" Style="height:100%; overflow:auto;">
+    @if (_isLoading)
+    {
+        <MudProgressLinear Indeterminate="true" Color="Color.Primary" />
+    }
+
+    @if (!string.IsNullOrEmpty(_statusMessage))
+    {
+        <MudAlert Severity="Severity.Info" Class="mb-2" Dense="true" ShowCloseIcon="true" CloseIconClicked="() => _statusMessage = string.Empty">
+            @_statusMessage
+        </MudAlert>
+    }
+
+    <MudText Typo="Typo.h5" Class="mb-3">Action Order Request</MudText>
+
+    <MudGrid Spacing="2">
+        <!-- Row 1: Order ID, Status -->
+        <MudItem xs="12" sm="3">
+            <MudTextField T="string" Label="Order ID" @bind-Value="_txtOrderID" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudTextField T="string" Label="Status" @bind-Value="_txtStatus" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudTextField T="string" Label="Received Date" @bind-Value="_txtReceived" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudTextField T="string" Label="Received By" @bind-Value="_txtReceivedBy" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+
+        <!-- Row 2: Customer info -->
+        <MudItem xs="12" sm="6">
+            <MudTextField T="string" Label="Customer Company" @bind-Value="_txtCustomerCompany" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudTextField T="string" Label="Customer Contact" @bind-Value="_txtCustomerContact" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+
+        <!-- Row 3: Dates -->
+        <MudItem xs="12" sm="4">
+            <MudTextField T="string" Label="Required By" @bind-Value="_txtRequiredBy" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudTextField T="string" Label="Promised By" @bind-Value="_txtPromisedBy" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudTextField T="string" Label="Sales Tax %" @bind-Value="_txtSalesTax" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+
+        <!-- Row 4: Changed fields (conditionally visible) -->
+        @if (_showChangedFields)
+        {
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@_lblChangedText" @bind-Value="_txtChanged" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@_lblChangedByText" @bind-Value="_txtChangedBy" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+        }
+
+        <!-- Row 5: Notes -->
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Notes" @bind-Value="_txtNotes" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="3" />
+        </MudItem>
+    </MudGrid>
+
+    <!-- Details Grid (fgDetails) -->
+    <MudText Typo="Typo.h6" Class="mt-4 mb-2">Order Details</MudText>
+    <MudDataGrid T="OrderRequestDetailLineDto" Items="@_detailLines" Dense="true" Bordered="true" Striped="true"
+                 FixedHeader="true" Height="300px" Elevation="1">
+        <Columns>
+            <PropertyColumn Property="x => x.Quantity" Title="Quantity" Format="N2" />
+            <PropertyColumn Property="x => x.ProductID" Title="Code" />
+            <PropertyColumn Property="x => x.ProductName" Title="Product" />
+            <PropertyColumn Property="x => x.UnitPrice" Title="UnitPrice" Format="N2" />
+            <PropertyColumn Property="x => x.SalePrice" Title="Price" Format="N2" />
+            <PropertyColumn Property="x => x.UnitsInStock" Title="Existence" />
+            <PropertyColumn Property="x => x.UnitsOnOrder" Title="Ordered" />
+            <PropertyColumn Property="x => x.QuantityPerUnitDisplay" Title="Quantity per unit" />
+            <PropertyColumn Property="x => x.LineTotal" Title="Line Total" Format="N2" />
+        </Columns>
+    </MudDataGrid>
+
+    <!-- Totals row -->
+    <MudGrid Spacing="2" Class="mt-3">
+        <MudItem xs="12" sm="3">
+            <MudTextField T="string" Label="Freight Charge" @bind-Value="_txtFreightCharge" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudTextField T="string" Label="Sub Total" Value="@(_state?.TxtSubTotalText ?? "0.00")" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudTextField T="string" Label="Total Tax" Value="@(_state?.TxtTotalTaxText ?? "0.00")" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudTextField T="string" Label="Total" Value="@(_state?.TxtTotalText ?? "0.00")" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        </MudItem>
+    </MudGrid>
+
+    <!-- Action buttons -->
+    <MudGrid Spacing="2" Class="mt-4">
+        <MudItem xs="12" sm="4">
+            <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true"
+                       Disabled="@(!_cmdApproveEnabled || _isLoading)"
+                       OnClick="OnApproveClickAsync"
+                       StartIcon="@Icons.Material.Filled.CheckCircle">
+                Approve
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudButton Variant="Variant.Filled" Color="Color.Error" FullWidth="true"
+                       Disabled="@(!_cmdCancelEnabled || _isLoading)"
+                       OnClick="OnCancelClickAsync"
+                       StartIcon="@Icons.Material.Filled.Cancel">
+                Cancel Order
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudButton Variant="Variant.Outlined" Color="Color.Default" FullWidth="true"
+                       OnClick="OnCloseClick"
+                       StartIcon="@Icons.Material.Filled.Close">
+                Close
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>

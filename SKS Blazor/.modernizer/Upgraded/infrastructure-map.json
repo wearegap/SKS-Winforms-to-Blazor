@@ -1,0 +1,239 @@
+{
+  "classes": [
+    {
+      "className": "AppState",
+      "filePath": "Infrastructure/AppState.cs",
+      "purpose": "Global Blazor application state singleton",
+      "legacySource": "New abstraction",
+      "isStatic": false,
+      "properties": [
+        {
+          "name": "CurrentUser",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CurrentCompany",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CurrentYear",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "IsLoggedIn",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "StatusMessage",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "OnCommand",
+          "clrType": "Func\u003Cstring,Task\u003E",
+          "description": null
+        }
+      ],
+      "methods": null,
+      "methodSignatures": [
+        {
+          "name": "SendCommandAsync",
+          "returnType": "Task",
+          "parameters": "string command"
+        },
+        {
+          "name": "LogStatus",
+          "returnType": "void",
+          "parameters": "string message"
+        },
+        {
+          "name": "NotifyStateChangedAsync",
+          "returnType": "Task",
+          "parameters": ""
+        }
+      ]
+    },
+    {
+      "className": "UpgradedDbContext",
+      "filePath": "Infrastructure/Data/UpgradedDbContext.cs",
+      "purpose": "EF Core DbContext mapping to existing Upgraded tables",
+      "legacySource": "New abstraction",
+      "isStatic": false,
+      "properties": [
+        {
+          "name": "Categories",
+          "clrType": "DbSet\u003CCategories\u003E",
+          "description": null
+        },
+        {
+          "name": "Customers",
+          "clrType": "DbSet\u003CCustomers\u003E",
+          "description": null
+        },
+        {
+          "name": "InvoiceDetails",
+          "clrType": "DbSet\u003CInvoiceDetails\u003E",
+          "description": null
+        },
+        {
+          "name": "Invoices",
+          "clrType": "DbSet\u003CInvoices\u003E",
+          "description": null
+        },
+        {
+          "name": "Levels",
+          "clrType": "DbSet\u003CLevels\u003E",
+          "description": null
+        },
+        {
+          "name": "ManualStocks",
+          "clrType": "DbSet\u003CManualStocks\u003E",
+          "description": null
+        },
+        {
+          "name": "OrderReceptionDetails",
+          "clrType": "DbSet\u003COrderReceptionDetails\u003E",
+          "description": null
+        },
+        {
+          "name": "OrderReceptions",
+          "clrType": "DbSet\u003COrderReceptions\u003E",
+          "description": null
+        },
+        {
+          "name": "OrderRequestDetails",
+          "clrType": "DbSet\u003COrderRequestDetails\u003E",
+          "description": null
+        },
+        {
+          "name": "OrderRequests",
+          "clrType": "DbSet\u003COrderRequests\u003E",
+          "description": null
+        },
+        {
+          "name": "Products",
+          "clrType": "DbSet\u003CProducts\u003E",
+          "description": null
+        },
+        {
+          "name": "ProductsByCustomers",
+          "clrType": "DbSet\u003CProductsByCustomer\u003E",
+          "description": null
+        },
+        {
+          "name": "ProductsByProviders",
+          "clrType": "DbSet\u003CProductsByProvider\u003E",
+          "description": null
+        },
+        {
+          "name": "Providers",
+          "clrType": "DbSet\u003CProviders\u003E",
+          "description": null
+        },
+        {
+          "name": "StockLogs",
+          "clrType": "DbSet\u003CStockLog\u003E",
+          "description": null
+        },
+        {
+          "name": "Stocks",
+          "clrType": "DbSet\u003CStocks\u003E",
+          "description": null
+        },
+        {
+          "name": "Users",
+          "clrType": "DbSet\u003CUsers\u003E",
+          "description": null
+        },
+        {
+          "name": "Warehouses",
+          "clrType": "DbSet\u003CWarehouses\u003E",
+          "description": null
+        }
+      ],
+      "methods": null,
+      "methodSignatures": null
+    },
+    {
+      "className": "StockNotificationHub",
+      "filePath": "Infrastructure/Hubs/StockNotificationHub.cs",
+      "purpose": "SignalR hub broadcasting real-time stock level changes and low-stock alerts to connected MDI clients",
+      "legacySource": "New abstraction",
+      "isStatic": false,
+      "properties": null,
+      "methods": [
+        "public Task SendStockUpdate(int productId, decimal newQuantity)",
+        "public Task JoinWarehouseGroup(int warehouseId)"
+      ],
+      "methodSignatures": null
+    },
+    {
+      "className": "OrderWorkflowNotificationHub",
+      "filePath": "Infrastructure/Hubs/OrderWorkflowNotificationHub.cs",
+      "purpose": "SignalR hub notifying users of order request/reception approval status changes",
+      "legacySource": "New abstraction",
+      "isStatic": false,
+      "properties": null,
+      "methods": [
+        "public Task NotifyApproval(int orderId, string status)",
+        "public Task NotifyRejection(int orderId, string reason)"
+      ],
+      "methodSignatures": null
+    },
+    {
+      "className": "StockLevelEngine",
+      "filePath": "Infrastructure/Engines/StockLevelEngine.cs",
+      "purpose": "Encapsulates business rules for computing stock adjustments, reorder thresholds, and manual stock corrections",
+      "legacySource": "New abstraction",
+      "isStatic": false,
+      "properties": null,
+      "methods": [
+        "public Task\u003Cdecimal\u003E CalculateAvailableStockAsync(int productId, int warehouseId)",
+        "public Task ApplyManualAdjustmentAsync(int productId, int warehouseId, decimal delta, string reason)"
+      ],
+      "methodSignatures": null
+    },
+    {
+      "className": "AuditLogger",
+      "filePath": "Infrastructure/Logging/AuditLogger.cs",
+      "purpose": "Centralized audit trail logger recording user actions across stock, order, and invoice operations",
+      "legacySource": "New abstraction",
+      "isStatic": false,
+      "properties": null,
+      "methods": [
+        "public Task LogActionAsync(string userId, string entity, string action, string details)"
+      ],
+      "methodSignatures": null
+    },
+    {
+      "className": "ReportExportHelper",
+      "filePath": "Infrastructure/Helpers/ReportExportHelper.cs",
+      "purpose": "Helper for exporting invoices, order receptions, and stock reports to PDF/Excel formats",
+      "legacySource": "New abstraction",
+      "isStatic": false,
+      "properties": null,
+      "methods": [
+        "public Task\u003Cbyte[]\u003E ExportToPdfAsync(string reportName, object data)",
+        "public Task\u003Cbyte[]\u003E ExportToExcelAsync(string reportName, object data)"
+      ],
+      "methodSignatures": null
+    },
+    {
+      "className": "SecurityService",
+      "filePath": "Infrastructure/Security/SecurityService.cs",
+      "purpose": "Authentication and authorization helper managing login validation and role-based access checks",
+      "legacySource": "New abstraction",
+      "isStatic": false,
+      "properties": null,
+      "methods": [
+        "public Task\u003Cbool\u003E ValidateCredentialsAsync(string username, string password)",
+        "public Task\u003Cbool\u003E HasPermissionAsync(string userId, string resource)"
+      ],
+      "methodSignatures": null
+    }
+  ]
+}

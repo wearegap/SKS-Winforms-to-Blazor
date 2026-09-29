@@ -1,0 +1,235 @@
+{
+  "formName": "frmSearch",
+  "formFileName": "frmSearch.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmSearch.cs",
+  "legacyLines": 135,
+  "methods": [
+    {
+      "name": "frmSearch_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "cboSrchBy_SelectedIndexChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E lblSrchBy.Text = cboSrchBy.Text",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "cmdClose_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E this.Close()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "Search",
+      "returnType": "void",
+      "params": "string Table, string fieldToSearch, string itemToSearch",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 16,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(itemToSearch))\n\t\t\t{\n\t\t\t\tLabel20.Text = $\u0022Search for a {itemToSearch}\u0022;\n\t\t\t}\n\t\t\tSearchTable = Table;\n\t\t\tmodConnection.ExecuteSql($\u0022Select * from {Table} limit 1;\u0022);\n\t\t\tint tempForEndVar = (modConnection.rs.FieldsMetadata.Count - 1);\n\t\t\tfor (modMain.i = 0; modMain.i \u003C= tempForEndVar; modMain.i\u002B\u002B)\n\t\t\t{\n\t\t\t\tcboSrchBy.AddItem(modConnection.rs.GetField(modMain.i).FieldMetadata.ColumnName);\n\t\t\t}\n\t\t\tcboSrchBy.Text = fieldToSearch;\n\t\t}\n",
+      "bodyLineCount": 15
+    },
+    {
+      "name": "cmdSearch_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 30,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tif (txtSrchStr.Text.Substring(Math.Max(txtSrchStr.Text.Length - 1, 0)) == \u0022\u0027\u0022)\n\t\t\t{\n\t\t\t\ttxtSrchStr.Text = \u0022\u0022;\n\t\t\t}\n\t\t\tstring txtToSearch = \u0022\u0022;\n\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(txtSrchStr.Text.Trim()))\n\t\t\t{\n\t\t\t\ttxtToSearch = txtSrchStr.Text;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\ttxtToSearch = \u0022%\u0022;\n\t\t\t}\n\t\t\tif (SearchTable == \u0022Customers\u0022)\n\t\t\t{\n\t\t\t\tSearchCriteriaCustomers(lblSrchBy.Text, txtToSearch);\n\t\t\t}\n\t\t\telse if (SearchTable == \u0022Products\u0022)\n\t\t\t{ \n\t\t\t\tSearchCriteriaProducts(lblSrchBy.Text, txtToSearch);\n\t\t\t}\n\t\t\telse if (SearchTable == \u0022Providers\u0022)\n\t\t\t{ \n\t\t\t\tSearchCriteriaProviders(lblSrchBy.Text, txtToSearch);\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 29
+    },
+    {
+      "name": "SearchCriteriaCustomers",
+      "returnType": "void",
+      "params": "string field, string value",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 13,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tmodConnection.ExecuteSql($\u0022Select * from Customers where {field} LIKE \u0027{value}%\u0027\u0022);\n\t\t\tif (modConnection.rs.RecordCount == 0)\n\t\t\t{\n\t\t\t\tMessageBox.Show(\u0022There are no records with the selected criteria\u0022, \u0022Search\u0022, MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tmodMain.LogStatus($\u0022There are {modConnection.rs.RecordCount.ToString()} that meet with the selected criteria\u0022);\n\t\t\t\tfrmCustomers.DefInstance.dcCustomers.Recordset = modConnection.rs;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 12
+    },
+    {
+      "name": "SearchCriteriaProducts",
+      "returnType": "void",
+      "params": "string field, string value",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 12,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tmodConnection.ExecuteSql($\u0022Select * from Products where {field} LIKE \u0027{value}%\u0027\u0022);\n\t\t\tif (modConnection.rs.RecordCount == 0)\n\t\t\t{\n\t\t\t\tMessageBox.Show(\u0022There are no records with the selected criteria\u0022, \u0022Search\u0022, MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tfrmProducts.DefInstance.dcProducts.Recordset = modConnection.rs;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 11
+    },
+    {
+      "name": "SearchCriteriaProviders",
+      "returnType": "void",
+      "params": "string field, string value",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 13,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tmodConnection.ExecuteSql($\u0022Select * from Providers where {field} LIKE \u0027{value}%\u0027\u0022);\n\t\t\tif (modConnection.rs.RecordCount == 0)\n\t\t\t{\n\t\t\t\tMessageBox.Show(\u0022There are no records with the selected criteria\u0022, \u0022Search\u0022, MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tmodMain.LogStatus($\u0022There are {modConnection.rs.RecordCount.ToString()} that meet with the selected criteria\u0022);\n\t\t\t\tfrmProviders.DefInstance.dcProviders.Recordset = modConnection.rs;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 12
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 3,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t}\n",
+      "bodyLineCount": 2
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [
+    "frmCustomers",
+    "frmProducts",
+    "frmProviders"
+  ],
+  "formsInstantiated": [],
+  "gridDeclarations": [],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "cmdClose",
+      "eventName": "Click",
+      "handlerMethod": "cmdClose_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdSearch",
+      "eventName": "Click",
+      "handlerMethod": "cmdSearch_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cboSrchBy",
+      "eventName": "SelectedIndexChanged",
+      "handlerMethod": "cboSrchBy_SelectedIndexChanged",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "Image3",
+    "Label1",
+    "Label19",
+    "Label20",
+    "cboSrchBy",
+    "cmdClose",
+    "cmdSearch",
+    "ctrlLiner1",
+    "lblSrchBy",
+    "txtSrchStr"
+  ],
+  "sharedStateFields": [
+    {
+      "name": "SearchTable",
+      "declaredType": "string",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Search",
+        "cmdSearch_Click"
+      ],
+      "writtenByMethods": [
+        "Search"
+      ]
+    },
+    {
+      "name": "CboSrchByText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cboSrchBy_SelectedIndexChanged",
+        "Search"
+      ],
+      "writtenByMethods": [
+        "Search"
+      ]
+    },
+    {
+      "name": "TxtSrchStrText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdSearch_Click"
+      ],
+      "writtenByMethods": [
+        "cmdSearch_Click"
+      ]
+    },
+    {
+      "name": "Label20Text",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Search"
+      ],
+      "writtenByMethods": [
+        "Search"
+      ]
+    },
+    {
+      "name": "LblSrchByText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cboSrchBy_SelectedIndexChanged",
+        "cmdSearch_Click"
+      ],
+      "writtenByMethods": [
+        "cboSrchBy_SelectedIndexChanged"
+      ]
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}

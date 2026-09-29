@@ -1,0 +1,389 @@
+{
+  "ProjectName": "SKS Blazor",
+  "SourceLanguage": "WinForms",
+  "TargetFramework": "Blazor",
+  "TargetDatabase": "SQLite",
+  "SourcePath": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded",
+  "ScreenshotsPath": "",
+  "TargetName": "SKS Blazor",
+  "OutputPath": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS Blazor",
+  "ApiKey": "",
+  "CreatedAt": "2026-09-28T14:52:41.1666344-06:00",
+  "Status": 1,
+  "CurrentPhase": "Planning (Phase A)",
+  "CoverageScore": 0,
+  "CoverageGrade": "",
+  "CoverageReportPath": "",
+  "MigrationScope": "Partial",
+  "SelectedForms": [
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAbout.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmActionOrderReception.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmActionOrderRequest.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAddProductTo.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAddStockManual.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAdjustStockManual.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmCustomers.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmLogin.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmMain.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmOrderAproval.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmOrderReception.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmOrderRequest.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmProducts.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmProviders.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmRequestAproval.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmSearch.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmSplash.cs",
+    "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmUsersManage.cs"
+  ],
+  "SecondarySources": [],
+  "SelectedCppClasses": [],
+  "SecondaryModuleTargets": [],
+  "SelectedCSharpClasses": [],
+  "CSharpModuleTargets": [],
+  "Logs": [
+    {
+      "Timestamp": "2026-09-28T14:52:41.1687745-06:00",
+      "Phase": "Setup",
+      "Message": "Project \u0027SKS Blazor\u0027 created. Output: C:\\Users\\JassonNunezCamacho\\Desktop\\SKS Blazor",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:18:45.8994642-06:00",
+      "Phase": "Load",
+      "Message": "Loaded existing project \u0027SKS Blazor\u0027 from C:\\Users\\JassonNunezCamacho\\Desktop\\SKS Blazor (45 files), scope Partial (18 form(s))",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:18:47.7178336-06:00",
+      "Phase": "Permissions",
+      "Message": "Approved tools: Read, Write, Edit, Bash, Glob, Grep",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:18:53.3478835-06:00",
+      "Phase": "PreAnalysis",
+      "Message": "Scanning source for libraries, controls, and dependencies...",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:18:54.6408706-06:00",
+      "Phase": "FileRead",
+      "Message": "Included 34/36 source files (287,530 chars)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:18:57.6967414-06:00",
+      "Phase": "PreAnalysis",
+      "Message": "Scan complete \u2014 22 control types, 5 dependencies, 18 forms, 15,405 lines",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:19:03.3900851-06:00",
+      "Phase": "PreAnalysis",
+      "Message": "Generating clarifying questions (claude-haiku-4-5)...",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:19:31.2703277-06:00",
+      "Phase": "PreAnalysis",
+      "Message": "Generated 7 questions. Answer them below, then save.",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:47.9289803-06:00",
+      "Phase": "PreAnalysis",
+      "Message": "Pre-analysis saved \u2014 23 library choices, 7 answers. Ready for planning.",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:49.3155201-06:00",
+      "Phase": "Plan",
+      "Message": "Phase A \u2014 building the plan from extractors \u002B db-schema, then enriching it.",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:49.3187275-06:00",
+      "Phase": "Progress",
+      "Message": "Started: Phase A: Building plan from extractors...",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:49.3361819-06:00",
+      "Phase": "Plan",
+      "Message": "Phase A \u2014 deterministic build, followed by enrichment",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:49.4105767-06:00",
+      "Phase": "Plan",
+      "Message": "Parsed db-schema.txt \u2014 18 tables, 0 SPs, 0 FKs",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7249987-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmActionOrderReception\u0027 has 1 grid(s): fgDetails",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7282289-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmActionOrderRequest\u0027 has 1 grid(s): fgDetails",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7325151-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmAddProductTo\u0027 has 2 grid(s): lvProducts, lvProductsBy",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7360365-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmAddProductTo\u0027 has 1 child dialog(s): frmProducts",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7392268-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmAddStockManual\u0027 has 1 grid(s): lvProducts",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7429916-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmAddStockManual\u0027 has 1 child dialog(s): frmProducts",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7463628-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmAdjustStockManual\u0027 has 2 grid(s): lvStocks, lvProducts",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7486796-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmAdjustStockManual\u0027 has 1 child dialog(s): frmProducts",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7508561-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmMain\u0027 has 12 child dialog(s): frmSplash, frmOrderRequest, frmAbout, frmAddStockManual, frmAdjustStockManual, frmOrderReception, frmCustomers, frmReceptionApproval, frmRequestApproval, frmProducts, frmProviders, frmUsersManage",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7536386-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmReceptionApproval\u0027 has 1 grid(s): fgOrders",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7561252-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmReceptionApproval\u0027 has 2 child dialog(s): frmActionOrderReception, frmProviders",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7586359-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmOrderReception\u0027 has 2 grid(s): fgProducts, lvProviders",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7611633-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmOrderReception\u0027 has 2 child dialog(s): frmAddProductTo, frmProviders",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7661631-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmOrderRequest\u0027 has 2 grid(s): fgProducts, lvCustomers",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7703833-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmOrderRequest\u0027 has 2 child dialog(s): frmAddProductTo, frmCustomers",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.773887-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmRequestApproval\u0027 has 1 grid(s): fgOrders",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7764393-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmRequestApproval\u0027 has 2 child dialog(s): frmActionOrderRequest, frmCustomers",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7798073-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmSearch\u0027 has 3 child dialog(s): frmCustomers, frmProducts, frmProviders",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:51.7822301-06:00",
+      "Phase": "Plan",
+      "Message": "Form structure: \u0027frmUsersManage\u0027 has 1 grid(s): lstAccounts",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:20:59.3199914-06:00",
+      "Phase": "Progress",
+      "Message": "14 lines received (0:10 elapsed)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:09.3338139-06:00",
+      "Phase": "Progress",
+      "Message": "32 lines received (0:20 elapsed)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:19.319259-06:00",
+      "Phase": "Progress",
+      "Message": "85 lines received (0:30 elapsed)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:19.973339-06:00",
+      "Phase": "Progress",
+      "Message": "100 chunks received (0:30 elapsed)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:24.5026804-06:00",
+      "Phase": "Progress",
+      "Message": "200 chunks received (0:35 elapsed)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:29.0480276-06:00",
+      "Phase": "Progress",
+      "Message": "300 chunks received (0:39 elapsed)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:29.319158-06:00",
+      "Phase": "Progress",
+      "Message": "305 lines received (0:40 elapsed)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:33.6004582-06:00",
+      "Phase": "Progress",
+      "Message": "400 chunks received (0:44 elapsed)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:34.4801365-06:00",
+      "Phase": "Plan",
+      "Message": "AI enrichment complete \u2014 FK relationships, AppState methods, and dialog wiring added.",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:34.4989077-06:00",
+      "Phase": "Plan",
+      "Message": "AI Verifier: 21 service(s) protected from dropping (user-selected forms and/or proven data access).",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:34.5031056-06:00",
+      "Phase": "Plan",
+      "Message": "AI Verifier \u2014 reviewing 18 service signature(s) (1 Haiku call)...",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.4218481-06:00",
+      "Phase": "Plan",
+      "Message": "AI Verifier: dropping 2 non-business service(s): IMainService, IFunctionsService",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.4249787-06:00",
+      "Phase": "Plan",
+      "Message": "AI Verifier: kept IFunctionsService \u2014 user-selected form override",
+      "Level": 2
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.4353272-06:00",
+      "Phase": "Plan",
+      "Message": "AI Verifier complete \u2014 17/18 services retained, 1 dropped",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.4419665-06:00",
+      "Phase": "Plan",
+      "Message": "AI Verifier: removed 20 page call(s) naming a method the plan does not define \u2014 a UI helper taking a control is not a service operation in the target, and a call the service never declares is invented by the slice or fails the build: AddStockManual.razor/IFunctionsService.SelectAll; AdjustStockManual.razor/IFunctionsService.SelectAll; Customers.razor/IFunctionsService.SearchShow; LoginDialog.razor/IFunctionsService.SelectAll; ReceptionApproval.razor/IFunctionsService.AppendAND; OrderReception.razor/IFunctionsService.SelectAll; OrderReception.razor/IFunctionsService.ValidateTextBoxDouble; OrderReception.razor/IFunctionsService.ValidateTextDouble",
+      "Level": 2
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.444596-06:00",
+      "Phase": "Plan",
+      "Message": "AI Verifier: removed 1 page reference(s) to dropped service(s), so no page declares a dependency the plan does not define.",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.4733168-06:00",
+      "Phase": "Plan",
+      "Message": "6 grid(s) needed a service the page did not declare \u2014 attached it, because a page\u0027s service list is the whole statement of what its UI may call, and a grid whose feed is unreachable gets bound to the nearest single-record call instead: ActionOrderReception.razor/fgDetails (OrderReceptionDetailsDto) \u2192 IOrderReceptionService; ActionOrderRequest.razor/fgDetails (OrderRequestDetailsDto) \u2192 IOrderReceptionService; AddProductTo.razor/lvProductsBy (ProductsByProviderDto) \u2192 IProductsService; ReceptionApproval.razor/fgOrders (OrderReceptionsDto) \u2192 IOrderReceptionService; OrderRequest.razor/fgProducts (OrderRequestDetailsDto) \u2192 IOrderReceptionService; RequestApproval.razor/fgOrders (OrderRequestsDto) \u2192 IOrderReceptionService",
+      "Level": 2
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.6133547-06:00",
+      "Phase": "Plan",
+      "Message": "Phase A complete \u2014 18 entities, 17 services, 18 pages. Deterministic scaffold \u002B AI enrichment.",
+      "Level": 1
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.6192843-06:00",
+      "Phase": "Plan",
+      "Message": "Architecture decisions: 4,199 chars",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.62285-06:00",
+      "Phase": "Plan",
+      "Message": "Domains: About (1), Action (2), Product (1), Stock (1), Adjust (1), Customers (1), Login (1), Reception (1), Order (2), Products (1), Providers (1), Request (1), Search (1), Users (1), Functions (1)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.6263615-06:00",
+      "Phase": "Plan",
+      "Message": "Routes preview:\n     \u2190 frmAbout (About)\n    /upgraded/action-order-reception \u2190 frmActionOrderReception (Action)\n    /upgraded/action-order-request \u2190 frmActionOrderRequest (Action)\n    /upgraded/add-product-to \u2190 frmAddProductTo (Product)\n    /upgraded/add-stock-manual \u2190 frmAddStockManual (Stock)\n    /upgraded/adjust-stock-manual \u2190 frmAdjustStockManual (Adjust)\n    /upgraded/customers \u2190 frmCustomers (Customers)\n     \u2190 frmLogin (Login)",
+      "Level": 0
+    },
+    {
+      "Timestamp": "2026-09-28T15:21:35.6301787-06:00",
+      "Phase": "Plan",
+      "Message": "  \u2026 10 more pages",
+      "Level": 0
+    }
+  ],
+  "ComponentMappingsPath": "",
+  "ExistingOutputPath": "",
+  "UseExistingDatabase": true,
+  "DatabaseConnectionString": "Data Source=C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\Orders.db",
+  "ExistingDatabaseProvider": "SQLite",
+  "CopyLegacyResources": false,
+  "SkipFidelityValidation": false,
+  "GenerateDataSeeder": false,
+  "ModuleSources": [],
+  "IsMultiModule": false,
+  "MultiModuleRootFolder": "",
+  "GlobalPlanPath": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS Blazor\\.modernizer\\globalPlan",
+  "InformixConnection": null,
+  "SeedFromUnlFiles": false,
+  "UnlSeedDataPath": "",
+  "EffectiveExistingDbSource": "Data Source=C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\Orders.db",
+  "IsLiveExistingDatabase": true,
+  "EffectiveUnlSeedPath": "",
+  "ShouldSeedFromUnl": false,
+  "ShouldGenerateSeeder": false
+}

@@ -1,0 +1,29 @@
+@namespace SKS_Blazor.Pages.About
+
+@implements IDisposable
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">@_dialogTitle</MudText>
+    </TitleContent>
+    <DialogContent>
+        <div style="display:flex; flex-direction:row; gap:16px; padding:8px; min-width:360px;">
+            <div style="flex-shrink:0; width:32px; height:32px;">
+                <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Large" Color="Color.Primary" />
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; flex:1;">
+                <MudText Typo="Typo.h6">@_appTitle</MudText>
+                <MudText Typo="Typo.body2">Version @_appVersion</MudText>
+                @if (!string.IsNullOrWhiteSpace(_appDescription))
+                {
+                    <MudText Typo="Typo.body2">@_appDescription</MudText>
+                }
+                <MudDivider Class="my-2" />
+                <MudText Typo="Typo.caption">© @DateTime.Now.Year SKS. All rights reserved.</MudText>
+            </div>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnCmdOkClick">OK</MudButton>
+    </DialogActions>
+</MudDialog>

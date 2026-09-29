@@ -1,0 +1,227 @@
+-- Database: main on C:\Users\JassonNunezCamacho\Desktop\SKS\SKSWinForms-master\Upgraded\Orders.db
+
+-- TABLE: [main].[Categories]
+  CategoryID int NOT NULL IDENTITY
+  CategoryName TEXT NULL
+
+-- TABLE: [main].[Customers]
+  BillingAddress TEXT NULL
+  City TEXT NULL
+  CompanyName TEXT NULL
+  CompanyOrDepartment TEXT NULL
+  ContactFirstName TEXT NULL
+  ContactLastName TEXT NULL
+  ContactTitle TEXT NULL
+  Country/Region TEXT NULL
+  CustomerID int NOT NULL IDENTITY
+  EmailAddress TEXT NULL
+  Extension TEXT NULL
+  FaxNumber TEXT NULL
+  Notes TEXT NULL
+  PhoneNumber TEXT NULL
+  PostalCode TEXT NULL
+  StateOrProvince TEXT NULL
+
+-- TABLE: [main].[InvoiceDetails]
+  Discount decimal NULL
+  InvoiceDetailID int NOT NULL IDENTITY
+  InvoiceID int NULL
+  PaymentTerms TEXT NULL
+  PricePerUnit decimal NULL
+  Quantity decimal NULL
+  StockID int NULL
+
+-- TABLE: [main].[Invoices]
+  CustomerID int NULL
+  DeliveryID int NULL
+  EmployeeID int NULL
+  InvoiceDate TEXT NULL
+  InvoiceID int NOT NULL IDENTITY
+  Notes TEXT NULL
+  OrderID int NULL
+  SalespersonName TEXT NULL
+  ShipDate TEXT NULL
+  ShippedTo TEXT NULL
+  ShippedVia TEXT NULL
+  ShippingCost decimal NULL
+  Status TEXT NULL
+
+-- TABLE: [main].[Levels]
+  Level TEXT NOT NULL
+
+-- TABLE: [main].[ManualStocks]
+  Action TEXT NULL
+  Date TEXT NULL
+  ManualID int NOT NULL IDENTITY
+  Price decimal NULL
+  Quantity decimal NULL
+  StockID int NULL
+  User TEXT NULL
+
+-- TABLE: [main].[OrderReceptionDetails]
+  DateSold TEXT NULL
+  Discount decimal NULL
+  LineTotal decimal NULL
+  OrderDetailID int NOT NULL IDENTITY
+  OrderID int NULL
+  ProductID TEXT NULL
+  Quantity decimal NULL
+  SalePrice decimal NULL
+  SalesTax decimal NULL
+  UnitPrice decimal NULL
+
+-- TABLE: [main].[OrderReceptions]
+  ChangedBy TEXT NULL
+  ChangedDate TEXT NULL
+  FreightCharge decimal NULL
+  Notes TEXT NULL
+  OrderDate TEXT NULL
+  OrderID int NOT NULL IDENTITY
+  PromisedByDate TEXT NULL
+  ProviderID int NULL
+  PurchaseOrderNumber TEXT NULL
+  ReceivedBy TEXT NULL
+  RequiredByDate TEXT NULL
+  SalesTaxRate decimal NULL
+  Status TEXT NULL
+
+-- TABLE: [main].[OrderRequestDetails]
+  DateSold TEXT NULL
+  Discount decimal NULL
+  LineTotal decimal NULL
+  OrderDetailID int NOT NULL IDENTITY
+  OrderID int NULL
+  ProductID TEXT NULL
+  Quantity decimal NULL
+  SalePrice decimal NULL
+  SalesTax decimal NULL
+  UnitPrice decimal NULL
+
+-- TABLE: [main].[OrderRequests]
+  ChangedBy TEXT NULL
+  ChangedDate TEXT NULL
+  CustomerID int NULL
+  EmployeeID TEXT NULL
+  FreightCharge decimal NULL
+  Notes TEXT NULL
+  OrderDate TEXT NULL
+  OrderID int NOT NULL IDENTITY
+  PromisedByDate TEXT NULL
+  PurchaseOrderNumber TEXT NULL
+  RequiredByDate TEXT NULL
+  SalesTaxRate decimal NULL
+  ShipAddress TEXT NULL
+  ShipCity TEXT NULL
+  ShipCountry TEXT NULL
+  ShipDate TEXT NULL
+  ShipName TEXT NULL
+  ShipPhoneNumber TEXT NULL
+  ShippingMethodID int NULL
+  ShipPostalCode TEXT NULL
+  ShipState TEXT NULL
+  ShipStateOrProvince TEXT NULL
+  Status TEXT NULL
+
+-- TABLE: [main].[Products]
+  CategoryID int NULL
+  Discontinued int NOT NULL
+  LeadTime TEXT NULL
+  ProductDescription TEXT NULL
+  ProductID TEXT NOT NULL
+  ProductName TEXT NULL
+  QuantityPerUnit decimal NULL
+  ReorderLevel int NULL
+  SerialNumber TEXT NULL
+  SupplierID int NULL
+  Unit TEXT NULL
+  UnitPrice decimal NULL
+  UnitsInStock int NULL
+  UnitsOnOrder int NULL
+
+-- TABLE: [main].[ProductsByCustomer]
+  CustomerID int NULL
+  ID int NOT NULL IDENTITY
+  ProductID TEXT NULL
+
+-- TABLE: [main].[ProductsByProvider]
+  ID int NOT NULL IDENTITY
+  ProductID TEXT NULL
+  ProviderID int NULL
+
+-- TABLE: [main].[Providers]
+  Address TEXT NULL
+  City TEXT NULL
+  ContactFirstName TEXT NULL
+  ContactLastName TEXT NULL
+  ContactTitle TEXT NULL
+  Country/Region TEXT NULL
+  EmailAddress TEXT NULL
+  Extension TEXT NULL
+  FaxNumber TEXT NULL
+  Notes TEXT NULL
+  PaymentTerms TEXT NULL
+  PhoneNumber TEXT NULL
+  PostalCode TEXT NULL
+  ProviderID int NOT NULL IDENTITY
+  ProviderName TEXT NULL
+  StateOrProvince TEXT NULL
+
+-- TABLE: [main].[StockLog]
+  Date TEXT NULL
+  DocID int NULL
+  DocType TEXT NULL
+  ID int NOT NULL IDENTITY
+  ProductID TEXT NULL
+  Quantity decimal NULL
+  StockID int NULL
+  StockPrice decimal NULL
+  User TEXT NULL
+
+-- TABLE: [main].[Stocks]
+  DateModified TEXT NULL
+  DateStarted TEXT NULL
+  InitialStock decimal NULL
+  ProductID TEXT NULL
+  Stock decimal NULL
+  StockID int NOT NULL IDENTITY
+  StockPrice decimal NULL
+  UnitPrice decimal NULL
+  User TEXT NULL
+
+-- TABLE: [main].[Users]
+  Fullname TEXT NULL
+  Level TEXT NULL
+  Password TEXT NULL
+  Username TEXT NOT NULL
+
+-- TABLE: [main].[Warehouses]
+  Address TEXT NULL
+  City TEXT NULL
+  Country/Region TEXT NULL
+  Description TEXT NULL
+  Name TEXT NULL
+  PostalCode TEXT NULL
+  Region TEXT NULL
+  StateOrProvince TEXT NULL
+  WarehouseID int NOT NULL IDENTITY
+
+-- PRIMARY KEYS
+  [main].[Categories] PK: CategoryID
+  [main].[Customers] PK: CustomerID
+  [main].[InvoiceDetails] PK: InvoiceDetailID
+  [main].[Invoices] PK: InvoiceID
+  [main].[Levels] PK: Level
+  [main].[ManualStocks] PK: ManualID
+  [main].[OrderReceptionDetails] PK: OrderDetailID
+  [main].[OrderReceptions] PK: OrderID
+  [main].[OrderRequestDetails] PK: OrderDetailID
+  [main].[OrderRequests] PK: OrderID
+  [main].[Products] PK: ProductID
+  [main].[ProductsByCustomer] PK: ID
+  [main].[ProductsByProvider] PK: ID
+  [main].[Providers] PK: ProviderID
+  [main].[StockLog] PK: ID
+  [main].[Stocks] PK: StockID
+  [main].[Users] PK: Username
+  [main].[Warehouses] PK: WarehouseID
+

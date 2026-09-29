@@ -1,0 +1,223 @@
+@page "/upgraded/order-request"
+@using SKS_Blazor.Application.DTOs.Core
+@using SKS_Blazor.Application.DTOs.Order
+
+<!-- Columns: CustomerID, CompanyName, ContactFirstName, ContactLastName, City, StateOrProvince, Country/Region -->
+<!-- Columns: Quantity, Code, Product, UnitPrice, Price, Existence, Ordered, Quantity per unit -->
+
+<MudPaper Class="pa-4" Style="height:100%; display:flex; flex-direction:column; overflow:hidden;">
+    <MudText Typo="Typo.h5" Class="mb-2">Order Request</MudText>
+
+    <div style="display:flex; flex-direction:row; gap:16px; flex:1; overflow:hidden;">
+        @* LEFT PANEL — Customer Search + Customer Grid *@
+        <div style="display:flex; flex-direction:column; width:50%; overflow:hidden;">
+            <MudPaper Outlined="true" Class="pa-2 mb-2">
+                <MudText Typo="Typo.subtitle2" Class="mb-1">Search Customer</MudText>
+                <div style="display:flex; gap:8px;">
+                    <MudTextField T="string"
+                                  Label="Company Name"
+                                  @bind-Value="_companyNameFilter"
+                                  @bind-Value:after="OnCompanyNameChanged"
+                                  Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Style="flex:1;" />
+                    <MudTextField T="string"
+                                  Label="Contact Name"
+                                  @bind-Value="_contactNameFilter"
+                                  @bind-Value:after="OnContactNameChanged"
+                                  Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Style="flex:1;" />
+                    <MudTextField T="string"
+                                  Label="Contact Last Name"
+                                  @bind-Value="_contactLastNameFilter"
+                                  @bind-Value:after="OnContactLastNameChanged"
+                                  Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Style="flex:1;" />
+                </div>
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Primary"
+                           Size="Size.Small"
+                           Class="mt-1"
+                           OnClick="OnCustomersClick">
+                    Customers...
+                </MudButton>
+            </MudPaper>
+
+            @* lvCustomers grid *@
+            <MudPaper Outlined="true" Class="pa-1" Style="flex:1; overflow:auto;">
+                <MudDataGrid T="CustomersDto"
+                             Items="@_customers"
+                             Dense="true"
+                             Hover="true"
+                             RowClick="OnCustomerRowClick"
+                             SelectedItem="_selectedCustomer"
+                             SelectedItemChanged="OnCustomerSelected"
+                             Height="100%"
+                             FixedHeader="true"
+                             Striped="true"
+                             Loading="_isLoading">
+                    <Columns>
+                        <PropertyColumn Property="x => x.CustomerID" Title="ID" />
+                        <PropertyColumn Property="x => x.CompanyName" Title="Company Name" />
+                        <PropertyColumn Property="x => x.ContactFirstName" Title="First Name" />
+                        <PropertyColumn Property="x => x.ContactLastName" Title="Last Name" />
+                        <PropertyColumn Property="x => x.City" Title="City" />
+                        <PropertyColumn Property="x => x.StateOrProvince" Title="State" />
+                        <PropertyColumn Property="x => x.CountryRegion" Title="Country/Region" />
+                    </Columns>
+                </MudDataGrid>
+            </MudPaper>
+
+            @* Selected customer info *@
+            <MudPaper Outlined="true" Class="pa-2 mt-2">
+                <div style="display:flex; gap:8px;">
+                    <MudTextField T="string"
+                                  Label="Customer Company"
+                                  Value="@(_state?.TxtCustomerCompanyText ?? string.Empty)"
+                                  ReadOnly="true"
+                                  Variant="Variant.Filled"
+                                  Margin="Margin.Dense"
+                                  Style="flex:1;" />
+                    <MudTextField T="string"
+                                  Label="Customer Contact"
+                                  Value="@(_state?.TxtCustomerContactText ?? string.Empty)"
+                                  ReadOnly="true"
+                                  Variant="Variant.Filled"
+                                  Margin="Margin.Dense"
+                                  Style="flex:1;" />
+                </div>
+            </MudPaper>
+        </div>
+
+        @* RIGHT PANEL — Products Grid + Totals *@
+        <div style="display:flex; flex-direction:column; width:50%; overflow:hidden;">
+            @* Dates *@
+            <MudPaper Outlined="true" Class="pa-2 mb-2">
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <MudDatePicker Label="Required By"
+                                   @bind-Date="_dtRequired"
+                                   @bind-Date:after="OnRequiredDateChanged"
+                                   Disabled="@(!_dtRequiredEnabled)"
+                                   Variant="Variant.Outlined"
+                                   Margin="Margin.Dense"
+                                   Style="flex:1;" />
+                    <MudDatePicker Label="Promised By"
+                                   @bind-Date="_dtPromised"
+                                   @bind-Date:after="OnPromisedDateChanged"
+                                   Disabled="@(!_dtPromisedEnabled)"
+                                   Variant="Variant.Outlined"
+                                   Margin="Margin.Dense"
+                                   Style="flex:1;" />
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Secondary"
+                               Size="Size.Small"
+                               Disabled="@(!_cmdAddProductsEnabled)"
+                               OnClick="OnAddProductsClick">
+                        Add Products...
+                    </MudButton>
+                </div>
+            </MudPaper>
+
+            @* fgProducts grid *@
+            <MudPaper Outlined="true" Class="pa-1" Style="flex:1; overflow:auto;">
+                <MudDataGrid T="OrderRequestProductLineDto"
+                             Items="@_productLines"
+                             Dense="true"
+                             Hover="true"
+                             Striped="true"
+                             FixedHeader="true"
+                             Height="100%"
+                             EditMode="DataGridEditMode.Cell"
+                             CellClick="OnProductCellClick"
+                             CanceledEditingItem="OnCanceledEditingItem"
+                             CommittedItemChanges="OnCommittedItemChanges"
+                             Loading="_isLoading">
+                    <Columns>
+                        <PropertyColumn Property="x => x.Quantity" Title="Quantity" IsEditable="true">
+                            <EditTemplate>
+                                <MudNumericField T="decimal"
+                                                 @bind-Value="context.Item.Quantity"
+                                                 Variant="Variant.Text"
+                                                 Margin="Margin.Dense"
+                                                 Min="0m"
+                                                 Immediate="true" />
+                            </EditTemplate>
+                        </PropertyColumn>
+                        <PropertyColumn Property="x => x.ProductCode" Title="Code" IsEditable="false" />
+                        <PropertyColumn Property="x => x.ProductName" Title="Product" IsEditable="false" />
+                        <PropertyColumn Property="x => x.UnitPrice" Title="Unit Price" Format="N2" IsEditable="false" />
+                        <PropertyColumn Property="x => x.LinePrice" Title="Price" Format="N2" IsEditable="false" />
+                        <PropertyColumn Property="x => x.UnitsInStock" Title="Existence" IsEditable="false" />
+                        <PropertyColumn Property="x => x.UnitsOnOrder" Title="Ordered" IsEditable="false" />
+                        <PropertyColumn Property="x => x.QuantityPerUnit" Title="Quantity per unit" IsEditable="false" />
+                    </Columns>
+                </MudDataGrid>
+            </MudPaper>
+
+            @* Totals section *@
+            <MudPaper Outlined="true" Class="pa-2 mt-2">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <MudTextField T="string"
+                                  Label="Freight Charge"
+                                  @bind-Value="_freightChargeText"
+                                  @bind-Value:after="OnFreightChargeChanged"
+                                  Immediate="true"
+                                  InputType="InputType.Number"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Style="width:120px;" />
+                    <MudTextField T="string"
+                                  Label="Sales Tax %"
+                                  @bind-Value="_salesTaxText"
+                                  @bind-Value:after="OnSalesTaxChanged"
+                                  Immediate="true"
+                                  InputType="InputType.Number"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Style="width:120px;" />
+                    <MudTextField T="string"
+                                  Label="Sub Total"
+                                  Value="@(_state?.TxtSubTotalText ?? string.Empty)"
+                                  ReadOnly="true"
+                                  Variant="Variant.Filled"
+                                  Margin="Margin.Dense"
+                                  Style="width:120px;" />
+                    <MudTextField T="string"
+                                  Label="Total Tax"
+                                  Value="@(_state?.TxtTotalTaxText ?? string.Empty)"
+                                  ReadOnly="true"
+                                  Variant="Variant.Filled"
+                                  Margin="Margin.Dense"
+                                  Style="width:120px;" />
+                    <MudTextField T="string"
+                                  Label="Total"
+                                  Value="@(_state?.TxtTotalText ?? string.Empty)"
+                                  ReadOnly="true"
+                                  Variant="Variant.Filled"
+                                  Margin="Margin.Dense"
+                                  Style="width:120px;" />
+                </div>
+            </MudPaper>
+
+            @* Action buttons *@
+            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Disabled="@(!_cmdSaveEnabled)"
+                           OnClick="OnSaveClick">
+                    Save
+                </MudButton>
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           OnClick="OnCloseClick">
+                    Close
+                </MudButton>
+            </div>
+        </div>
+    </div>
+</MudPaper>

@@ -1,0 +1,119 @@
+@page "/upgraded/request-approval"
+
+@using SKS_Blazor.Application.DTOs.Order
+@using SKS_Blazor.Application.DTOs.Request
+
+<!-- Port of frmRequestApproval (frmRequestAproval.cs). -->
+
+<MudPaper Class="pa-4" Style="height:100%; display:flex; flex-direction:column; overflow:hidden;">
+    <MudText Typo="Typo.h5" Class="mb-2">Request Approval</MudText>
+
+    <!-- Filter Section -->
+    <MudPaper Outlined="true" Class="pa-3 mb-3" Style="flex-shrink:0;">
+        <MudGrid Spacing="2">
+            <MudItem xs="12" sm="4" md="2">
+                <MudTextField T="string" Label="Order ID" @bind-Value="_txtOrderID"
+                              @bind-Value:after="OnTxtOrderIDChanged"
+                              Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4" md="2">
+                <MudTextField T="string" Label="Product ID" @bind-Value="_txtProductID"
+                              @bind-Value:after="OnTxtProductIDChanged"
+                              Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4" md="2">
+                <MudTextField T="string" Label="Company Name" @bind-Value="_txtCompanyName"
+                              @bind-Value:after="OnTxtCompanyNameChanged"
+                              Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4" md="2">
+                <MudTextField T="string" Label="Contact Name" @bind-Value="_txtContactName"
+                              @bind-Value:after="OnTxtContactNameChanged"
+                              Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4" md="2">
+                <MudTextField T="string" Label="Contact Last Name" @bind-Value="_txtContactLastName"
+                              @bind-Value:after="OnTxtContactLastNameChanged"
+                              Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4" md="2">
+                <MudSelect T="string" Label="Status" @bind-Value="_cmbStatusValue"
+                           @bind-Value:after="OnCmbStatusSelectedIndexChanged"
+                           Variant="Variant.Outlined" Margin="Margin.Dense">
+                    <MudSelectItem T="string" Value="@("All")">All</MudSelectItem>
+                    <MudSelectItem T="string" Value="@("Requested")">Requested</MudSelectItem>
+                    <MudSelectItem T="string" Value="@("Cancelled")">Cancelled</MudSelectItem>
+                    <MudSelectItem T="string" Value="@("Approved")">Approved</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Spacing="2" Class="mt-2">
+            <MudItem xs="12" sm="1">
+                <MudCheckBox T="bool" @bind-Value="_chkFrom" Label="From" />
+            </MudItem>
+            <MudItem xs="12" sm="3">
+                <MudDatePicker Label="From Date" @bind-Date="_dtFrom"
+                               @bind-Date:after="OnDtFromValueChanged"
+                               Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="1">
+                <MudCheckBox T="bool" @bind-Value="_chkTo" Label="To" />
+            </MudItem>
+            <MudItem xs="12" sm="3">
+                <MudDatePicker Label="To Date" @bind-Date="_dtTo"
+                               @bind-Date:after="OnDtToValueChanged"
+                               Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4" Class="d-flex align-center gap-2">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.PersonSearch"
+                           OnClick="OnCmdCustomersClick">Customers</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <!-- Action Buttons -->
+    <MudPaper Outlined="true" Class="pa-2 mb-3 d-flex gap-2" Style="flex-shrink:0;">
+        <MudButton Variant="Variant.Filled" Color="Color.Success"
+                   StartIcon="@Icons.Material.Filled.CheckCircle"
+                   OnClick="OnCmdApproveClick">Approve</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error"
+                   StartIcon="@Icons.Material.Filled.Cancel"
+                   OnClick="OnCmdCancelClick">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Info"
+                   StartIcon="@Icons.Material.Filled.Info"
+                   OnClick="OnCmdInfoClick">Info</MudButton>
+        <MudSpacer />
+        <MudButton Variant="Variant.Outlined" Color="Color.Default"
+                   StartIcon="@Icons.Material.Filled.Close"
+                   OnClick="OnCmdCloseClick">Close</MudButton>
+    </MudPaper>
+
+    <!-- Grid: fgOrders — columns: Date, Order, Customer, Contact, Received by, Price, Status -->
+    <div style="flex:1; overflow:auto;">
+        @if (_isLoading)
+        {
+            <MudProgressLinear Indeterminate="true" Color="Color.Primary" />
+        }
+        <MudDataGrid T="OrderRequestGridRow" Items="@_gridRows" Dense="true" Hover="true"
+                     RowClick="OnGridRowClick" @bind-SelectedItem="_selectedRow"
+                     SelectOnRowClick="true" Filterable="false" SortMode="SortMode.Single"
+                     Bordered="true" Striped="true">
+            <Columns>
+                <PropertyColumn Property="x => x.OrderDate" Title="Date" />
+                <PropertyColumn Property="x => x.OrderID" Title="Order" />
+                <PropertyColumn Property="x => x.CompanyName" Title="Customer" />
+                <PropertyColumn Property="x => x.ContactName" Title="Contact" />
+                <PropertyColumn Property="x => x.ReceivedBy" Title="Received by" />
+                <PropertyColumn Property="x => x.Price" Title="Price" Format="N2" />
+                <PropertyColumn Property="x => x.Status" Title="Status" />
+            </Columns>
+        </MudDataGrid>
+    </div>
+
+    <!-- Status bar -->
+    <MudPaper Outlined="true" Class="pa-1 mt-2" Style="flex-shrink:0;">
+        <MudText Typo="Typo.caption">@_statusMessage</MudText>
+    </MudPaper>
+</MudPaper>

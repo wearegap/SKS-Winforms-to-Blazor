@@ -1,0 +1,149 @@
+@page "/upgraded/customers"
+@using SKS_Blazor.Application.DTOs.Core
+@using SKS_Blazor.Application.DTOs.Customers
+@using SKS_Blazor.Application.DTOs.Search
+@using SKS_Blazor.Shared.Dialogs
+
+<!-- Columns: CustomerID, CompanyName, ContactTitle, ContactFirstName, ContactLastName, CompanyOrDepartment, BillingAddress, City, StateOrProvince, PostalCode, Country/Region, EmailAddress, PhoneNumber, Extension, FaxNumber, Notes -->
+
+<MudPaper Class="pa-2" Style="height:100%; display:flex; flex-direction:column; overflow:hidden;">
+    <MudText Typo="Typo.h6" Class="mb-2">Customers</MudText>
+
+    @* ── Toolbar — port of Toolbar1_ButtonClick ── *@
+    <MudToolBar Dense="true" Class="mb-2" Style="flex-shrink:0;">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   OnClick="OnAddClick">Add</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Edit"
+                   Disabled="@(_currentCustomer is null || _state?.NewMode == true)"
+                   OnClick="OnEditClick">Edit</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Save"
+                   Disabled="@(!(_state?.EditMode == true || _state?.NewMode == true))"
+                   OnClick="OnSaveClick">Save</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Delete"
+                   Disabled="@(_currentCustomer is null || _state?.NewMode == true)"
+                   OnClick="OnDeleteClick">Delete</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Info" Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Search"
+                   OnClick="OnSearchClick">Search</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Default" Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Cancel"
+                   OnClick="OnCancelClick">Cancel</MudButton>
+    </MudToolBar>
+
+    @* ── Main content split: grid left, form right ── *@
+    <div style="flex:1; display:flex; flex-direction:row; gap:8px; overflow:hidden;">
+
+        @* ── Left: Customer grid ── *@
+        <MudPaper Elevation="1" Class="pa-2" Style="width:45%; overflow:auto;">
+            <MudDataGrid T="CustomersDto" Items="@_customers" Dense="true" Hover="true"
+                         SelectedItem="@_selectedGridCustomer"
+                         SelectedItemChanged="OnSelectedItemChanged"
+                         RowClick="OnRowClick"
+                         Loading="@_isLoading"
+                         Style="max-height:100%;">
+                <Columns>
+                    <PropertyColumn Property="x => x.CustomerID" Title="ID" />
+                    <PropertyColumn Property="x => x.CompanyName" Title="Company Name" />
+                    <PropertyColumn Property="x => x.ContactFirstName" Title="First Name" />
+                    <PropertyColumn Property="x => x.ContactLastName" Title="Last Name" />
+                    <PropertyColumn Property="x => x.City" Title="City" />
+                    <PropertyColumn Property="x => x.PhoneNumber" Title="Phone" />
+                </Columns>
+            </MudDataGrid>
+        </MudPaper>
+
+        @* ── Right: Customer detail form ── *@
+        <MudPaper Elevation="1" Class="pa-3" Style="width:55%; overflow:auto;">
+            <MudText Typo="Typo.subtitle1" Class="mb-2">Customer Details</MudText>
+
+            <MudGrid Spacing="2">
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Company Name" @bind-Value="_editCompanyName"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Contact Title" @bind-Value="_editContactTitle"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Contact First Name" @bind-Value="_editContactFirstName"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Contact Last Name" @bind-Value="_editContactLastName"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Company or Department" @bind-Value="_editCompanyOrDepartment"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Billing Address" @bind-Value="_editBillingAddress"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="City" @bind-Value="_editCity"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="State / Province" @bind-Value="_editStateOrProvince"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Postal Code" @bind-Value="_editPostalCode"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Country / Region" @bind-Value="_editCountryRegion"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Email Address" @bind-Value="_editEmailAddress"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Phone Number" @bind-Value="_editPhoneNumber"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Extension" @bind-Value="_editExtension"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" Label="Fax Number" @bind-Value="_editFaxNumber"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Notes" @bind-Value="_editNotes"
+                                  @bind-Value:after="OnFieldChanged"
+                                  ReadOnly="@IsReadOnly" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  Lines="3" />
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+
+    </div>
+
+    @* ── Status bar ── *@
+    <MudPaper Elevation="0" Class="pa-1 mt-1" Style="flex-shrink:0; background-color:var(--mud-palette-background-gray);">
+        <MudText Typo="Typo.caption">@_statusMessage</MudText>
+    </MudPaper>
+</MudPaper>

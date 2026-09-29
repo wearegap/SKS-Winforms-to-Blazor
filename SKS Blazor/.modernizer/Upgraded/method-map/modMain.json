@@ -1,0 +1,178 @@
+{
+  "formName": "modMain",
+  "formFileName": "modMain.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\modMain.cs",
+  "legacyLines": 83,
+  "methods": [
+    {
+      "name": "Main",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "public",
+      "isStatic": true,
+      "isAsync": false,
+      "lineCount": 14,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tApplication.EnableVisualStyles();\n\t\t\tApplication.SetCompatibleTextRenderingDefault(false);\n\t\t\tConnectionString = \u0022DRIVER=SQLite3 ODBC Driver; Database=Orders.db; LongNames=0; Timeout=1000; NoTXN=0; SyncPragma=NORMAL; StepAPI=0;\u0022;\n\n\t\t\tmodConnection.OpenConnection();\n\t\t\tCurrentUserAdmin = true;\n\t\t\tUserFullname = \u0022Allan Cantillo\u0022;\n\t\t\tUserLevel = \u0022Administrator\u0022;\n\t\t\tUserId = \u0022acantillo\u0022;\n\t\t\tApplication.Run(frmMain.DefInstance);\n\t\t}\n",
+      "bodyLineCount": 12
+    },
+    {
+      "name": "LogStatus",
+      "returnType": "void",
+      "params": "string message, Form frm",
+      "accessModifier": "internal",
+      "isStatic": true,
+      "isAsync": false,
+      "lineCount": 48,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tStatusStrip sb = null;\n\t\t\tsb = null;\n\t\t\t((ToolStripStatusLabel) frmMain.DefInstance.sbStatusBar.Items[0]).Text = message;\n\t\t\tif (frm != null)\n\t\t\t{\n\t\t\t\tif (frm == frmAdjustStockManual.DefInstance)\n\t\t\t\t{\n\t\t\t\t\tsb = frmAdjustStockManual.DefInstance.sbStatusBar;\n\t\t\t\t}\n\t\t\t\telse if (frm == frmActionOrderReception.DefInstance)\n\t\t\t\t{ \n\t\t\t\t\tsb = frmActionOrderReception.DefInstance.sbStatusBar;\n\t\t\t\t}\n\t\t\t\telse if (frm == frmActionOrderRequest.DefInstance)\n\t\t\t\t{ \n\t\t\t\t\tsb = frmActionOrderRequest.DefInstance.sbStatusBar;\n\t\t\t\t}\n\t\t\t\telse if (frm == frmAddStockManual.DefInstance)\n\t\t\t\t{ \n\t\t\t\t\tsb = frmAddStockManual.DefInstance.sbStatusBar;\n\t\t\t\t}\n\t\t\t\telse if (frm == frmReceptionApproval.DefInstance)\n\t\t\t\t{ \n\t\t\t\t\tsb = frmReceptionApproval.DefInstance.sbStatusBar;\n\t\t\t\t}\n\t\t\t\telse if (frm == frmOrderReception.DefInstance)\n\t\t\t\t{ \n\t\t\t\t\tsb = frmOrderReception.DefInstance.sbStatusBar;\n\t\t\t\t}\n\t\t\t\telse if (frm == frmOrderRequest.DefInstance)\n\t\t\t\t{ \n\t\t\t\t\tsb = frmOrderRequest.DefInstance.sbStatusBar;\n\t\t\t\t}\n\t\t\t\telse if (frm == frmRequestApproval.DefInstance)\n\t\t\t\t{ \n\t\t\t\t\tsb = frmRequestApproval.DefInstance.sbStatusBar;\n\t\t\t\t}\n\t\t\t\tif (sb != null)\n\t\t\t\t{\n\t\t\t\t\tif (((ToolStripStatusLabel) sb.Items[0]) != null)\n\t\t\t\t\t{\n\t\t\t\t\t\t((ToolStripStatusLabel) sb.Items[0]).Text = message;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 47
+    },
+    {
+      "name": "ClearLogStatus",
+      "returnType": "void",
+      "params": "Form frm",
+      "accessModifier": "internal",
+      "isStatic": true,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": false,
+      "methodBody": "=\u003E LogStatus(\u0022\u0022, frm)",
+      "bodyLineCount": 1
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [],
+  "formsInstantiated": [],
+  "gridDeclarations": [],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [],
+  "sqlOperations": [],
+  "columnAccesses": [],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [],
+  "sharedStateFields": [
+    {
+      "name": "CurrentUserAdmin",
+      "declaredType": "bool",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Main"
+      ],
+      "writtenByMethods": [
+        "Main"
+      ]
+    },
+    {
+      "name": "UserFullname",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Main"
+      ],
+      "writtenByMethods": [
+        "Main"
+      ]
+    },
+    {
+      "name": "UserLevel",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Main"
+      ],
+      "writtenByMethods": [
+        "Main"
+      ]
+    },
+    {
+      "name": "UserId",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Main"
+      ],
+      "writtenByMethods": [
+        "Main"
+      ]
+    },
+    {
+      "name": "DetectionType",
+      "declaredType": "int",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "n",
+      "declaredType": "double",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "i",
+      "declaredType": "int",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "s",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "d",
+      "declaredType": "System.DateTime",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "msg",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "ImgName",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "ImgSrc",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}

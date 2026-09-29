@@ -1,0 +1,17 @@
+@using MudBlazor
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" Label="@FieldLabel" @bind-Value="_searchValue"
+                      Variant="Variant.Outlined" Margin="Margin.Dense"
+                      Immediate="true" AutoFocus="true"
+                      OnKeyUp="OnKeyUp" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="OnCancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="OnSearch">Search</MudButton>
+    </DialogActions>
+</MudDialog>

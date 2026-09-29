@@ -1,0 +1,1820 @@
+{
+  "entities": [
+    {
+      "name": "Categories",
+      "legacySource": "main:main.Categories table (reference)",
+      "tableName": "Categories",
+      "properties": [
+        {
+          "name": "CategoryID",
+          "clrType": "int",
+          "dbColumnName": "CategoryID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "CategoryName",
+          "clrType": "string",
+          "dbColumnName": "CategoryName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "Customers",
+      "legacySource": "main:main.Customers table (reference)",
+      "tableName": "Customers",
+      "properties": [
+        {
+          "name": "BillingAddress",
+          "clrType": "string",
+          "dbColumnName": "BillingAddress",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "City",
+          "clrType": "string",
+          "dbColumnName": "City",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "CompanyName",
+          "clrType": "string",
+          "dbColumnName": "CompanyName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "CompanyOrDepartment",
+          "clrType": "string",
+          "dbColumnName": "CompanyOrDepartment",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ContactFirstName",
+          "clrType": "string",
+          "dbColumnName": "ContactFirstName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ContactLastName",
+          "clrType": "string",
+          "dbColumnName": "ContactLastName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ContactTitle",
+          "clrType": "string",
+          "dbColumnName": "ContactTitle",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "CountryRegion",
+          "clrType": "string",
+          "dbColumnName": "Country/Region",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "CustomerID",
+          "clrType": "int",
+          "dbColumnName": "CustomerID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "EmailAddress",
+          "clrType": "string",
+          "dbColumnName": "EmailAddress",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Extension",
+          "clrType": "string",
+          "dbColumnName": "Extension",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "FaxNumber",
+          "clrType": "string",
+          "dbColumnName": "FaxNumber",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "dbColumnName": "Notes",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PhoneNumber",
+          "clrType": "string",
+          "dbColumnName": "PhoneNumber",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PostalCode",
+          "clrType": "string",
+          "dbColumnName": "PostalCode",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StateOrProvince",
+          "clrType": "string",
+          "dbColumnName": "StateOrProvince",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "InvoiceDetails",
+      "legacySource": "main:main.InvoiceDetails table (reference)",
+      "tableName": "InvoiceDetails",
+      "properties": [
+        {
+          "name": "Discount",
+          "clrType": "decimal?",
+          "dbColumnName": "Discount",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "InvoiceDetailID",
+          "clrType": "int",
+          "dbColumnName": "InvoiceDetailID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "InvoiceID",
+          "clrType": "int?",
+          "dbColumnName": "InvoiceID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PaymentTerms",
+          "clrType": "string",
+          "dbColumnName": "PaymentTerms",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PricePerUnit",
+          "clrType": "decimal?",
+          "dbColumnName": "PricePerUnit",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "dbColumnName": "Quantity",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StockID",
+          "clrType": "int?",
+          "dbColumnName": "StockID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "InvoiceID",
+          "toEntity": "Invoices",
+          "kind": "ManyToOne",
+          "navigationProperty": "Invoice",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Invoice",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "Invoices",
+      "legacySource": "main:main.Invoices table (reference)",
+      "tableName": "Invoices",
+      "properties": [
+        {
+          "name": "CustomerID",
+          "clrType": "int?",
+          "dbColumnName": "CustomerID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "DeliveryID",
+          "clrType": "int?",
+          "dbColumnName": "DeliveryID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "EmployeeID",
+          "clrType": "int?",
+          "dbColumnName": "EmployeeID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "InvoiceDate",
+          "clrType": "string",
+          "dbColumnName": "InvoiceDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "InvoiceID",
+          "clrType": "int",
+          "dbColumnName": "InvoiceID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "dbColumnName": "Notes",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int?",
+          "dbColumnName": "OrderID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SalespersonName",
+          "clrType": "string",
+          "dbColumnName": "SalespersonName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipDate",
+          "clrType": "string",
+          "dbColumnName": "ShipDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShippedTo",
+          "clrType": "string",
+          "dbColumnName": "ShippedTo",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShippedVia",
+          "clrType": "string",
+          "dbColumnName": "ShippedVia",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShippingCost",
+          "clrType": "decimal?",
+          "dbColumnName": "ShippingCost",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Status",
+          "clrType": "string",
+          "dbColumnName": "Status",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "CustomerID",
+          "toEntity": "Customers",
+          "kind": "ManyToOne",
+          "navigationProperty": "Customer",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "Levels",
+      "legacySource": "main:main.Levels table (reference)",
+      "tableName": "Levels",
+      "properties": [
+        {
+          "name": "Level",
+          "clrType": "string",
+          "dbColumnName": "Level",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "ManualStocks",
+      "legacySource": "main:main.ManualStocks table (reference)",
+      "tableName": "ManualStocks",
+      "properties": [
+        {
+          "name": "Action",
+          "clrType": "string",
+          "dbColumnName": "Action",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Date",
+          "clrType": "string",
+          "dbColumnName": "Date",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ManualID",
+          "clrType": "int",
+          "dbColumnName": "ManualID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Price",
+          "clrType": "decimal?",
+          "dbColumnName": "Price",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "dbColumnName": "Quantity",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StockID",
+          "clrType": "int?",
+          "dbColumnName": "StockID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "User",
+          "clrType": "string",
+          "dbColumnName": "User",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [],
+      "domain": "Manual",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "OrderReceptionDetails",
+      "legacySource": "main:main.OrderReceptionDetails table (reference)",
+      "tableName": "OrderReceptionDetails",
+      "properties": [
+        {
+          "name": "DateSold",
+          "clrType": "string",
+          "dbColumnName": "DateSold",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Discount",
+          "clrType": "decimal?",
+          "dbColumnName": "Discount",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "LineTotal",
+          "clrType": "decimal?",
+          "dbColumnName": "LineTotal",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderDetailID",
+          "clrType": "int",
+          "dbColumnName": "OrderDetailID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int?",
+          "dbColumnName": "OrderID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "dbColumnName": "ProductID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "dbColumnName": "Quantity",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SalePrice",
+          "clrType": "decimal?",
+          "dbColumnName": "SalePrice",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SalesTax",
+          "clrType": "decimal?",
+          "dbColumnName": "SalesTax",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "UnitPrice",
+          "clrType": "decimal?",
+          "dbColumnName": "UnitPrice",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "OrderID",
+          "toEntity": "OrderReceptions",
+          "kind": "ManyToOne",
+          "navigationProperty": "OrderReception",
+          "fromProperties": null
+        },
+        {
+          "fromProperty": "ProductID",
+          "toEntity": "Products",
+          "kind": "ManyToOne",
+          "navigationProperty": "Product",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Order",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "OrderReceptions",
+      "legacySource": "main:main.OrderReceptions table (reference)",
+      "tableName": "OrderReceptions",
+      "properties": [
+        {
+          "name": "ChangedBy",
+          "clrType": "string",
+          "dbColumnName": "ChangedBy",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ChangedDate",
+          "clrType": "string",
+          "dbColumnName": "ChangedDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "FreightCharge",
+          "clrType": "decimal?",
+          "dbColumnName": "FreightCharge",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "dbColumnName": "Notes",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderDate",
+          "clrType": "string",
+          "dbColumnName": "OrderDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int",
+          "dbColumnName": "OrderID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PromisedByDate",
+          "clrType": "string",
+          "dbColumnName": "PromisedByDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProviderID",
+          "clrType": "int?",
+          "dbColumnName": "ProviderID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PurchaseOrderNumber",
+          "clrType": "string",
+          "dbColumnName": "PurchaseOrderNumber",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ReceivedBy",
+          "clrType": "string",
+          "dbColumnName": "ReceivedBy",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "RequiredByDate",
+          "clrType": "string",
+          "dbColumnName": "RequiredByDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SalesTaxRate",
+          "clrType": "decimal?",
+          "dbColumnName": "SalesTaxRate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Status",
+          "clrType": "string",
+          "dbColumnName": "Status",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "ProviderID",
+          "toEntity": "Providers",
+          "kind": "ManyToOne",
+          "navigationProperty": "Provider",
+          "fromProperties": null
+        },
+        {
+          "fromProperty": "OrderID",
+          "toEntity": "OrderRequests",
+          "kind": "ManyToOne",
+          "navigationProperty": "OrderRequest",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Order",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "OrderRequestDetails",
+      "legacySource": "main:main.OrderRequestDetails table (reference)",
+      "tableName": "OrderRequestDetails",
+      "properties": [
+        {
+          "name": "DateSold",
+          "clrType": "string",
+          "dbColumnName": "DateSold",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Discount",
+          "clrType": "decimal?",
+          "dbColumnName": "Discount",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "LineTotal",
+          "clrType": "decimal?",
+          "dbColumnName": "LineTotal",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderDetailID",
+          "clrType": "int",
+          "dbColumnName": "OrderDetailID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int?",
+          "dbColumnName": "OrderID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "dbColumnName": "ProductID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "dbColumnName": "Quantity",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SalePrice",
+          "clrType": "decimal?",
+          "dbColumnName": "SalePrice",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SalesTax",
+          "clrType": "decimal?",
+          "dbColumnName": "SalesTax",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "UnitPrice",
+          "clrType": "decimal?",
+          "dbColumnName": "UnitPrice",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "OrderID",
+          "toEntity": "OrderRequests",
+          "kind": "ManyToOne",
+          "navigationProperty": "OrderRequest",
+          "fromProperties": null
+        },
+        {
+          "fromProperty": "ProductID",
+          "toEntity": "Products",
+          "kind": "ManyToOne",
+          "navigationProperty": "Product",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Order",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "OrderRequests",
+      "legacySource": "main:main.OrderRequests table (reference)",
+      "tableName": "OrderRequests",
+      "properties": [
+        {
+          "name": "ChangedBy",
+          "clrType": "string",
+          "dbColumnName": "ChangedBy",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ChangedDate",
+          "clrType": "string",
+          "dbColumnName": "ChangedDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "CustomerID",
+          "clrType": "int?",
+          "dbColumnName": "CustomerID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "EmployeeID",
+          "clrType": "string",
+          "dbColumnName": "EmployeeID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "FreightCharge",
+          "clrType": "decimal?",
+          "dbColumnName": "FreightCharge",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "dbColumnName": "Notes",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderDate",
+          "clrType": "string",
+          "dbColumnName": "OrderDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int",
+          "dbColumnName": "OrderID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PromisedByDate",
+          "clrType": "string",
+          "dbColumnName": "PromisedByDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PurchaseOrderNumber",
+          "clrType": "string",
+          "dbColumnName": "PurchaseOrderNumber",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "RequiredByDate",
+          "clrType": "string",
+          "dbColumnName": "RequiredByDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SalesTaxRate",
+          "clrType": "decimal?",
+          "dbColumnName": "SalesTaxRate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipAddress",
+          "clrType": "string",
+          "dbColumnName": "ShipAddress",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipCity",
+          "clrType": "string",
+          "dbColumnName": "ShipCity",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipCountry",
+          "clrType": "string",
+          "dbColumnName": "ShipCountry",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipDate",
+          "clrType": "string",
+          "dbColumnName": "ShipDate",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipName",
+          "clrType": "string",
+          "dbColumnName": "ShipName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipPhoneNumber",
+          "clrType": "string",
+          "dbColumnName": "ShipPhoneNumber",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShippingMethodID",
+          "clrType": "int?",
+          "dbColumnName": "ShippingMethodID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipPostalCode",
+          "clrType": "string",
+          "dbColumnName": "ShipPostalCode",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipState",
+          "clrType": "string",
+          "dbColumnName": "ShipState",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ShipStateOrProvince",
+          "clrType": "string",
+          "dbColumnName": "ShipStateOrProvince",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Status",
+          "clrType": "string",
+          "dbColumnName": "Status",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [],
+      "domain": "Order",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "Products",
+      "legacySource": "main:main.Products table (reference)",
+      "tableName": "Products",
+      "properties": [
+        {
+          "name": "CategoryID",
+          "clrType": "int?",
+          "dbColumnName": "CategoryID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Discontinued",
+          "clrType": "int",
+          "dbColumnName": "Discontinued",
+          "required": true,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "LeadTime",
+          "clrType": "string",
+          "dbColumnName": "LeadTime",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductDescription",
+          "clrType": "string",
+          "dbColumnName": "ProductDescription",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "dbColumnName": "ProductID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductName",
+          "clrType": "string",
+          "dbColumnName": "ProductName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "QuantityPerUnit",
+          "clrType": "decimal?",
+          "dbColumnName": "QuantityPerUnit",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ReorderLevel",
+          "clrType": "int?",
+          "dbColumnName": "ReorderLevel",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SerialNumber",
+          "clrType": "string",
+          "dbColumnName": "SerialNumber",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "SupplierID",
+          "clrType": "int?",
+          "dbColumnName": "SupplierID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Unit",
+          "clrType": "string",
+          "dbColumnName": "Unit",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "UnitPrice",
+          "clrType": "decimal?",
+          "dbColumnName": "UnitPrice",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "UnitsInStock",
+          "clrType": "int?",
+          "dbColumnName": "UnitsInStock",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "UnitsOnOrder",
+          "clrType": "int?",
+          "dbColumnName": "UnitsOnOrder",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "CategoryID",
+          "toEntity": "Categories",
+          "kind": "ManyToOne",
+          "navigationProperty": "Category",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "ProductsByCustomer",
+      "legacySource": "main:main.ProductsByCustomer table (reference)",
+      "tableName": "ProductsByCustomer",
+      "properties": [
+        {
+          "name": "CustomerID",
+          "clrType": "int?",
+          "dbColumnName": "CustomerID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ID",
+          "clrType": "int",
+          "dbColumnName": "ID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "dbColumnName": "ProductID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "ProductID",
+          "toEntity": "Products",
+          "kind": "ManyToOne",
+          "navigationProperty": "Product",
+          "fromProperties": null
+        },
+        {
+          "fromProperty": "CustomerID",
+          "toEntity": "Customers",
+          "kind": "ManyToOne",
+          "navigationProperty": "Customer",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Products",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "ProductsByProvider",
+      "legacySource": "main:main.ProductsByProvider table (reference)",
+      "tableName": "ProductsByProvider",
+      "properties": [
+        {
+          "name": "ID",
+          "clrType": "int",
+          "dbColumnName": "ID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "dbColumnName": "ProductID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProviderID",
+          "clrType": "int?",
+          "dbColumnName": "ProviderID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "ProductID",
+          "toEntity": "Products",
+          "kind": "ManyToOne",
+          "navigationProperty": "Product",
+          "fromProperties": null
+        },
+        {
+          "fromProperty": "ProviderID",
+          "toEntity": "Providers",
+          "kind": "ManyToOne",
+          "navigationProperty": "Provider",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Products",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "Providers",
+      "legacySource": "main:main.Providers table (reference)",
+      "tableName": "Providers",
+      "properties": [
+        {
+          "name": "Address",
+          "clrType": "string",
+          "dbColumnName": "Address",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "City",
+          "clrType": "string",
+          "dbColumnName": "City",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ContactFirstName",
+          "clrType": "string",
+          "dbColumnName": "ContactFirstName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ContactLastName",
+          "clrType": "string",
+          "dbColumnName": "ContactLastName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ContactTitle",
+          "clrType": "string",
+          "dbColumnName": "ContactTitle",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "CountryRegion",
+          "clrType": "string",
+          "dbColumnName": "Country/Region",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "EmailAddress",
+          "clrType": "string",
+          "dbColumnName": "EmailAddress",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Extension",
+          "clrType": "string",
+          "dbColumnName": "Extension",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "FaxNumber",
+          "clrType": "string",
+          "dbColumnName": "FaxNumber",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "dbColumnName": "Notes",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PaymentTerms",
+          "clrType": "string",
+          "dbColumnName": "PaymentTerms",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PhoneNumber",
+          "clrType": "string",
+          "dbColumnName": "PhoneNumber",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PostalCode",
+          "clrType": "string",
+          "dbColumnName": "PostalCode",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProviderID",
+          "clrType": "int",
+          "dbColumnName": "ProviderID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProviderName",
+          "clrType": "string",
+          "dbColumnName": "ProviderName",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StateOrProvince",
+          "clrType": "string",
+          "dbColumnName": "StateOrProvince",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "StockLog",
+      "legacySource": "main:main.StockLog table (reference)",
+      "tableName": "StockLog",
+      "properties": [
+        {
+          "name": "Date",
+          "clrType": "string",
+          "dbColumnName": "Date",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "DocID",
+          "clrType": "int?",
+          "dbColumnName": "DocID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "DocType",
+          "clrType": "string",
+          "dbColumnName": "DocType",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ID",
+          "clrType": "int",
+          "dbColumnName": "ID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "dbColumnName": "ProductID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "dbColumnName": "Quantity",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StockID",
+          "clrType": "int?",
+          "dbColumnName": "StockID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StockPrice",
+          "clrType": "decimal?",
+          "dbColumnName": "StockPrice",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "User",
+          "clrType": "string",
+          "dbColumnName": "User",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "ProductID",
+          "toEntity": "Products",
+          "kind": "ManyToOne",
+          "navigationProperty": "Product",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Stock",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "Stocks",
+      "legacySource": "main:main.Stocks table (reference)",
+      "tableName": "Stocks",
+      "properties": [
+        {
+          "name": "DateModified",
+          "clrType": "string",
+          "dbColumnName": "DateModified",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "DateStarted",
+          "clrType": "string",
+          "dbColumnName": "DateStarted",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "InitialStock",
+          "clrType": "decimal?",
+          "dbColumnName": "InitialStock",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "dbColumnName": "ProductID",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Stock",
+          "clrType": "decimal?",
+          "dbColumnName": "Stock",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StockID",
+          "clrType": "int",
+          "dbColumnName": "StockID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StockPrice",
+          "clrType": "decimal?",
+          "dbColumnName": "StockPrice",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "UnitPrice",
+          "clrType": "decimal?",
+          "dbColumnName": "UnitPrice",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "User",
+          "clrType": "string",
+          "dbColumnName": "User",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [
+        {
+          "fromProperty": "ProductID",
+          "toEntity": "Products",
+          "kind": "ManyToOne",
+          "navigationProperty": "Product",
+          "fromProperties": null
+        }
+      ],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "Users",
+      "legacySource": "main:main.Users table (reference)",
+      "tableName": "Users",
+      "properties": [
+        {
+          "name": "Fullname",
+          "clrType": "string",
+          "dbColumnName": "Fullname",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Level",
+          "clrType": "string",
+          "dbColumnName": "Level",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Password",
+          "clrType": "string",
+          "dbColumnName": "Password",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Username",
+          "clrType": "string",
+          "dbColumnName": "Username",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    },
+    {
+      "name": "Warehouses",
+      "legacySource": "main:main.Warehouses table (reference)",
+      "tableName": "Warehouses",
+      "properties": [
+        {
+          "name": "Address",
+          "clrType": "string",
+          "dbColumnName": "Address",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "City",
+          "clrType": "string",
+          "dbColumnName": "City",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "CountryRegion",
+          "clrType": "string",
+          "dbColumnName": "Country/Region",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Description",
+          "clrType": "string",
+          "dbColumnName": "Description",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Name",
+          "clrType": "string",
+          "dbColumnName": "Name",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "PostalCode",
+          "clrType": "string",
+          "dbColumnName": "PostalCode",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "Region",
+          "clrType": "string",
+          "dbColumnName": "Region",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "StateOrProvince",
+          "clrType": "string",
+          "dbColumnName": "StateOrProvince",
+          "required": false,
+          "isPrimaryKey": false,
+          "stringLength": null,
+          "isUnique": false
+        },
+        {
+          "name": "WarehouseID",
+          "clrType": "int",
+          "dbColumnName": "WarehouseID",
+          "required": true,
+          "isPrimaryKey": true,
+          "stringLength": null,
+          "isUnique": false
+        }
+      ],
+      "relationships": [],
+      "domain": "Core",
+      "schemaConfidence": "Ddl"
+    }
+  ]
+}

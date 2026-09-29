@@ -1,0 +1,109 @@
+@page "/upgraded/users-manage"
+
+@using SKS_Blazor.Application.DTOs.Core
+@using SKS_Blazor.Application.DTOs.Users
+
+<PageTitle>Users Manage</PageTitle>
+
+@* Port of frmUsersManage (frmUsersManage.cs). *@
+
+<div style="display:flex; flex-direction:column; height:100%; gap:16px; padding:16px;">
+    
+    <MudText Typo="Typo.h5">Users Management</MudText>
+
+    <div style="display:flex; gap:24px; flex:1; overflow:hidden;">
+        
+        @* Left panel — user form fields *@
+        <MudPaper Elevation="2" Style="padding:16px; width:380px; flex-shrink:0; display:flex; flex-direction:column; gap:12px;">
+            
+            <MudTextField T="string"
+                          Label="Username"
+                          @bind-Value="_state!.TxtUsernameText"
+                          @ref="_txtUsernameRef"
+                          OnAdornmentClick="OnUsernameEnterAsync"
+                          Variant="Variant.Outlined"
+                          Immediate="true"
+                          id="txtUsername" />
+
+            <MudTextField T="string"
+                          Label="Password"
+                          @bind-Value="_state!.TxtPasswordText"
+                          @ref="_txtPasswordRef"
+                          InputType="InputType.Password"
+                          Variant="Variant.Outlined"
+                          Immediate="true"
+                          id="txtPassword" />
+
+            <MudTextField T="string"
+                          Label="Full Name"
+                          @bind-Value="_state!.TxtFullnameText"
+                          @ref="_txtFullnameRef"
+                          Variant="Variant.Outlined"
+                          Immediate="true"
+                          id="txtFullname" />
+
+            <MudSelect T="string"
+                       Label="Level"
+                       @bind-Value="_state!.CboLevelText"
+                       Variant="Variant.Outlined">
+                @foreach (var level in _levels)
+                {
+                    <MudSelectItem T="string" Value="@level">@level</MudSelectItem>
+                }
+            </MudSelect>
+
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           OnClick="cmdSave_Click">
+                    @(_state!.CmdSaveText ?? "Save")
+                </MudButton>
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Warning"
+                           OnClick="cmdEdit_Click">
+                    Edit
+                </MudButton>
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Error"
+                           OnClick="cmdDelete_Click">
+                    Delete
+                </MudButton>
+
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           OnClick="cmdClear_Click">
+                    Clear
+                </MudButton>
+
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           OnClick="cmdClose_Click">
+                    Close
+                </MudButton>
+            </div>
+        </MudPaper>
+
+        @* Right panel — users grid (lstAccounts) *@
+        <MudPaper Elevation="2" Style="flex:1; overflow:auto; padding:8px;">
+            @* Grid columns: Username, Full Name, Level — port of lstAccounts ListView *@
+            <MudDataGrid T="UsersDto"
+                         Items="@_usersList"
+                         Dense="true"
+                         Hover="true"
+                         Striped="true"
+                         SelectedItem="_selectedUser"
+                         SelectedItemChanged="OnSelectedUserChanged"
+                         RowClick="lstAccounts_RowClick"
+                         Style="height:100%;">
+                <Columns>
+                    <PropertyColumn Property="x => x.Username" Title="Username" />
+                    <PropertyColumn Property="x => x.Fullname" Title="Full Name" />
+                    <PropertyColumn Property="x => x.Level" Title="Level" />
+                </Columns>
+            </MudDataGrid>
+        </MudPaper>
+
+    </div>
+</div>

@@ -1,0 +1,480 @@
+{
+  "formName": "frmAddProductTo",
+  "formFileName": "frmAddProductTo.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAddProductTo.cs",
+  "legacyLines": 331,
+  "methods": [
+    {
+      "name": "frmAddProductTo_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "chkAll_CheckStateChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 9,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tbool check = chkAll.CheckState == CheckState.Checked;\n\t\t\tint tempForEndVar = lvProductsBy.Items.Count;\n\t\t\tfor (modMain.i = 1; modMain.i \u003C= tempForEndVar; modMain.i\u002B\u002B)\n\t\t\t{\n\t\t\t\tlvProductsBy.Items[modMain.i - 1].Checked = check;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 8
+    },
+    {
+      "name": "cmdClose_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E this.Close()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "cmdProducts_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tfrmProducts.DefInstance.ShowDialog();\n\t\t\ttxtCode.Text = frmProducts.DefInstance.CurrentProductID;\n\t\t\ttxtName.Text = \u0022\u0022;\n\t\t\tDoSearchProduct();\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "cmdRemove_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 33,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tstring productIdToDelete = \u0022\u0022;\n\t\t\tfor (modMain.i = lvProductsBy.Items.Count; modMain.i \u003E= 1; modMain.i--)\n\t\t\t{\n\t\t\t\tif (lvProductsBy.Items[modMain.i - 1].Checked)\n\t\t\t\t{\n\t\t\t\t\tproductIdToDelete = lvProductsBy.Items[modMain.i - 1].Text;\n\n\t\t\t\t\tif (modFunctions.Exists(productsStored, productIdToDelete))\n\t\t\t\t\t{\n\t\t\t\t\t\tif (modFunctions.Exists(productsToAdd, productIdToDelete))\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tproductsToDelete.Remove(productIdToDelete);\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tmodFunctions.AddToCollection(productsToDelete, productIdToDelete);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tif (modFunctions.Exists(productsToAdd, currentIdProduct))\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tproductsToAdd.Remove(currentIdProduct);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\n\t\t\t\t\tlvProductsBy.Items.RemoveAt(modMain.i - 1);\n\t\t\t\t\teditingData = true;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 32
+    },
+    {
+      "name": "cmdSave_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 33,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\n\t\t\tif (productsToAdd.Count == 0 \u0026\u0026 productsToDelete.Count == 0)\n\t\t\t{\n\t\t\t\teditingData = true;\n\t\t\t\tMessageBox.Show(\u0022No data to be saved\u0022, \u0022No data modified\u0022, MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\t\tthis.Close();\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tSavedChanges = true;\n\t\t\tstring productCode = \u0022\u0022;\n\t\t\tforeach (string productCodeIterator in productsToAdd.Values)\n\t\t\t{\n\t\t\t\tproductCode = productCodeIterator;\n\t\t\t\tmodConnection.ExecuteSql($\u0022Insert into {Table}({ColumnName}, ProductID) Values ({Id.ToString()}, \u0027{productCode}\u0027)\u0022);\n\t\t\t\tproductCode = default(string);\n\t\t\t}\n\t\t\tforeach (string productCodeIterator2 in productsToDelete.Values)\n\t\t\t{\n\t\t\t\tproductCode = productCodeIterator2;\n\t\t\t\tmodConnection.ExecuteSql($\u0022Delete from {Table} Where {ColumnName} = {Id.ToString()} And ProductID = \u0027{productCode}\u0027\u0022);\n\t\t\t\tproductCode = default(string);\n\t\t\t}\n\n\t\t\teditingData = false;\n\t\t\tMessageBox.Show(\u0022Data was succesfully saved\u0022, \u0022New data\u0022, MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\tthis.Close();\n\t\t\treturn;\n\n\t\t\t//UPGRADE_WARNING: (2081) Err.Number has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2081\n\t\t\tMessageBox.Show($\u0022An error has occurred adding the data.{Environment.NewLine}Error: ({Information.Err().Number.ToString()}) {Information.Err().Description}\u0022, \u0022Error\u0022, MessageBoxButtons.OK, MessageBoxIcon.Error);\n\t\t}\n",
+      "bodyLineCount": 32
+    },
+    {
+      "name": "LoadData",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 12,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\teditingData = false;\n\t\t\teditingData = false;\n\t\t\tcodeGeneratedChange = false;\n\t\t\tthis.Text = $\u0022Add product(s) to {ObjectReferred}\u0022;\n\t\t\tlblProductsRelated.Text = $\u0022Products related to {ObjectReferred}\u0022;\n\t\t\tproductsStored = new OrderedDictionary(System.StringComparer.OrdinalIgnoreCase);\n\t\t\tproductsToDelete = new OrderedDictionary(System.StringComparer.OrdinalIgnoreCase);\n\t\t\tproductsToAdd = new OrderedDictionary(System.StringComparer.OrdinalIgnoreCase);\n\t\t\tLoadProductsById();\n\t\t}\n",
+      "bodyLineCount": 11
+    },
+    {
+      "name": "Form_FormClosing",
+      "returnType": "void",
+      "params": "Object eventSender, FormClosingEventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 25,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tint Cancel = (eventArgs.Cancel) ? 1 : 0;\n\t\t\tint UnloadMode = (int) eventArgs.CloseReason;\n\t\t\ttry\n\t\t\t{\n\t\t\t\tDialogResult res = (DialogResult) 0;\n\t\t\t\tif (editingData)\n\t\t\t\t{\n\t\t\t\t\tres = MessageBox.Show(\u0022Do you want to save the edited data?\u0022, \u0022Save data\u0022, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);\n\t\t\t\t\tif (res == System.Windows.Forms.DialogResult.Yes)\n\t\t\t\t\t{\n\t\t\t\t\t\tcmdSave_Click(cmdSave, new EventArgs());\n\t\t\t\t\t}\n\t\t\t\t\telse if (res != System.Windows.Forms.DialogResult.No)\n\t\t\t\t\t{ \n\t\t\t\t\t\tCancel = -1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tfinally\n\t\t\t{\n\t\t\t\teventArgs.Cancel = Cancel != 0;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 24
+    },
+    {
+      "name": "lvProducts_ItemClick",
+      "returnType": "void",
+      "params": "ListViewItem Item",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": false,
+      "methodBody": "=\u003E AddProductToSet()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtCode_TextChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E DoSearchProduct()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtCode_Leave",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tif (lvProducts.Items.Count == 1)\n\t\t\t{\n\t\t\t\tAddProductToSet();\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "txtName_TextChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E DoSearchProduct()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "LoadProductsById",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 28,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tstring productCode = \u0022\u0022;\n\t\t\tmodConnection.ExecuteSql($\u0022Select p.ProductID, p.ProductName, p.UnitPrice, p.QuantityPerUnit, p.Unit from Products as p, {Table} as pb Where pb.{ColumnName} = {Id.ToString()} And pb.ProductId = p.ProductId\u0022);\n\n\t\t\tmodMain.LogStatus($\u0022There are {modConnection.rs.RecordCount.ToString()} records with the selected criteria\u0022, this);\n\t\t\tListViewItem x = null;\n\t\t\tif (modConnection.rs.RecordCount \u003E 0)\n\t\t\t{\n\t\t\t\twhile (!modConnection.rs.EOF)\n\t\t\t\t{\n\t\t\t\t\t//productCode = CStr(rs.Fields(0).value)\n\t\t\t\t\tproductCode = Convert.ToString(modConnection.rs[0]);\n\t\t\t\t\tmodFunctions.AddToCollection(productsStored, productCode);\n\t\t\t\t\tx = lvProductsBy.Items.Add(productCode);\n\t\t\t\t\tfor (modMain.i = 1; modMain.i \u003C= 2; modMain.i\u002B\u002B)\n\t\t\t\t\t{\n\t\t\t\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\t\t\t\tif (!(modConnection.rs.GetField(modMain.i) is null))\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tListViewHelper.GetListViewSubItem(x, modMain.i).Text = Convert.ToString(modConnection.rs[modMain.i]);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tListViewHelper.GetListViewSubItem(x, 3).Text = $\u0022{Convert.ToString(modConnection.rs[3])}{Convert.ToString(modConnection.rs[4])}\u0022;\n\t\t\t\t\tmodConnection.rs.MoveNext();\n\t\t\t\t}\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 27
+    },
+    {
+      "name": "DoSearchProduct",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 49,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tstring filter = \u0022\u0022;\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(txtCode.Text))\n\t\t\t{\n\t\t\t\tfilter = $\u0022ProductId LIKE \u0027%{txtCode.Text}%\u0027\u0022;\n\t\t\t}\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(txtName.Text))\n\t\t\t{\n\t\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\t\tif (!String.IsNullOrEmpty(filter))\n\t\t\t\t{\n\t\t\t\t\tfilter = $\u0022{filter} AND \u0022;\n\t\t\t\t}\n\t\t\t\tfilter = $\u0022{filter}ProductName LIKE \u0027%{txtName.Text}%\u0027\u0022;\n\t\t\t}\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(filter))\n\t\t\t{\n\t\t\t\tfilter = $\u0022Where {filter}\u0022;\n\t\t\t}\n\t\t\tmodConnection.ExecuteSql($\u0022Select ProductID, ProductName, UnitPrice, UnitsInStock, UnitsOnOrder, QuantityPerUnit, Unit from Products {filter}\u0022);\n\t\t\tlvProducts.Items.Clear();\n\t\t\tmodMain.LogStatus($\u0022There are {modConnection.rs.RecordCount.ToString()} records with the selected criteria\u0022, this);\n\t\t\tListViewItem x = null;\n\t\t\tif (modConnection.rs.RecordCount \u003E 0)\n\t\t\t{\n\t\t\t\twhile (!modConnection.rs.EOF)\n\t\t\t\t{\n\t\t\t\t\tx = lvProducts.Items.Add(Convert.ToString(modConnection.rs[0]));\n\t\t\t\t\tint tempForEndVar = (modConnection.rs.FieldsMetadata.Count - 1);\n\t\t\t\t\tfor (modMain.i = 1; modMain.i \u003C= tempForEndVar; modMain.i\u002B\u002B)\n\t\t\t\t\t{\n\t\t\t\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\t\t\t\tif (!(modConnection.rs.GetField(modMain.i) is null))\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tListViewHelper.GetListViewSubItem(x, modMain.i).Text = Convert.ToString(modConnection.rs[modMain.i]);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tmodConnection.rs.MoveNext();\n\t\t\t\t}\n\t\t\t\tif (lvProducts.Items.Count == 1)\n\t\t\t\t{\n\t\t\t\t\tlvProducts.Items[lvProducts.Items[0].Index].Selected = true;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 48
+    },
+    {
+      "name": "AddProductToSet",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 55,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\n\t\t\tListViewItem y = null;\n\t\t\tint i = 0;\n\t\t\tbool found = false;\n\t\t\tListViewItem x = null;\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!(lvProducts.FocusedItem is null))\n\t\t\t{\n\t\t\t\ty = lvProducts.FocusedItem;\n\t\t\t\tcurrentIdProduct = lvProducts.FocusedItem.Text;\n\t\t\t\tfound = false;\n\t\t\t\tint tempForEndVar = lvProductsBy.Items.Count;\n\t\t\t\tfor (i = 1; i \u003C= tempForEndVar; i\u002B\u002B)\n\t\t\t\t{\n\t\t\t\t\tif (lvProductsBy.Items[i - 1].Text == currentIdProduct)\n\t\t\t\t\t{\n\t\t\t\t\t\tlvProductsBy.Items[lvProductsBy.Items[i - 1].Index].Selected = true;\n\t\t\t\t\t\tfound = true;\n\t\t\t\t\t\tbreak;\n\t\t\t\t\t}\n\t\t\t\t\telse if (String.CompareOrdinal(lvProductsBy.Items[i - 1].Text, currentIdProduct) \u003E 0)\n\t\t\t\t\t{ \n\t\t\t\t\t\tbreak;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tif (!found)\n\t\t\t\t{\n\t\t\t\t\teditingData = true;\n\t\t\t\t\tif (!modFunctions.Exists(productsStored, currentIdProduct))\n\t\t\t\t\t{\n\t\t\t\t\t\tif (modFunctions.Exists(productsToDelete, currentIdProduct))\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tproductsToDelete.Remove(currentIdProduct);\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tmodFunctions.AddToCollection(productsToAdd, currentIdProduct);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tif (modFunctions.Exists(productsToDelete, currentIdProduct))\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tproductsToDelete.Remove(currentIdProduct);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tx = lvProductsBy.Items.Insert(i - 1, currentIdProduct);\n\t\t\t\t\tListViewHelper.GetListViewSubItem(x, 1).Text = ListViewHelper.GetListViewSubItem(y, 1).Text;\n\t\t\t\t\tListViewHelper.GetListViewSubItem(x, 2).Text = ListViewHelper.GetListViewSubItem(y, 2).Text;\n\t\t\t\t\tListViewHelper.GetListViewSubItem(x, 3).Text = $\u0022{ListViewHelper.GetListViewSubItem(y, 5).Text}{ListViewHelper.GetListViewSubItem(y, 6).Text}\u0022;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 54
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 3,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t}\n",
+      "bodyLineCount": 2
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [
+    "frmProducts"
+  ],
+  "formsInstantiated": [],
+  "gridDeclarations": [
+    {
+      "fieldName": "lvProducts",
+      "fullType": "System.Windows.Forms.ListView",
+      "simplifiedType": "ListView"
+    },
+    {
+      "fieldName": "lvProductsBy",
+      "fullType": "System.Windows.Forms.ListView",
+      "simplifiedType": "ListView"
+    }
+  ],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "chkAll",
+      "eventName": "CheckStateChanged",
+      "handlerMethod": "chkAll_CheckStateChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdRemove",
+      "eventName": "Click",
+      "handlerMethod": "cmdRemove_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdClose",
+      "eventName": "Click",
+      "handlerMethod": "cmdClose_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdSave",
+      "eventName": "Click",
+      "handlerMethod": "cmdSave_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdProducts",
+      "eventName": "Click",
+      "handlerMethod": "cmdProducts_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtName",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtName_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtCode",
+      "eventName": "Leave",
+      "handlerMethod": "txtCode_Leave",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtCode",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtCode_TextChanged",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [
+    {
+      "methodName": "cmdProducts_Click",
+      "columnName": "CurrentProductID",
+      "clrType": "string",
+      "recordsetVariable": ""
+    }
+  ],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "Frame1",
+    "Label4",
+    "Label5",
+    "chkAll",
+    "cmdClose",
+    "cmdProducts",
+    "cmdRemove",
+    "cmdSave",
+    "lblProductsRelated",
+    "lvProducts",
+    "lvProductsBy",
+    "sbStatusBar",
+    "txtCode",
+    "txtName"
+  ],
+  "sharedStateFields": [
+    {
+      "name": "Id",
+      "declaredType": "int",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "ObjectReferred",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "Table",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "ColumnName",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "SavedChanges",
+      "declaredType": "bool",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdSave_Click"
+      ],
+      "writtenByMethods": [
+        "cmdSave_Click"
+      ]
+    },
+    {
+      "name": "productsStored",
+      "declaredType": "OrderedDictionary",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdRemove_Click",
+        "LoadData",
+        "LoadProductsById",
+        "AddProductToSet"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "productsToDelete",
+      "declaredType": "OrderedDictionary",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdRemove_Click",
+        "cmdSave_Click",
+        "LoadData",
+        "AddProductToSet"
+      ],
+      "writtenByMethods": [
+        "cmdRemove_Click",
+        "LoadData",
+        "AddProductToSet"
+      ]
+    },
+    {
+      "name": "productsToAdd",
+      "declaredType": "OrderedDictionary",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdRemove_Click",
+        "cmdSave_Click",
+        "LoadData",
+        "AddProductToSet"
+      ],
+      "writtenByMethods": [
+        "cmdRemove_Click",
+        "LoadData"
+      ]
+    },
+    {
+      "name": "editingData",
+      "declaredType": "bool",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdRemove_Click",
+        "cmdSave_Click",
+        "LoadData",
+        "Form_FormClosing",
+        "AddProductToSet"
+      ],
+      "writtenByMethods": [
+        "cmdRemove_Click",
+        "cmdSave_Click",
+        "LoadData",
+        "AddProductToSet"
+      ]
+    },
+    {
+      "name": "currentIdProduct",
+      "declaredType": "string",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdRemove_Click",
+        "AddProductToSet"
+      ],
+      "writtenByMethods": [
+        "AddProductToSet"
+      ]
+    },
+    {
+      "name": "codeGeneratedChange",
+      "declaredType": "bool",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtNameText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdProducts_Click",
+        "DoSearchProduct"
+      ],
+      "writtenByMethods": [
+        "cmdProducts_Click"
+      ]
+    },
+    {
+      "name": "TxtCodeText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdProducts_Click",
+        "DoSearchProduct"
+      ],
+      "writtenByMethods": [
+        "cmdProducts_Click"
+      ]
+    },
+    {
+      "name": "LblProductsRelatedText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}

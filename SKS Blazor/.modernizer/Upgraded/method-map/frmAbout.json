@@ -1,0 +1,203 @@
+{
+  "formName": "frmAbout",
+  "formFileName": "frmAbout.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmAbout.cs",
+  "legacyLines": 70,
+  "methods": [
+    {
+      "name": "frmAbout_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "cmdOk_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E this.Close()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "Form_Load",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 6,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tthis.Text = $\u0022About {AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly())}\u0022;\n\t\t\t//lblVersion.Caption = \u0022Version \u0022 \u0026 App.Major \u0026 \u0022.\u0022 \u0026 App.Minor \u0026 \u0022.\u0022 \u0026 App.Revision\n\t\t\tlblTitle.Text = AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly());\n\t\t}\n",
+      "bodyLineCount": 5
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 3,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t}\n",
+      "bodyLineCount": 2
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [],
+  "formsInstantiated": [],
+  "gridDeclarations": [],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "cmdOK",
+      "eventName": "Click",
+      "handlerMethod": "cmdOk_Click",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "Line1",
+    "_Line1_0",
+    "_Line1_1",
+    "cmdOK",
+    "lblDescription",
+    "lblDisclaimer",
+    "lblTitle",
+    "lblVersion",
+    "picIcon"
+  ],
+  "sharedStateFields": [
+    {
+      "name": "READ_CONTROL",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "KEY_QUERY_VALUE",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "KEY_SET_VALUE",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "KEY_CREATE_SUB_KEY",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "KEY_ENUMERATE_SUB_KEYS",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "KEY_NOTIFY",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "KEY_CREATE_LINK",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "KEY_ALL_ACCESS",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "HKEY_LOCAL_MACHINE",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "ERROR_SUCCESS",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "REG_SZ",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "REG_DWORD",
+      "declaredType": "int",
+      "scope": "private",
+      "isConstant": true,
+      "referencedByMethods": [],
+      "writtenByMethods": []
+    },
+    {
+      "name": "LblTitleText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Form_Load"
+      ],
+      "writtenByMethods": [
+        "Form_Load"
+      ]
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}

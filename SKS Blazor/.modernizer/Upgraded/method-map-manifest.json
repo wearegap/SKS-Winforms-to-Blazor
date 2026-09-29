@@ -1,0 +1,182 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-09-28",
+  "forms": [
+    {
+      "legacyForm": "frmAbout",
+      "mapFile": "method-map/frmAbout.json",
+      "legacyLines": 70,
+      "methodCount": 4,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmActionOrderReception",
+      "mapFile": "method-map/frmActionOrderReception.json",
+      "legacyLines": 266,
+      "methodCount": 10,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmActionOrderRequest",
+      "mapFile": "method-map/frmActionOrderRequest.json",
+      "legacyLines": 244,
+      "methodCount": 10,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmAddProductTo",
+      "mapFile": "method-map/frmAddProductTo.json",
+      "legacyLines": 331,
+      "methodCount": 16,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmAddStockManual",
+      "mapFile": "method-map/frmAddStockManual.json",
+      "legacyLines": 367,
+      "methodCount": 19,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmAdjustStockManual",
+      "mapFile": "method-map/frmAdjustStockManual.json",
+      "legacyLines": 422,
+      "methodCount": 17,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmCustomers",
+      "mapFile": "method-map/frmCustomers.json",
+      "legacyLines": 135,
+      "methodCount": 7,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmLogin",
+      "mapFile": "method-map/frmLogin.json",
+      "legacyLines": 73,
+      "methodCount": 4,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmMain",
+      "mapFile": "method-map/frmMain.json",
+      "legacyLines": 69,
+      "methodCount": 14,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmReceptionApproval",
+      "mapFile": "method-map/frmReceptionApproval.json",
+      "legacyLines": 209,
+      "methodCount": 20,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmOrderReception",
+      "mapFile": "method-map/frmOrderReception.json",
+      "legacyLines": 600,
+      "methodCount": 32,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmOrderRequest",
+      "mapFile": "method-map/frmOrderRequest.json",
+      "legacyLines": 589,
+      "methodCount": 30,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmProducts",
+      "mapFile": "method-map/frmProducts.json",
+      "legacyLines": 165,
+      "methodCount": 6,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmProviders",
+      "mapFile": "method-map/frmProviders.json",
+      "legacyLines": 182,
+      "methodCount": 6,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmRequestApproval",
+      "mapFile": "method-map/frmRequestApproval.json",
+      "legacyLines": 212,
+      "methodCount": 20,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmSearch",
+      "mapFile": "method-map/frmSearch.json",
+      "legacyLines": 135,
+      "methodCount": 9,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmSplash",
+      "mapFile": "method-map/frmSplash.json",
+      "legacyLines": 66,
+      "methodCount": 4,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "frmUsersManage",
+      "mapFile": "method-map/frmUsersManage.json",
+      "legacyLines": 242,
+      "methodCount": 15,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "modConnection",
+      "mapFile": "method-map/modConnection.json",
+      "legacyLines": 65,
+      "methodCount": 3,
+      "propertyCount": 3,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "modFunctions",
+      "mapFile": "method-map/modFunctions.json",
+      "legacyLines": 274,
+      "methodCount": 17,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "modMain",
+      "mapFile": "method-map/modMain.json",
+      "legacyLines": 83,
+      "methodCount": 3,
+      "propertyCount": 0,
+      "eventCount": 0
+    },
+    {
+      "legacyForm": "AssemblyInfo",
+      "mapFile": "method-map/AssemblyInfo.json",
+      "legacyLines": 25,
+      "methodCount": 0,
+      "propertyCount": 0,
+      "eventCount": 0
+    }
+  ]
+}

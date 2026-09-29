@@ -1,0 +1,126 @@
+{
+  "formName": "frmLogin",
+  "formFileName": "frmLogin.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmLogin.cs",
+  "legacyLines": 73,
+  "methods": [
+    {
+      "name": "frmLogin_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "cmdCancel_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 5,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tLoginSucceeded = false;\n\t\t\tthis.Close();\n\t\t}\n",
+      "bodyLineCount": 4
+    },
+    {
+      "name": "cmdOk_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 18,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tmodConnection.ExecuteSql($\u0022SELECT * FROM Users WHERE username = \u0027{txtUserName.Text}\u0027 and password = \u0027{txtPassword.Text}\u0027\u0022);\n\t\t\tif (modConnection.rs.EOF)\n\t\t\t{\n\t\t\t\tMessageBox.Show(\u0022Invalid \u0027Username\u0027 or \u0027Password\u0027, please try again!\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);\n\t\t\t\ttxtUserName.Focus();\n\t\t\t\tmodFunctions.SelectAll(txtUserName);\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tmodMain.UserFullname = Convert.ToString(modConnection.rs[\u0022Fullname\u0022]);\n\t\t\tmodMain.UserLevel = Convert.ToString(modConnection.rs[\u0022Level\u0022]);\n\t\t\tmodMain.CurrentUserAdmin = (modMain.UserLevel == \u0022Administrator\u0022);\n\t\t\tthis.Cursor = CursorHelper.CursorDefault;\n\t\t\tLoginSucceeded = true;\n\t\t\tmodMain.LogStatus($\u0022User : {modMain.UserFullname} logged at {DateTimeHelper.ToString(DateTime.Parse(DateTimeHelper.ToString(DateTime.Now)))},{DateTimeHelper.ToString(DateTime.Now)}\u0022);\n\t\t\tthis.Close();\n\t\t}\n",
+      "bodyLineCount": 17
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 3,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t}\n",
+      "bodyLineCount": 2
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [],
+  "formsInstantiated": [],
+  "gridDeclarations": [],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "cmdCancel",
+      "eventName": "Click",
+      "handlerMethod": "cmdCancel_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdOK",
+      "eventName": "Click",
+      "handlerMethod": "cmdOk_Click",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [
+    {
+      "methodName": "cmdOk_Click",
+      "columnName": "Fullname",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdOk_Click",
+      "columnName": "Level",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    }
+  ],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "_lblLabels_0",
+    "_lblLabels_1",
+    "cmdCancel",
+    "cmdOK",
+    "lblLabels",
+    "txtPassword",
+    "txtUserName"
+  ],
+  "sharedStateFields": [
+    {
+      "name": "LoginSucceeded",
+      "declaredType": "bool",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdCancel_Click",
+        "cmdOk_Click"
+      ],
+      "writtenByMethods": [
+        "cmdCancel_Click",
+        "cmdOk_Click"
+      ]
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}

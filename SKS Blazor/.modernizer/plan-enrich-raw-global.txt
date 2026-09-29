@@ -1,0 +1,129 @@
+=== ENRICH: ===
+{
+  "relationships": {
+    "InvoiceDetails": [
+      { "fromProperty":"InvoiceId", "toEntity":"Invoices", "kind":"ManyToOne", "navigationProperty":"Invoice" },
+      { "fromProperty":"ProductId", "toEntity":"Products", "kind":"ManyToOne", "navigationProperty":"Product" }
+    ],
+    "Invoices": [
+      { "fromProperty":"CustomerId", "toEntity":"Customers", "kind":"ManyToOne", "navigationProperty":"Customer" },
+      { "fromProperty":"UserId", "toEntity":"Users", "kind":"ManyToOne", "navigationProperty":"User" }
+    ],
+    "ManualStocks": [
+      { "fromProperty":"ProductId", "toEntity":"Products", "kind":"ManyToOne", "navigationProperty":"Product" },
+      { "fromProperty":"WarehouseId", "toEntity":"Warehouses", "kind":"ManyToOne", "navigationProperty":"Warehouse" },
+      { "fromProperty":"UserId", "toEntity":"Users", "kind":"ManyToOne", "navigationProperty":"User" }
+    ],
+    "OrderReceptionDetails": [
+      { "fromProperty":"OrderReceptionId", "toEntity":"OrderReceptions", "kind":"ManyToOne", "navigationProperty":"OrderReception" },
+      { "fromProperty":"ProductId", "toEntity":"Products", "kind":"ManyToOne", "navigationProperty":"Product" }
+    ],
+    "OrderReceptions": [
+      { "fromProperty":"ProviderId", "toEntity":"Providers", "kind":"ManyToOne", "navigationProperty":"Provider" },
+      { "fromProperty":"WarehouseId", "toEntity":"Warehouses", "kind":"ManyToOne", "navigationProperty":"Warehouse" },
+      { "fromProperty":"UserId", "toEntity":"Users", "kind":"ManyToOne", "navigationProperty":"User" },
+      { "fromProperty":"OrderRequestId", "toEntity":"OrderRequests", "kind":"ManyToOne", "navigationProperty":"OrderRequest" }
+    ],
+    "OrderRequestDetails": [
+      { "fromProperty":"OrderRequestId", "toEntity":"OrderRequests", "kind":"ManyToOne", "navigationProperty":"OrderRequest" },
+      { "fromProperty":"ProductId", "toEntity":"Products", "kind":"ManyToOne", "navigationProperty":"Product" }
+    ],
+    "OrderRequests": [
+      { "fromProperty":"ProviderId", "toEntity":"Providers", "kind":"ManyToOne", "navigationProperty":"Provider" },
+      { "fromProperty":"WarehouseId", "toEntity":"Warehouses", "kind":"ManyToOne", "navigationProperty":"Warehouse" },
+      { "fromProperty":"UserId", "toEntity":"Users", "kind":"ManyToOne", "navigationProperty":"User" }
+    ],
+    "Products": [
+      { "fromProperty":"CategoryId", "toEntity":"Categories", "kind":"ManyToOne", "navigationProperty":"Category" },
+      { "fromProperty":"LevelId", "toEntity":"Levels", "kind":"ManyToOne", "navigationProperty":"Level" }
+    ],
+    "ProductsByCustomer": [
+      { "fromProperty":"ProductId", "toEntity":"Products", "kind":"ManyToOne", "navigationProperty":"Product" },
+      { "fromProperty":"CustomerId", "toEntity":"Customers", "kind":"ManyToOne", "navigationProperty":"Customer" }
+    ],
+    "ProductsByProvider": [
+      { "fromProperty":"ProductId", "toEntity":"Products", "kind":"ManyToOne", "navigationProperty":"Product" },
+      { "fromProperty":"ProviderId", "toEntity":"Providers", "kind":"ManyToOne", "navigationProperty":"Provider" }
+    ],
+    "Stocks": [
+      { "fromProperty":"ProductId", "toEntity":"Products", "kind":"ManyToOne", "navigationProperty":"Product" },
+      { "fromProperty":"WarehouseId", "toEntity":"Warehouses", "kind":"ManyToOne", "navigationProperty":"Warehouse" }
+    ],
+    "StockLog": [
+      { "fromProperty":"ProductId", "toEntity":"Products", "kind":"ManyToOne", "navigationProperty":"Product" },
+      { "fromProperty":"WarehouseId", "toEntity":"Warehouses", "kind":"ManyToOne", "navigationProperty":"Warehouse" },
+      { "fromProperty":"UserId", "toEntity":"Users", "kind":"ManyToOne", "navigationProperty":"User" }
+    ]
+  },
+  "appState": {
+    "properties": [
+      { "name":"IsLoggedIn", "clrType":"bool" },
+      { "name":"StatusMessage", "clrType":"string" },
+      { "name":"OnCommand", "clrType":"Func<string,Task>" }
+    ],
+    "methods": [
+      { "name":"SendCommandAsync", "returnType":"Task", "parameters":"string command" },
+      { "name":"LogStatus", "returnType":"void", "parameters":"string message" },
+      { "name":"NotifyStateChangedAsync", "returnType":"Task", "parameters":"" }
+    ]
+  },
+  "pageDialogs": {},
+  "pageEmbeddedViews": {},
+  "additionalInfrastructure": [
+    {
+      "className":"StockNotificationHub",
+      "filePath":"Infrastructure/Hubs/StockNotificationHub.cs",
+      "description":"SignalR hub broadcasting real-time stock level changes and low-stock alerts to connected MDI clients",
+      "methodSignatures":[
+        "public Task SendStockUpdate(int productId, decimal newQuantity)",
+        "public Task JoinWarehouseGroup(int warehouseId)"
+      ]
+    },
+    {
+      "className":"OrderWorkflowNotificationHub",
+      "filePath":"Infrastructure/Hubs/OrderWorkflowNotificationHub.cs",
+      "description":"SignalR hub notifying users of order request/reception approval status changes",
+      "methodSignatures":[
+        "public Task NotifyApproval(int orderId, string status)",
+        "public Task NotifyRejection(int orderId, string reason)"
+      ]
+    },
+    {
+      "className":"StockLevelEngine",
+      "filePath":"Infrastructure/Engines/StockLevelEngine.cs",
+      "description":"Encapsulates business rules for computing stock adjustments, reorder thresholds, and manual stock corrections",
+      "methodSignatures":[
+        "public Task<decimal> CalculateAvailableStockAsync(int productId, int warehouseId)",
+        "public Task ApplyManualAdjustmentAsync(int productId, int warehouseId, decimal delta, string reason)"
+      ]
+    },
+    {
+      "className":"AuditLogger",
+      "filePath":"Infrastructure/Logging/AuditLogger.cs",
+      "description":"Centralized audit trail logger recording user actions across stock, order, and invoice operations",
+      "methodSignatures":[
+        "public Task LogActionAsync(string userId, string entity, string action, string details)"
+      ]
+    },
+    {
+      "className":"ReportExportHelper",
+      "filePath":"Infrastructure/Helpers/ReportExportHelper.cs",
+      "description":"Helper for exporting invoices, order receptions, and stock reports to PDF/Excel formats",
+      "methodSignatures":[
+        "public Task<byte[]> ExportToPdfAsync(string reportName, object data)",
+        "public Task<byte[]> ExportToExcelAsync(string reportName, object data)"
+      ]
+    },
+    {
+      "className":"SecurityService",
+      "filePath":"Infrastructure/Security/SecurityService.cs",
+      "description":"Authentication and authorization helper managing login validation and role-based access checks",
+      "methodSignatures":[
+        "public Task<bool> ValidateCredentialsAsync(string username, string password)",
+        "public Task<bool> HasPermissionAsync(string userId, string resource)"
+      ]
+    }
+  ],
+  "serviceProcedures": {}
+}
+=== END ENRICH ===

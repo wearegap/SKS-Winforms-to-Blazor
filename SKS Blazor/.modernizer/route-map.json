@@ -1,0 +1,686 @@
+{
+  "pages": [
+    {
+      "fileName": "AboutDialog.razor",
+      "route": null,
+      "domain": "About",
+      "legacyForm": "frmAbout",
+      "pageTitle": "About",
+      "claimsRoot": false,
+      "behavior": null,
+      "toolbars": null,
+      "embeddedViews": null,
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IAboutService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "ActionOrderReception.razor",
+      "route": "/upgraded/action-order-reception",
+      "domain": "Action",
+      "legacyForm": "frmActionOrderReception",
+      "pageTitle": "Action Order Reception",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "fgDetails",
+          "dataSource": "OrderReceptionDetailsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IActionOrderReceptionService",
+        "IOrderReceptionService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "ActionOrderRequest.razor",
+      "route": "/upgraded/action-order-request",
+      "domain": "Action",
+      "legacyForm": "frmActionOrderRequest",
+      "pageTitle": "Action Order Request",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "fgDetails",
+          "dataSource": "OrderRequestDetailsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IActionOrderRequestService",
+        "IOrderReceptionService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "AddProductTo.razor",
+      "route": "/upgraded/add-product-to",
+      "domain": "Product",
+      "legacyForm": "frmAddProductTo",
+      "pageTitle": "Add Product To",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "lvProducts",
+          "dataSource": "ProductsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        },
+        {
+          "name": "lvProductsBy",
+          "dataSource": "ProductsByProviderDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": [
+        {
+          "triggerElement": "cmdProducts",
+          "dialogComponent": "Products",
+          "passedParameter": null,
+          "returnAction": null
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IAddProductToService",
+        "IFunctionsService",
+        "IProductsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": [
+        {
+          "interface": "IFunctionsService",
+          "methods": [
+            "AddToCollection",
+            "Exists"
+          ]
+        }
+      ]
+    },
+    {
+      "fileName": "AddStockManual.razor",
+      "route": "/upgraded/add-stock-manual",
+      "domain": "Stock",
+      "legacyForm": "frmAddStockManual",
+      "pageTitle": "Add Stock Manual",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "lvProducts",
+          "dataSource": "ProductsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": [
+        {
+          "triggerElement": "cmdProducts",
+          "dialogComponent": "Products",
+          "passedParameter": null,
+          "returnAction": null
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IAddStockManualService",
+        "IFunctionsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "AdjustStockManual.razor",
+      "route": "/upgraded/adjust-stock-manual",
+      "domain": "Adjust",
+      "legacyForm": "frmAdjustStockManual",
+      "pageTitle": "Adjust Stock Manual",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "lvStocks",
+          "dataSource": "StocksDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        },
+        {
+          "name": "lvProducts",
+          "dataSource": "ProductsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": [
+        {
+          "triggerElement": "cmdProducts",
+          "dialogComponent": "Products",
+          "passedParameter": null,
+          "returnAction": null
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IAdjustStockManualService",
+        "IFunctionsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "Customers.razor",
+      "route": "/upgraded/customers",
+      "domain": "Customers",
+      "legacyForm": "frmCustomers",
+      "pageTitle": "Customers",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": null,
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "ICustomersService",
+        "ISearchService",
+        "IFunctionsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": [
+        {
+          "interface": "ISearchService",
+          "methods": [
+            "Search"
+          ]
+        }
+      ]
+    },
+    {
+      "fileName": "LoginDialog.razor",
+      "route": null,
+      "domain": "Login",
+      "legacyForm": "frmLogin",
+      "pageTitle": "Login",
+      "claimsRoot": false,
+      "behavior": null,
+      "toolbars": null,
+      "embeddedViews": null,
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "ILoginService",
+        "IFunctionsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "Main.razor",
+      "route": "/",
+      "domain": "Main",
+      "legacyForm": "frmMain",
+      "pageTitle": "Main",
+      "claimsRoot": true,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": null,
+      "dialogs": [
+        {
+          "triggerElement": "MDIForm_Load",
+          "dialogComponent": "SplashDialog",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "mnuAbout",
+          "dialogComponent": "AboutDialog",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "mnuAddStockManually",
+          "dialogComponent": "AddStockManual",
+          "passedParameter": null,
+          "returnAction": "RefreshGrid"
+        },
+        {
+          "triggerElement": "mnuAdjustStockManually",
+          "dialogComponent": "AdjustStockManual",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "mnuCreateOrderReception",
+          "dialogComponent": "OrderReception",
+          "passedParameter": null,
+          "returnAction": "RefreshGrid"
+        },
+        {
+          "triggerElement": "mnuCustomer",
+          "dialogComponent": "Customers",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "mnuOrderReceptionsApproval",
+          "dialogComponent": "ReceptionApproval",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "mnuOrderRequestsApproval",
+          "dialogComponent": "RequestApproval",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "mnuProducts",
+          "dialogComponent": "Products",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "mnuProviders",
+          "dialogComponent": "Providers",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "mnuSecurity",
+          "dialogComponent": "UsersManage",
+          "passedParameter": null,
+          "returnAction": null
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "ICustomersService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": [
+        {
+          "interface": "ICustomersService",
+          "methods": [
+            "InitForm"
+          ]
+        }
+      ]
+    },
+    {
+      "fileName": "ReceptionApproval.razor",
+      "route": "/upgraded/reception-approval",
+      "domain": "Reception",
+      "legacyForm": "frmReceptionApproval",
+      "pageTitle": "Reception Approval",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "fgOrders",
+          "dataSource": "OrderReceptionsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": [
+        {
+          "triggerElement": "LoadActionOrderReception",
+          "dialogComponent": "ActionOrderReception",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "cmdProviders",
+          "dialogComponent": "Providers",
+          "passedParameter": null,
+          "returnAction": null
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IReceptionApprovalService",
+        "IFunctionsService",
+        "IOrderReceptionService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "OrderReception.razor",
+      "route": "/upgraded/order-reception",
+      "domain": "Order",
+      "legacyForm": "frmOrderReception",
+      "pageTitle": "Order Reception",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "fgProducts",
+          "dataSource": "OrderReceptionDetailsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        },
+        {
+          "name": "lvProviders",
+          "dataSource": "ProvidersDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": [
+        {
+          "triggerElement": "cmdAddProducts",
+          "dialogComponent": "AddProductTo",
+          "passedParameter": null,
+          "returnAction": "RefreshGrid"
+        },
+        {
+          "triggerElement": "cmdProviders",
+          "dialogComponent": "Providers",
+          "passedParameter": null,
+          "returnAction": null
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IOrderReceptionService",
+        "IFunctionsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": [
+        {
+          "interface": "IFunctionsService",
+          "methods": [
+            "DoubleValue"
+          ]
+        }
+      ]
+    },
+    {
+      "fileName": "OrderRequest.razor",
+      "route": "/upgraded/order-request",
+      "domain": "Order",
+      "legacyForm": "frmOrderRequest",
+      "pageTitle": "Order Request",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "fgProducts",
+          "dataSource": "OrderRequestDetailsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        },
+        {
+          "name": "lvCustomers",
+          "dataSource": "CustomersDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": [
+        {
+          "triggerElement": "cmdAddProducts",
+          "dialogComponent": "AddProductTo",
+          "passedParameter": null,
+          "returnAction": "RefreshGrid"
+        },
+        {
+          "triggerElement": "cmdCustomers",
+          "dialogComponent": "Customers",
+          "passedParameter": null,
+          "returnAction": null
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IOrderRequestService",
+        "IFunctionsService",
+        "IOrderReceptionService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": [
+        {
+          "interface": "IFunctionsService",
+          "methods": [
+            "DoubleValue"
+          ]
+        }
+      ]
+    },
+    {
+      "fileName": "Products.razor",
+      "route": "/upgraded/products",
+      "domain": "Products",
+      "legacyForm": "frmProducts",
+      "pageTitle": "Products",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": null,
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IProductsService",
+        "ISearchService",
+        "IFunctionsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": [
+        {
+          "interface": "ISearchService",
+          "methods": [
+            "Search"
+          ]
+        }
+      ]
+    },
+    {
+      "fileName": "Providers.razor",
+      "route": "/upgraded/providers",
+      "domain": "Providers",
+      "legacyForm": "frmProviders",
+      "pageTitle": "Providers",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": null,
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IProvidersService",
+        "ISearchService",
+        "IFunctionsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": [
+        {
+          "interface": "ISearchService",
+          "methods": [
+            "Search"
+          ]
+        }
+      ]
+    },
+    {
+      "fileName": "RequestApproval.razor",
+      "route": "/upgraded/request-approval",
+      "domain": "Request",
+      "legacyForm": "frmRequestApproval",
+      "pageTitle": "Request Approval",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "fgOrders",
+          "dataSource": "OrderRequestsDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": [
+        {
+          "triggerElement": "LoadActionOrderRequest",
+          "dialogComponent": "ActionOrderRequest",
+          "passedParameter": null,
+          "returnAction": null
+        },
+        {
+          "triggerElement": "cmdCustomers",
+          "dialogComponent": "Customers",
+          "passedParameter": null,
+          "returnAction": null
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IRequestApprovalService",
+        "IFunctionsService",
+        "IOrderReceptionService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "Search.razor",
+      "route": "/upgraded/search",
+      "domain": "Search",
+      "legacyForm": "frmSearch",
+      "pageTitle": "Search",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": null,
+      "dialogs": [
+        {
+          "triggerElement": "SearchCriteriaCustomers",
+          "dialogComponent": "Customers",
+          "passedParameter": null,
+          "returnAction": "SetFieldValue"
+        },
+        {
+          "triggerElement": "SearchCriteriaProducts",
+          "dialogComponent": "Products",
+          "passedParameter": null,
+          "returnAction": "SetFieldValue"
+        },
+        {
+          "triggerElement": "SearchCriteriaProviders",
+          "dialogComponent": "Providers",
+          "passedParameter": null,
+          "returnAction": "SetFieldValue"
+        }
+      ],
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "ISearchService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "SplashDialog.razor",
+      "route": null,
+      "domain": "Splash",
+      "legacyForm": "frmSplash",
+      "pageTitle": "Splash",
+      "claimsRoot": false,
+      "behavior": null,
+      "toolbars": null,
+      "embeddedViews": null,
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": null,
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    },
+    {
+      "fileName": "UsersManage.razor",
+      "route": "/upgraded/users-manage",
+      "domain": "Users",
+      "legacyForm": "frmUsersManage",
+      "pageTitle": "Users Manage",
+      "claimsRoot": false,
+      "behavior": "Renders",
+      "toolbars": null,
+      "embeddedViews": [
+        {
+          "name": "lstAccounts",
+          "dataSource": "UsersDto",
+          "displayMode": "Grid",
+          "hostTab": null
+        }
+      ],
+      "dialogs": null,
+      "parentPage": null,
+      "tabHost": null,
+      "services": [
+        "IUsersManageService",
+        "IFunctionsService"
+      ],
+      "components": null,
+      "keyBindings": null,
+      "serviceCalls": null
+    }
+  ]
+}

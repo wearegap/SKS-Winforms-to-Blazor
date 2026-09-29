@@ -1,0 +1,502 @@
+{
+  "formName": "frmReceptionApproval",
+  "formFileName": "frmOrderAproval.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmOrderAproval.cs",
+  "legacyLines": 209,
+  "methods": [
+    {
+      "name": "frmReceptionApproval_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "cmbStatus_SelectedIndexChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E DoSearchReception()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "cmdApprove_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E LoadActionOrderReception(1)",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "cmdCancel_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E LoadActionOrderReception(2)",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "cmdInfo_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E LoadActionOrderReception()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "LoadActionOrderReception",
+      "returnType": "void",
+      "params": "int Action",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 12,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tint OrderId = 0;\n\t\t\tif (fgOrders.CurrentRowIndex \u003E 0)\n\t\t\t{\n\t\t\t\tOrderId = Convert.ToInt32(Double.Parse(Convert.ToString(fgOrders[fgOrders.CurrentRowIndex, 1].Value)));\n\t\t\t\tfrmActionOrderReception.DefInstance.OrderId = OrderId;\n\t\t\t\tfrmActionOrderReception.DefInstance.Action = Action;\n\t\t\t\tfrmActionOrderReception.DefInstance.LoadData();\n\t\t\t\tfrmActionOrderReception.DefInstance.Show(); //vbModal\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 11
+    },
+    {
+      "name": "dtFrom_ValueChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 5,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tchkFrom.CheckState = CheckState.Checked;\n\t\t\tDoSearchReception();\n\t\t}\n",
+      "bodyLineCount": 4
+    },
+    {
+      "name": "dtTo_ValueChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 5,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tchkTo.CheckState = CheckState.Checked;\n\t\t\tDoSearchReception();\n\t\t}\n",
+      "bodyLineCount": 4
+    },
+    {
+      "name": "fgOrders_DoubleClick",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E cmdInfo_Click(cmdInfo, new EventArgs())",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "Form_Load",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": false,
+      "methodBody": "=\u003E InitGrid()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtOrderID_TextChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E DoSearchReception()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtProductID_TextChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E DoSearchReception()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtProviderName_TextChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E DoSearchReception()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtContactLastName_TextChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E DoSearchReception()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtContactName_TextChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E DoSearchReception()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "cmdClose_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E this.Close()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "cmdProviders_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 8,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tfrmProviders.DefInstance.Show(); //vbModal\n\t\t\ttxtProviderName.Text = \u0022\u0022;\n\t\t\ttxtContactLastName.Text = \u0022\u0022;\n\t\t\ttxtContactName.Text = \u0022\u0022;\n\t\t\tDoSearchReception(frmProviders.DefInstance.CurrentProviderID);\n\t\t}\n",
+      "bodyLineCount": 7
+    },
+    {
+      "name": "DoSearchReception",
+      "returnType": "void",
+      "params": "int Id",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 97,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tstring filter = \u0022\u0022;\n\t\t\tif (Id != -1)\n\t\t\t{\n\t\t\t\tfilter = $\u0022o.ProviderID = {Id.ToString()}\u0022;\n\t\t\t}\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(txtProviderName.Text))\n\t\t\t{\n\t\t\t\tmodFunctions.AppendAND(ref filter);\n\t\t\t\tfilter = $\u0022p.ProviderName LIKE \u0027%{txtProviderName.Text}%\u0027\u0022;\n\t\t\t}\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(txtContactName.Text))\n\t\t\t{\n\t\t\t\tmodFunctions.AppendAND(ref filter);\n\t\t\t\tfilter = $\u0022{filter}p.ContactFirstName LIKE \u0027%{txtContactName.Text}%\u0027\u0022;\n\t\t\t}\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(txtContactLastName.Text))\n\t\t\t{\n\t\t\t\tmodFunctions.AppendAND(ref filter);\n\t\t\t\tfilter = $\u0022{filter}p.ContactLastName LIKE \u0027%{txtContactLastName.Text}%\u0027\u0022;\n\t\t\t}\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(txtOrderID.Text))\n\t\t\t{\n\t\t\t\tmodFunctions.AppendAND(ref filter);\n\t\t\t\tfilter = $\u0022{filter}o.OrderID = {txtOrderID.Text}\u0022;\n\t\t\t}\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(txtProductID.Text))\n\t\t\t{\n\t\t\t\tmodFunctions.AppendAND(ref filter);\n\t\t\t\tfilter = $\u0022{filter}d.ProductID LIKE \u0027%{txtProductID.Text}%\u0027\u0022;\n\t\t\t}\n\t\t\tif (chkFrom.CheckState == CheckState.Checked)\n\t\t\t{\n\t\t\t\tmodFunctions.AppendAND(ref filter);\n\t\t\t\t//UPGRADE_WARNING: (1068) dtFrom.value of type Variant is being forced to DateTime. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-1068\n\t\t\t\tfilter = $\u0022{filter}o.OrderDate \u003E= #{Convert.ToDateTime(dtFrom.GetValue()).ToString(\u0022MM/dd/yyyy\u0022)}#\u0022;\n\t\t\t}\n\t\t\tif (chkTo.CheckState == CheckState.Checked)\n\t\t\t{\n\t\t\t\tmodFunctions.AppendAND(ref filter);\n\t\t\t\t//UPGRADE_WARNING: (1068) dtTo.value of type Variant is being forced to DateTime. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-1068\n\t\t\t\tfilter = $\u0022{filter}o.OrderDate \u003C= #{Convert.ToDateTime(dtTo.GetValue()).ToString(\u0022MM/dd/yyyy\u0022)}#\u0022;\n\t\t\t}\n\t\t\tif (cmbStatus.SelectedIndex != -1 \u0026\u0026 cmbStatus.Text != \u0022All\u0022)\n\t\t\t{\n\t\t\t\tmodFunctions.AppendAND(ref filter);\n\t\t\t\tfilter = $\u0022{filter}o.Status = \u0027{cmbStatus.Text.ToUpper()}\u0027\u0022;\n\t\t\t}\n\n\t\t\tstring where = \u0022 Where o.OrderID = d.OrderID And p.ProviderID = o.ProviderID And u.Username = o.ReceivedBy \u0022;\n\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\tif (!String.IsNullOrEmpty(filter))\n\t\t\t{\n\t\t\t\tfilter = $\u0022{where} AND {filter}\u0022;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tfilter = where;\n\t\t\t}\n\n\n\t\t\tstring sql = $\u0022Select o.OrderDate, o.OrderID, p.ProviderName, p.ContactFirstName \u002B \u0027 \u0027 \u002B p.ContactLastName as ContactName, u.Fullname as [Received by], Sum(d.LineTotal) as Price, o.Status \u0022 \u002B\n\t\t\t             $\u0022From OrderReceptions as o, OrderReceptionDetails as d, Providers as p, Users as u \u0022 \u002B\n\t\t\t             $\u0022{filter} Group by o.orderDate, o.OrderID, p.ProviderName, p.ContactFirstName \u002B \u0027 \u0027 \u002B p.ContactLastName, u.Fullname, o.Status \u0022;\n\t\t\tmodConnection.ExecuteSql(sql);\n\t\t\tmodMain.LogStatus($\u0022There are {modConnection.rs.RecordCount.ToString()} records with the selected criteria\u0022, this);\n\t\t\tint i = 0;\n\t\t\tfgOrders.RowsCount = modConnection.rs.RecordCount \u002B 1;\n\t\t\tif (fgOrders.RowsCount == 1)\n\t\t\t{\n\t\t\t\tfgOrders.FixedRows = 0;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tfgOrders.FixedRows = 1;\n\t\t\t}\n\t\t\ti = 1;\n\t\t\twhile (!modConnection.rs.EOF)\n\t\t\t{\n\t\t\t\tint tempForEndVar = modConnection.rs.FieldsMetadata.Count - 1;\n\t\t\t\tfor (int j = 0; j \u003C= tempForEndVar; j\u002B\u002B)\n\t\t\t\t{\n\t\t\t\t\tif (modConnection.rs.GetField(j) != null)\n\t\t\t\t\t{\n\t\t\t\t\t\tfgOrders[i, j].Value = Convert.ToString(modConnection.rs[j]);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tmodConnection.rs.MoveNext();\n\t\t\t\ti\u002B\u002B;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 96
+    },
+    {
+      "name": "InitGrid",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 10,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tfgOrders.RowsCount = 0;\n\t\t\tfgOrders.ColumnsCount = 7;\n\t\t\tfgOrders.FixedColumns = 0;\n\t\t\tfgOrders.AddItem($\u0022Date{\u0022\\t\u0022}Order{\u0022\\t\u0022}Supplier{\u0022\\t\u0022}Contact{\u0022\\t\u0022}Received by{\u0022\\t\u0022}Price{\u0022\\t\u0022}Status\u0022);\n\t\t\tfgOrders.RowsCount = 1;\n\t\t\tfgOrders.FixedRows = 0;\n\t\t\tfgOrders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;\n\t\t}\n",
+      "bodyLineCount": 9
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 3,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t}\n",
+      "bodyLineCount": 2
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [
+    "frmActionOrderReception",
+    "frmProviders"
+  ],
+  "formsInstantiated": [],
+  "gridDeclarations": [
+    {
+      "fieldName": "fgOrders",
+      "fullType": "UpgradeHelpers.DataGridViewFlex",
+      "simplifiedType": "DataGridViewFlex"
+    }
+  ],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [
+    {
+      "controlName": "cmbStatus",
+      "options": [
+        "All",
+        "Received",
+        "Cancelled",
+        "Approved"
+      ]
+    }
+  ],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "cmdApprove",
+      "eventName": "Click",
+      "handlerMethod": "cmdApprove_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdInfo",
+      "eventName": "Click",
+      "handlerMethod": "cmdInfo_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "fgOrders",
+      "eventName": "DoubleClick",
+      "handlerMethod": "fgOrders_DoubleClick",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdCancel",
+      "eventName": "Click",
+      "handlerMethod": "cmdCancel_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdClose",
+      "eventName": "Click",
+      "handlerMethod": "cmdClose_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmbStatus",
+      "eventName": "SelectedIndexChanged",
+      "handlerMethod": "cmbStatus_SelectedIndexChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtProductID",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtProductID_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtOrderID",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtOrderID_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtContactLastName",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtContactLastName_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtContactName",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtContactName_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdProviders",
+      "eventName": "Click",
+      "handlerMethod": "cmdProviders_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtProviderName",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtProviderName_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "dtFrom",
+      "eventName": "ValueChanged",
+      "handlerMethod": "dtFrom_ValueChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "dtTo",
+      "eventName": "ValueChanged",
+      "handlerMethod": "dtTo_ValueChanged",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [
+    {
+      "methodName": "dtFrom_ValueChanged",
+      "columnName": "Checked",
+      "clrType": null,
+      "recordsetVariable": ""
+    },
+    {
+      "methodName": "InitGrid",
+      "columnName": "FullRowSelect",
+      "clrType": null,
+      "recordsetVariable": ""
+    }
+  ],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "Frame1",
+    "Label1",
+    "Label2",
+    "Label3",
+    "Label4",
+    "Label5",
+    "Label6",
+    "Label8",
+    "chkFrom",
+    "chkTo",
+    "cmbStatus",
+    "cmdApprove",
+    "cmdCancel",
+    "cmdClose",
+    "cmdInfo",
+    "cmdProviders",
+    "dtFrom",
+    "dtTo",
+    "fgOrders",
+    "sbStatusBar",
+    "txtContactLastName",
+    "txtContactName",
+    "txtOrderID",
+    "txtProductID",
+    "txtProviderName"
+  ],
+  "sharedStateFields": [
+    {
+      "name": "Id",
+      "declaredType": "string",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DoSearchReception"
+      ],
+      "writtenByMethods": []
+    },
+    {
+      "name": "CmbStatusText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DoSearchReception"
+      ],
+      "writtenByMethods": []
+    },
+    {
+      "name": "CmbStatusSelectedIndex",
+      "declaredType": "int",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DoSearchReception"
+      ],
+      "writtenByMethods": []
+    },
+    {
+      "name": "TxtProductIDText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DoSearchReception"
+      ],
+      "writtenByMethods": []
+    },
+    {
+      "name": "TxtOrderIDText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DoSearchReception"
+      ],
+      "writtenByMethods": []
+    },
+    {
+      "name": "TxtContactLastNameText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdProviders_Click",
+        "DoSearchReception"
+      ],
+      "writtenByMethods": [
+        "cmdProviders_Click"
+      ]
+    },
+    {
+      "name": "TxtContactNameText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdProviders_Click",
+        "DoSearchReception"
+      ],
+      "writtenByMethods": [
+        "cmdProviders_Click"
+      ]
+    },
+    {
+      "name": "TxtProviderNameText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdProviders_Click",
+        "DoSearchReception"
+      ],
+      "writtenByMethods": [
+        "cmdProviders_Click"
+      ]
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}

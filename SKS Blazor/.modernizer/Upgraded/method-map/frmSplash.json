@@ -1,0 +1,86 @@
+{
+  "formName": "frmSplash",
+  "formFileName": "frmSplash.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmSplash.cs",
+  "legacyLines": 66,
+  "methods": [
+    {
+      "name": "frmSplash_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "Form_KeyPress",
+      "returnType": "void",
+      "params": "Object eventSender, KeyPressEventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 16,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tint KeyAscii = Convert.ToInt32(eventArgs.KeyChar);\n\t\t\ttry\n\t\t\t{\n\t\t\t\tthis.Close();\n\t\t\t}\n\t\t\tfinally\n\t\t\t{\n\t\t\t\tif (KeyAscii == 0)\n\t\t\t\t{\n\t\t\t\t\teventArgs.Handled = true;\n\t\t\t\t}\n\t\t\t\teventArgs.KeyChar = Convert.ToChar(KeyAscii);\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 15
+    },
+    {
+      "name": "Timer1_Tick",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E this.Close()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 3,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t}\n",
+      "bodyLineCount": 2
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [],
+  "formsInstantiated": [],
+  "gridDeclarations": [],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "Timer1",
+      "eventName": "Tick",
+      "handlerMethod": "Timer1_Tick",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "Image1"
+  ],
+  "sharedStateFields": [],
+  "nativeApiDeclarationCount": 0
+}

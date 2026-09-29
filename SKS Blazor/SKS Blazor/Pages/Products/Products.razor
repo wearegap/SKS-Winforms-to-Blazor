@@ -1,0 +1,145 @@
+@page "/upgraded/products"
+
+@using SKS_Blazor.Application.DTOs.Core
+@using SKS_Blazor.Application.DTOs.Products
+@using SKS_Blazor.Application.DTOs.Search
+
+<PageTitle>Products</PageTitle>
+
+<MudPaper Elevation="2" Class="pa-4" Style="height:100%; display:flex; flex-direction:column; overflow:hidden;">
+    @* Toolbar — Add, Edit, Save, Delete, Search, Cancel (port of Toolbar1_ButtonClick) *@
+    <MudToolBar Dense="true" Style="flex-shrink:0; min-height:38px;">
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Add"
+                   OnClick="OnToolbarAdd" Disabled="_isLoading">Add</MudButton>
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Edit"
+                   OnClick="OnToolbarEdit" Disabled="@(_isLoading || _state == null || _state.NewMode)">Edit</MudButton>
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Save"
+                   OnClick="OnToolbarSave" Disabled="@(_isLoading || _state == null || (!_state.EditMode && !_state.NewMode))">Save</MudButton>
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Delete"
+                   OnClick="OnToolbarDelete" Disabled="@(_isLoading || _state == null || _state.NewMode)">Delete</MudButton>
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Search"
+                   OnClick="OnToolbarSearch" Disabled="_isLoading">Search</MudButton>
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Cancel"
+                   OnClick="OnToolbarCancel" Disabled="_isLoading">Cancel</MudButton>
+    </MudToolBar>
+
+    <MudDivider Class="my-1" />
+
+    @if (_isLoading)
+    {
+        <MudProgressLinear Indeterminate="true" Color="Color.Primary" />
+    }
+
+    @* Record navigation bar (port of dcProducts ADO data control nav buttons) *@
+    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0; padding:4px 0;">
+        <MudIconButton Icon="@Icons.Material.Filled.FirstPage" Size="Size.Small"
+                       OnClick="OnFirstRecord" Disabled="@(_isLoading || _products.Count == 0)" />
+        <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" Size="Size.Small"
+                       OnClick="OnPreviousRecord" Disabled="@(_isLoading || _currentIndex <= 0)" />
+        <MudText Typo="Typo.body2">
+            Record @(_products.Count > 0 ? (_currentIndex + 1).ToString() : "0") of @_products.Count
+        </MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" Size="Size.Small"
+                       OnClick="OnNextRecord" Disabled="@(_isLoading || _currentIndex >= _products.Count - 1)" />
+        <MudIconButton Icon="@Icons.Material.Filled.LastPage" Size="Size.Small"
+                       OnClick="OnLastRecord" Disabled="@(_isLoading || _products.Count == 0)" />
+    </div>
+
+    <MudDivider Class="my-1" />
+
+    @* Product detail form (port of frmProducts bound text fields) *@
+    <div style="flex:1; overflow:auto; padding:8px 0;">
+        @if (_currentProduct != null)
+        {
+            var readOnly = !(_state?.EditMode == true || _state?.NewMode == true);
+
+            <MudGrid Spacing="2">
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Product ID" @bind-Value="_currentProduct.ProductID"
+                                  ReadOnly="@(!(_state?.NewMode == true))"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Product Name" @bind-Value="_currentProduct.ProductName"
+                                  ReadOnly="readOnly"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Product Description" @bind-Value="_currentProduct.ProductDescription"
+                                  ReadOnly="readOnly"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudSelect T="int?" Label="Category" @bind-Value="_currentProduct.CategoryID"
+                               Disabled="readOnly"
+                               Variant="Variant.Outlined" Margin="Margin.Dense"
+                               @bind-Value:after="OnCategorySelectionChanged">
+                        <MudSelectItem T="int?" Value="@((int?)null)">-- None --</MudSelectItem>
+                        @foreach (var cat in _categories)
+                        {
+                            <MudSelectItem T="int?" Value="@((int?)cat.CategoryID)">@cat.CategoryName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudNumericField T="decimal?" Label="Unit Price" @bind-Value="_currentProduct.UnitPrice"
+                                     ReadOnly="readOnly" Format="C2"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudNumericField T="int?" Label="Units In Stock" @bind-Value="_currentProduct.UnitsInStock"
+                                     ReadOnly="true"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudNumericField T="int?" Label="Units On Order" @bind-Value="_currentProduct.UnitsOnOrder"
+                                     ReadOnly="true"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudNumericField T="decimal?" Label="Quantity Per Unit" @bind-Value="_currentProduct.QuantityPerUnit"
+                                     ReadOnly="readOnly"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Unit" @bind-Value="_currentProduct.Unit"
+                                  ReadOnly="readOnly"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudNumericField T="int?" Label="Reorder Level" @bind-Value="_currentProduct.ReorderLevel"
+                                     ReadOnly="readOnly"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Serial Number" @bind-Value="_currentProduct.SerialNumber"
+                                  ReadOnly="readOnly"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Lead Time" @bind-Value="_currentProduct.LeadTime"
+                                  ReadOnly="readOnly"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudNumericField T="int?" Label="Supplier ID" @bind-Value="_currentProduct.SupplierID"
+                                     ReadOnly="readOnly"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudCheckBox T="bool" Label="Discontinued"
+                                 Value="@(_currentProduct.Discontinued != 0)"
+                                 ValueChanged="OnDiscontinuedChanged"
+                                 Disabled="readOnly"
+                                 LabelPlacement="Placement.End" />
+                </MudItem>
+            </MudGrid>
+        }
+        else
+        {
+            <MudText Typo="Typo.body1" Color="Color.Secondary" Class="pa-4">
+                No product records found. Click "Add" to create a new product.
+            </MudText>
+        }
+    </div>
+</MudPaper>

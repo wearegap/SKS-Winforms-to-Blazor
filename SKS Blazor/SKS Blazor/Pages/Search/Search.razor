@@ -1,0 +1,60 @@
+@page "/upgraded/search"
+
+@using SKS_Blazor.Application.DTOs.Search
+
+<MudPaper Class="pa-4" Style="max-width:600px; margin:auto;">
+    <MudText Typo="Typo.h5" Class="mb-4">@_titleText</MudText>
+
+    <MudSelect T="string"
+               Label="Search By"
+               @bind-Value="_selectedField"
+               @bind-Value:after="OnSearchByChanged"
+               Variant="Variant.Outlined"
+               Class="mb-3">
+        @if (_fieldNames is not null)
+        {
+            @foreach (var fieldName in _fieldNames)
+            {
+                <MudSelectItem T="string" Value="@fieldName">@fieldName</MudSelectItem>
+            }
+        }
+    </MudSelect>
+
+    <MudTextField T="string"
+                  Label="@($"Search by {_selectedField}")"
+                  @bind-Value="_searchString"
+                  Variant="Variant.Outlined"
+                  Immediate="true"
+                  Class="mb-3"
+                  OnKeyDown="OnSearchKeyDown" />
+
+    <MudStack Row="true" Spacing="2" Class="mb-3">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   OnClick="OnSearchClick"
+                   Disabled="_isLoading"
+                   StartIcon="@Icons.Material.Filled.Search">
+            @if (_isLoading)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                <span>Searching...</span>
+            }
+            else
+            {
+                <span>Search</span>
+            }
+        </MudButton>
+
+        <MudButton Variant="Variant.Outlined"
+                   Color="Color.Default"
+                   OnClick="OnCloseClick"
+                   StartIcon="@Icons.Material.Filled.Close">
+            Close
+        </MudButton>
+    </MudStack>
+
+    @if (!string.IsNullOrEmpty(_statusMessage))
+    {
+        <MudAlert Severity="_statusSeverity" Class="mt-2">@_statusMessage</MudAlert>
+    }
+</MudPaper>

@@ -1,0 +1,86 @@
+@page "/"
+
+@using SKS_Blazor.Infrastructure
+@using SKS_Blazor.Application.Services.Customers
+@using SKS_Blazor.Application.DTOs.Customers
+
+<PageTitle>Main</PageTitle>
+
+@* Port of frmMain (MDI parent form). Dashboard landing page. *@
+
+<div style="display:flex; flex-direction:column; height:100%; align-items:center; justify-content:center; padding:24px;">
+    <MudPaper Elevation="3" Style="padding:48px; text-align:center; max-width:700px; width:100%;">
+        <MudImage Src="images/sks-logo.png" Alt="SKS" Width="64" Height="64" ObjectFit="ObjectFit.Contain" Class="mb-4" />
+        <MudText Typo="Typo.h4" Class="mb-2">SKS Inventory Management</MudText>
+        <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mb-6">
+            Welcome, @_appState.CurrentUser
+        </MudText>
+
+        <MudDivider Class="mb-4" />
+
+        <MudText Typo="Typo.h6" Class="mb-3">Quick Actions</MudText>
+
+        <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.ShoppingCart"
+                       OnClick="OnCreateOrderRequestClick">
+                Create Order Request
+            </MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.LocalShipping"
+                       OnClick="OnCreateOrderReceptionClick">
+                Create Order Reception
+            </MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary"
+                       StartIcon="@Icons.Material.Filled.Inventory"
+                       OnClick="OnAddStockManuallyClick">
+                Add Stock Manually
+            </MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary"
+                       StartIcon="@Icons.Material.Filled.Build"
+                       OnClick="OnAdjustStockManuallyClick">
+                Adjust Stock Manually
+            </MudButton>
+        </div>
+
+        <MudDivider Class="my-4" />
+
+        <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.People"
+                       OnClick="OnCustomerClick">
+                Customers
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Store"
+                       OnClick="OnProvidersClick">
+                Providers
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Category"
+                       OnClick="OnProductsClick">
+                Products
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Warning"
+                       StartIcon="@Icons.Material.Filled.CheckCircle"
+                       OnClick="OnOrderRequestsApprovalClick">
+                Request Approval
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Warning"
+                       StartIcon="@Icons.Material.Filled.FactCheck"
+                       OnClick="OnOrderReceptionsApprovalClick">
+                Reception Approval
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Info"
+                       StartIcon="@Icons.Material.Filled.Security"
+                       OnClick="OnSecurityClick">
+                Security
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Default"
+                       StartIcon="@Icons.Material.Filled.Info"
+                       OnClick="OnAboutClick">
+                About
+            </MudButton>
+        </div>
+    </MudPaper>
+</div>

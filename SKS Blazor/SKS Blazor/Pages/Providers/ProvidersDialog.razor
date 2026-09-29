@@ -1,0 +1,11 @@
+@namespace SKS_Blazor.Pages.Providers
+
+@* The screen opened as a modal. It is the same component the route renders, so the
+   two entry points stay one implementation and cannot drift apart. DynamicComponent
+   sidesteps the name collision between a component and the namespace sharing its
+   name, which a plain element reference cannot express. *@
+<MudDialog>
+    <DialogContent>
+        <DynamicComponent Type="typeof(SKS_Blazor.Pages.Providers.Providers)" />
+    </DialogContent>
+</MudDialog>

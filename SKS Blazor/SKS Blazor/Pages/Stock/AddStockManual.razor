@@ -1,0 +1,174 @@
+@page "/upgraded/add-stock-manual"
+
+@using SKS_Blazor.Application.DTOs.Core
+@using SKS_Blazor.Application.DTOs.Stock
+
+<PageTitle>Add Stock Manual</PageTitle>
+
+<MudPaper Class="pa-4" Elevation="2" Style="height:100%; display:flex; flex-direction:column; overflow:hidden;">
+    <MudText Typo="Typo.h5" Class="mb-3">Add Stock Manually</MudText>
+
+    @* Search area *@
+    <MudPaper Class="pa-3 mb-3" Outlined="true">
+        <MudText Typo="Typo.subtitle1" Class="mb-2">Search Product</MudText>
+        <MudGrid>
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string"
+                              Label="Code"
+                              @bind-Value="_state!.TxtCodeText"
+                              @bind-Value:after="OnCodeChangedAsync"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
+                              OnBlur="OnCodeLeaveAsync" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string"
+                              Label="Name"
+                              @bind-Value="_state!.TxtNameText"
+                              @bind-Value:after="OnNameChangedAsync"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
+                              OnBlur="OnNameLeaveAsync" />
+            </MudItem>
+            <MudItem xs="12" sm="4" Class="d-flex align-center">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Search"
+                           OnClick="OnProductsClickAsync"
+                           Class="mr-2">
+                    Products
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    @* Products grid — columns: ProductID, ProductName, UnitPrice, UnitsInStock, UnitsOnOrder, QuantityPerUnit, Unit *@
+    <MudPaper Class="mb-3" Outlined="true" Style="flex:1; min-height:200px; overflow:auto;">
+        <MudDataGrid T="ProductsDto"
+                     Items="_productsList"
+                     Dense="true"
+                     Hover="true"
+                     SelectedItem="_selectedProduct"
+                     SelectedItemChanged="OnProductSelectedAsync"
+                     Style="height:100%;">
+            <Columns>
+                <PropertyColumn Property="x => x.ProductID" Title="Product ID" />
+                <PropertyColumn Property="x => x.ProductName" Title="Product Name" />
+                <PropertyColumn Property="x => x.UnitPrice" Title="Unit Price" Format="N2" />
+                <PropertyColumn Property="x => x.UnitsInStock" Title="Units In Stock" />
+                <PropertyColumn Property="x => x.UnitsOnOrder" Title="Units On Order" />
+                <PropertyColumn Property="x => x.QuantityPerUnit" Title="Qty Per Unit" />
+                <PropertyColumn Property="x => x.Unit" Title="Unit" />
+            </Columns>
+        </MudDataGrid>
+    </MudPaper>
+
+    @* Product detail & values *@
+    <MudPaper Class="pa-3 mb-3" Outlined="true">
+        <MudGrid>
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string"
+                              Label="Product Name"
+                              Value="@(_state!.TxtProductNameText)"
+                              ReadOnly="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string"
+                              Label="Quantity Per Unit"
+                              Value="@(_state!.TxtQuantityPerUnitText)"
+                              ReadOnly="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string"
+                              Label="Unit"
+                              Value="@(_state!.TxtUnitText)"
+                              ReadOnly="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense" />
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Class="mt-2">
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string"
+                              Label="Quantity"
+                              @bind-Value="_quantityText"
+                              @bind-Value:after="() => OnValueChangedAsync(0)"
+                              ReadOnly="_valuesReadOnly"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
+                              InputType="InputType.Number"
+                              OnFocus="() => OnValueFocusAsync(0)"
+                              OnKeyDown="OnValueKeyDownAsync" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string"
+                              Label="Stock Price"
+                              @bind-Value="_stockPriceText"
+                              @bind-Value:after="() => OnValueChangedAsync(1)"
+                              ReadOnly="_valuesReadOnly"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
+                              InputType="InputType.Number"
+                              OnFocus="() => OnValueFocusAsync(1)"
+                              OnKeyDown="OnValueKeyDownAsync" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string"
+                              Label="Unit Price"
+                              @bind-Value="_unitPriceText"
+                              @bind-Value:after="() => OnValueChangedAsync(2)"
+                              ReadOnly="_valuesReadOnly"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
+                              InputType="InputType.Number"
+                              OnFocus="() => OnValueFocusAsync(2)"
+                              OnKeyDown="OnValueKeyDownAsync" />
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Class="mt-2">
+            <MudItem xs="12" sm="6">
+                <MudText Typo="Typo.subtitle1">
+                    New Quantity: <strong>@(_state!.LblNewQuantityText ?? "")</strong>
+                </MudText>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    @* Action buttons *@
+    <div class="d-flex justify-end gap-2">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Success"
+                   StartIcon="@Icons.Material.Filled.Save"
+                   OnClick="OnSaveClickAsync"
+                   Disabled="_isLoading">
+            Save
+        </MudButton>
+        <MudButton Variant="Variant.Outlined"
+                   Color="Color.Default"
+                   StartIcon="@Icons.Material.Filled.Close"
+                   OnClick="OnCloseClickAsync">
+            Close
+        </MudButton>
+    </div>
+
+    @* Status bar *@
+    <MudText Typo="Typo.caption" Class="mt-2" Color="Color.Secondary">@_statusMessage</MudText>
+</MudPaper>
+
+@if (_isLoading)
+{
+    <MudOverlay Visible="true" DarkBackground="true">
+        <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+    </MudOverlay>
+}

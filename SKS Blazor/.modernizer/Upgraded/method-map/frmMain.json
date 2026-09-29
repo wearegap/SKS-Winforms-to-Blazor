@@ -1,0 +1,303 @@
+{
+  "formName": "frmMain",
+  "formFileName": "frmMain.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmMain.cs",
+  "legacyLines": 69,
+  "methods": [
+    {
+      "name": "frmMain_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "MDIForm_Load",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tfrmSplash.DefInstance.ShowDialog();\n\t\t\tfrmOrderRequest.DefInstance.Show();\n\n\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "mnuAbout_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmAbout.DefInstance.ShowDialog(this)",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuAddStockManually_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmAddStockManual.DefInstance.Show()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuAdjustStockManually_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmAdjustStockManual.DefInstance.Show()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuCreateOrderReception_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmOrderReception.DefInstance.Show()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuCreateOrderRequest_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmOrderRequest.DefInstance.Show()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuCustomer_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 5,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tfrmCustomers.DefInstance.ShowDialog();\n\t\t\tfrmCustomers.DefInstance.InitForm();\n\t\t}\n",
+      "bodyLineCount": 4
+    },
+    {
+      "name": "mnuExit_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E this.Close()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuOrderReceptionsApproval_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmReceptionApproval.DefInstance.Show()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuOrderRequestsApproval_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmRequestApproval.DefInstance.Show()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuProducts_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmProducts.DefInstance.ShowDialog()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuProviders_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmProviders.DefInstance.ShowDialog()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "mnuSecurity_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E frmUsersManage.DefInstance.Show()",
+      "bodyLineCount": 1
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [
+    "frmSplash",
+    "frmOrderRequest",
+    "frmAbout",
+    "frmAddStockManual",
+    "frmAdjustStockManual",
+    "frmOrderReception",
+    "frmCustomers",
+    "frmReceptionApproval",
+    "frmRequestApproval",
+    "frmProducts",
+    "frmProviders",
+    "frmUsersManage"
+  ],
+  "formsInstantiated": [],
+  "gridDeclarations": [],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "mnuCustomer",
+      "eventName": "Click",
+      "handlerMethod": "mnuCustomer_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuProviders",
+      "eventName": "Click",
+      "handlerMethod": "mnuProviders_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuExit",
+      "eventName": "Click",
+      "handlerMethod": "mnuExit_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuCreateOrderRequest",
+      "eventName": "Click",
+      "handlerMethod": "mnuCreateOrderRequest_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuOrderRequestsApproval",
+      "eventName": "Click",
+      "handlerMethod": "mnuOrderRequestsApproval_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuCreateOrderReception",
+      "eventName": "Click",
+      "handlerMethod": "mnuCreateOrderReception_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuOrderReceptionsApproval",
+      "eventName": "Click",
+      "handlerMethod": "mnuOrderReceptionsApproval_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuAddStockManually",
+      "eventName": "Click",
+      "handlerMethod": "mnuAddStockManually_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuAdjustStockManually",
+      "eventName": "Click",
+      "handlerMethod": "mnuAdjustStockManually_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuProducts",
+      "eventName": "Click",
+      "handlerMethod": "mnuProducts_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuSecurity",
+      "eventName": "Click",
+      "handlerMethod": "mnuSecurity_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "mnuAbout",
+      "eventName": "Click",
+      "handlerMethod": "mnuAbout_Click",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "MainMenu1",
+    "mnuAbout",
+    "mnuAccounts",
+    "mnuAddStockManually",
+    "mnuAdjustStockManually",
+    "mnuCreateOrderReception",
+    "mnuCreateOrderRequest",
+    "mnuCustomer",
+    "mnuExit",
+    "mnuFile",
+    "mnuHelp",
+    "mnuMainInventory",
+    "mnuOrderReceptionsApproval",
+    "mnuOrderRequestsApproval",
+    "mnuOrders",
+    "mnuProducts",
+    "mnuProviders",
+    "mnuSecurity",
+    "sbStatusBar"
+  ],
+  "sharedStateFields": [],
+  "nativeApiDeclarationCount": 0
+}

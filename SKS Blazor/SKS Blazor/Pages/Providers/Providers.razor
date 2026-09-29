@@ -1,0 +1,169 @@
+@page "/upgraded/providers"
+
+@using SKS_Blazor.Application.DTOs.Core
+@using SKS_Blazor.Application.DTOs.Providers
+@using SKS_Blazor.Application.DTOs.Search
+@using SKS_Blazor.Application.Services.Providers
+@using SKS_Blazor.Application.Services.Search
+@using SKS_Blazor.Application.Services.Functions
+@using SKS_Blazor.Infrastructure
+@using MudBlazor
+
+<!-- Port of frmProviders (WinForms) -->
+
+<PageTitle>Providers</PageTitle>
+
+@if (_isLoading)
+{
+    <MudProgressLinear Indeterminate="true" Color="Color.Primary" />
+}
+
+<MudPaper Elevation="2" Class="pa-4">
+    <MudText Typo="Typo.h5" Class="mb-3">Providers</MudText>
+
+    @* Toolbar — legacy Toolbar1 with buttons: Add, Edit, Save, Delete, Search, Cancel *@
+    <MudToolBar Dense="true" Class="mb-3">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+                   OnClick="OnToolbarAdd" Disabled="_isLoading">Add</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit"
+                   OnClick="OnToolbarEdit" Disabled="@(_isLoading || _currentProvider == null)">Edit</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Save"
+                   OnClick="OnToolbarSave" Disabled="@(_isLoading || !(_state?.EditMode == true || _state?.NewMode == true))">Save</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete"
+                   OnClick="OnToolbarDelete" Disabled="@(_isLoading || _currentProvider == null)">Delete</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Search"
+                   OnClick="OnToolbarSearch" Disabled="_isLoading">Search</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Default" StartIcon="@Icons.Material.Filled.Cancel"
+                   OnClick="OnToolbarCancel" Disabled="_isLoading">Cancel</MudButton>
+    </MudToolBar>
+
+    @* Provider data grid for navigation *@
+    <MudPaper Elevation="1" Class="mb-4 pa-2">
+        <MudText Typo="Typo.subtitle1" Class="mb-2">Provider List</MudText>
+        <!-- Columns: ProviderID, ProviderName, ContactFirstName, ContactLastName, City, PhoneNumber, EmailAddress -->
+        <MudDataGrid T="ProvidersDto" Items="_providersList" Dense="true" Hover="true" Striped="true"
+                     SelectedItem="_selectedGridProvider" SelectedItemChanged="OnProviderSelected"
+                     Height="200px" FixedHeader="true" Filterable="false">
+            <Columns>
+                <PropertyColumn Property="x => x.ProviderID" Title="ID" />
+                <PropertyColumn Property="x => x.ProviderName" Title="Provider Name" />
+                <PropertyColumn Property="x => x.ContactFirstName" Title="First Name" />
+                <PropertyColumn Property="x => x.ContactLastName" Title="Last Name" />
+                <PropertyColumn Property="x => x.City" Title="City" />
+                <PropertyColumn Property="x => x.PhoneNumber" Title="Phone" />
+                <PropertyColumn Property="x => x.EmailAddress" Title="Email" />
+            </Columns>
+        </MudDataGrid>
+    </MudPaper>
+
+    @* Provider detail fields — mapped from legacy txtField[0..14] *@
+    @if (_currentProvider != null)
+    {
+        <MudPaper Elevation="1" Class="pa-3">
+            <MudText Typo="Typo.subtitle1" Class="mb-2">Provider Details</MudText>
+            <MudGrid>
+                @* txtField[0] = ProviderName (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.ProviderName" Label="Provider Name"
+                                  Required="true" RequiredError="Provider Name is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[1] = ContactFirstName (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.ContactFirstName" Label="Contact First Name"
+                                  Required="true" RequiredError="Contact First Name is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[2] = ContactLastName (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.ContactLastName" Label="Contact Last Name"
+                                  Required="true" RequiredError="Contact Last Name is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[3] = ContactTitle *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.ContactTitle" Label="Contact Title"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[4] = Address (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.Address" Label="Address"
+                                  Required="true" RequiredError="Address is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[5] = City (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.City" Label="City"
+                                  Required="true" RequiredError="City is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[6] = StateOrProvince (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.StateOrProvince" Label="State/Province"
+                                  Required="true" RequiredError="State/Province is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[7] = PostalCode (required — validated twice in legacy) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.PostalCode" Label="Postal Code"
+                                  Required="true" RequiredError="Postal Code is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[8] = CountryRegion *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.CountryRegion" Label="Country/Region"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[9] = PhoneNumber *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.PhoneNumber" Label="Phone Number"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[10] = Extension (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.Extension" Label="Extension"
+                                  Required="true" RequiredError="Extension is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[11] = FaxNumber (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.FaxNumber" Label="Fax Number"
+                                  Required="true" RequiredError="Fax Number is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[12] = EmailAddress (required) *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.EmailAddress" Label="Email Address"
+                                  Required="true" RequiredError="Email Address is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[13] = PaymentTerms *@
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField @bind-Value="_currentProvider.PaymentTerms" Label="Payment Terms"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+                @* txtField[14] = Notes (required) *@
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="_currentProvider.Notes" Label="Notes" Lines="3"
+                                  Required="true" RequiredError="Notes is required"
+                                  ReadOnly="@(!IsEditable)" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  @bind-Value:after="OnTxtFieldChanged" />
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    }
+</MudPaper>

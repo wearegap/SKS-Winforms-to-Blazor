@@ -1,0 +1,1671 @@
+{
+  "dtos": [
+    {
+      "name": "CategoriesDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "CategoryID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "CategoryName",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "CustomersDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "BillingAddress",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "City",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CompanyName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CompanyOrDepartment",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ContactFirstName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ContactLastName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ContactTitle",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CountryRegion",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CustomerID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "EmailAddress",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Extension",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "FaxNumber",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "PhoneNumber",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "PostalCode",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "StateOrProvince",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "InvoiceDetailsDto",
+      "domain": "Invoice",
+      "properties": [
+        {
+          "name": "Discount",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "InvoiceDetailID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "InvoiceID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "PaymentTerms",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "PricePerUnit",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "StockID",
+          "clrType": "int?",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "InvoicesDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "CustomerID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "DeliveryID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "EmployeeID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "InvoiceDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "InvoiceID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "SalespersonName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShipDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShippedTo",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShippedVia",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShippingCost",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "Status",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "LevelsDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "Level",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ManualStocksDto",
+      "domain": "Manual",
+      "properties": [
+        {
+          "name": "Action",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Date",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ManualID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "Price",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "StockID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "User",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "OrderReceptionDetailsDto",
+      "domain": "Order",
+      "properties": [
+        {
+          "name": "DateSold",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Discount",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "LineTotal",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "OrderDetailID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "SalePrice",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "SalesTax",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "UnitPrice",
+          "clrType": "decimal?",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "OrderReceptionsDto",
+      "domain": "Order",
+      "properties": [
+        {
+          "name": "ChangedBy",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ChangedDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "FreightCharge",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "OrderDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "PromisedByDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ProviderID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "PurchaseOrderNumber",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ReceivedBy",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "RequiredByDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "SalesTaxRate",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "Status",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "OrderRequestDetailsDto",
+      "domain": "Order",
+      "properties": [
+        {
+          "name": "DateSold",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Discount",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "LineTotal",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "OrderDetailID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "SalePrice",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "SalesTax",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "UnitPrice",
+          "clrType": "decimal?",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "OrderRequestsDto",
+      "domain": "Order",
+      "properties": [
+        {
+          "name": "ChangedBy",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ChangedDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CustomerID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "EmployeeID",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "FreightCharge",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "OrderDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "OrderID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "PromisedByDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "PurchaseOrderNumber",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "RequiredByDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "SalesTaxRate",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "ShipAddress",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShipCity",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShipCountry",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShipDate",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShipName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShipPhoneNumber",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShippingMethodID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "ShipPostalCode",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShipState",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ShipStateOrProvince",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Status",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ProductsDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "CategoryID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "Discontinued",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "LeadTime",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ProductDescription",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ProductName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "QuantityPerUnit",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "ReorderLevel",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "SerialNumber",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "SupplierID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "Unit",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "UnitPrice",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "UnitsInStock",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "UnitsOnOrder",
+          "clrType": "int?",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ProductsByCustomerDto",
+      "domain": "Products",
+      "properties": [
+        {
+          "name": "CustomerID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "ID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ProductsByProviderDto",
+      "domain": "Products",
+      "properties": [
+        {
+          "name": "ID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ProviderID",
+          "clrType": "int?",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ProvidersDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "Address",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "City",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ContactFirstName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ContactLastName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ContactTitle",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CountryRegion",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "EmailAddress",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Extension",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "FaxNumber",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Notes",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "PaymentTerms",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "PhoneNumber",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "PostalCode",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ProviderID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "ProviderName",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "StateOrProvince",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "StockLogDto",
+      "domain": "Stock",
+      "properties": [
+        {
+          "name": "Date",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "DocID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "DocType",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "ID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Quantity",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "StockID",
+          "clrType": "int?",
+          "description": null
+        },
+        {
+          "name": "StockPrice",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "User",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "StocksDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "DateModified",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "DateStarted",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "InitialStock",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "ProductID",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Stock",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "StockID",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "StockPrice",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "UnitPrice",
+          "clrType": "decimal?",
+          "description": null
+        },
+        {
+          "name": "User",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "UsersDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "Fullname",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Level",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Password",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Username",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "WarehousesDto",
+      "domain": "Core",
+      "properties": [
+        {
+          "name": "Address",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "City",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CountryRegion",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Description",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Name",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "PostalCode",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "Region",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "StateOrProvince",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "WarehouseID",
+          "clrType": "int",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ActionOrderReceptionStateDto",
+      "domain": "Action",
+      "properties": [
+        {
+          "name": "CurrentSubTotal",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTotal",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTax",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentFreightCharge",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTotalTax",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "TxtStatusText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtSubTotalText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtTotalText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtTotalTaxText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ActionOrderRequestStateDto",
+      "domain": "Action",
+      "properties": [
+        {
+          "name": "CurrentSubTotal",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTotal",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTax",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentFreightCharge",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTotalTax",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "TxtStatusText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtSubTotalText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtTotalText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtTotalTaxText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "AddProductToStateDto",
+      "domain": "Product",
+      "properties": [
+        {
+          "name": "ProductsStored",
+          "clrType": "OrderedDictionary",
+          "description": null
+        },
+        {
+          "name": "ProductsToDelete",
+          "clrType": "OrderedDictionary",
+          "description": null
+        },
+        {
+          "name": "ProductsToAdd",
+          "clrType": "OrderedDictionary",
+          "description": null
+        },
+        {
+          "name": "EditingData",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CurrentIdProduct",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtCodeText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "AddStockManualStateDto",
+      "domain": "Stock",
+      "properties": [
+        {
+          "name": "EditingData",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CurrentIdProduct",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CodeGeneratedChange",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "TxtUnitText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtProductNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtQuantityPerUnitText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtCodeText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "LblNewQuantityText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "AdjustStockManualStateDto",
+      "domain": "Adjust",
+      "properties": [
+        {
+          "name": "EditingData",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CurrentIdProduct",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CurrentIdStock",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "CurrentStockPrice",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentStock",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "ChangedStockPrice",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "ChangedStock",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CodeGeneratedChange",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "TxtStockIDText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtOriginalPriceText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtQuantityPerUnitText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtProductNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtUnitText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtOriginalQuantityText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtCodeText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "LblNewQuantityText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "LblCurrentQuantityText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "CustomersStateDto",
+      "domain": "Customers",
+      "properties": [
+        {
+          "name": "NewMode",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "EditMode",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CancellingMode",
+          "clrType": "bool",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "LoginStateDto",
+      "domain": "Login",
+      "properties": [
+        {
+          "name": "LoginSucceeded",
+          "clrType": "bool",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ReceptionApprovalStateDto",
+      "domain": "Reception",
+      "properties": [
+        {
+          "name": "TxtContactLastNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtContactNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtProviderNameText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "OrderReceptionStateDto",
+      "domain": "Order",
+      "properties": [
+        {
+          "name": "CurrentIdProvider",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "EditingData",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CurrentSubTotal",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTotal",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTax",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentFreightCharge",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTotalTax",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "TxtNotesText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtSubTotalText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtTotalText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtTotalTaxText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtFreightChargeText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtSalesTaxText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtEntryText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtProviderNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtContactLastNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtContactNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtProviderContactText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtProviderCompanyText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "OrderRequestStateDto",
+      "domain": "Order",
+      "properties": [
+        {
+          "name": "CurrentIdCustomer",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "EditingData",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CurrentSubTotal",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTotal",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTax",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentFreightCharge",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "CurrentTotalTax",
+          "clrType": "decimal",
+          "description": null
+        },
+        {
+          "name": "EditingQuantity",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "TxtSubTotalText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtTotalText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtTotalTaxText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtFreightChargeText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtSalesTaxText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtEntryText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtContactLastNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtContactNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtCompanyNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtCustomerContactText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtCustomerCompanyText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ProductsStateDto",
+      "domain": "Products",
+      "properties": [
+        {
+          "name": "NewMode",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "EditMode",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CancellingMode",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CmbCategorySelectedIndex",
+          "clrType": "int",
+          "description": null
+        },
+        {
+          "name": "TxtCategoryText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "ProvidersStateDto",
+      "domain": "Providers",
+      "properties": [
+        {
+          "name": "NewMode",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "EditMode",
+          "clrType": "bool",
+          "description": null
+        },
+        {
+          "name": "CancellingMode",
+          "clrType": "bool",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "RequestApprovalStateDto",
+      "domain": "Request",
+      "properties": [
+        {
+          "name": "TxtContactLastNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtContactNameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtCompanyNameText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "SearchStateDto",
+      "domain": "Search",
+      "properties": [
+        {
+          "name": "SearchTable",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CboSrchByText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "LblSrchByText",
+          "clrType": "string",
+          "description": null
+        }
+      ],
+      "baseType": null
+    },
+    {
+      "name": "UsersManageStateDto",
+      "domain": "Users",
+      "properties": [
+        {
+          "name": "CurrentEditedUser",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CmdSaveText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtFullnameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtPasswordText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "TxtUsernameText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CboLevelText",
+          "clrType": "string",
+          "description": null
+        },
+        {
+          "name": "CboLevelSelectedIndex",
+          "clrType": "int",
+          "description": null
+        }
+      ],
+      "baseType": null
+    }
+  ],
+  "enums": []
+}

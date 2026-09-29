@@ -1,0 +1,145 @@
+@page "/upgraded/add-product-to"
+
+@using SKS_Blazor.Application.DTOs.Core
+@using SKS_Blazor.Application.DTOs.Product
+@using SKS_Blazor.Application.DTOs.Products
+@using MudBlazor
+
+<PageTitle>@_pageTitle</PageTitle>
+
+<MudPaper Elevation="2" Class="pa-4 ma-2" Style="height:100%; display:flex; flex-direction:column; overflow:hidden;">
+    <MudText Typo="Typo.h5" Class="mb-2">@_pageTitle</MudText>
+
+    @* ── Search filters row ── *@
+    <MudGrid Spacing="2" Class="mb-2">
+        <MudItem xs="12" sm="4">
+            <MudTextField T="string"
+                          Label="Product Code"
+                          @bind-Value="_state!.TxtCodeText"
+                          @bind-Value:after="OnTxtCodeChanged"
+                          Immediate="true"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudTextField T="string"
+                          Label="Product Name"
+                          @bind-Value="_state!.TxtNameText"
+                          @bind-Value:after="OnTxtNameChanged"
+                          Immediate="true"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+        <MudItem xs="12" sm="4" Class="d-flex align-center">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Inventory"
+                       OnClick="OnCmdProductsClick"
+                       Class="mr-2">
+                Products...
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    @* ── Search results grid (lvProducts) ── *@
+    @* Columns: ProductID, ProductName, UnitPrice, UnitsInStock, UnitsOnOrder, QuantityPerUnit, Unit *@
+    <MudText Typo="Typo.subtitle1" Class="mb-1">Search Results</MudText>
+    <MudPaper Elevation="0" Style="flex:0 0 200px; overflow:auto;" Class="mb-2">
+        <MudDataGrid T="ProductsDto"
+                     Items="@_searchResults"
+                     Dense="true"
+                     Hover="true"
+                     Striped="true"
+                     FixedHeader="true"
+                     Height="190px"
+                     RowClick="OnLvProductsRowClick"
+                     SelectedItem="_selectedProduct"
+                     SelectedItemChanged="OnSelectedProductChanged">
+            <Columns>
+                <PropertyColumn Property="x => x.ProductID" Title="Product ID" />
+                <PropertyColumn Property="x => x.ProductName" Title="Product Name" />
+                <PropertyColumn Property="x => x.UnitPrice" Title="Unit Price" Format="C2" />
+                <PropertyColumn Property="x => x.UnitsInStock" Title="In Stock" />
+                <PropertyColumn Property="x => x.UnitsOnOrder" Title="On Order" />
+                <PropertyColumn Property="x => x.QuantityPerUnit" Title="Qty/Unit" />
+                <PropertyColumn Property="x => x.Unit" Title="Unit" />
+            </Columns>
+        </MudDataGrid>
+    </MudPaper>
+
+    @* ── Separator & action buttons ── *@
+    <MudDivider Class="mb-2" />
+
+    <div class="d-flex align-center mb-2">
+        <MudText Typo="Typo.subtitle1" Class="mr-4">@_productsRelatedLabel</MudText>
+        <MudCheckBox T="bool"
+                     Value="_checkAll"
+                     ValueChanged="OnChkAllChanged"
+                     Label="Select All"
+                     Color="Color.Primary"
+                     Dense="true"
+                     Class="mr-2" />
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Error"
+                   StartIcon="@Icons.Material.Filled.Remove"
+                   OnClick="OnCmdRemoveClick"
+                   Disabled="_isLoading"
+                   Class="mr-2">
+            Remove
+        </MudButton>
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Success"
+                   StartIcon="@Icons.Material.Filled.Save"
+                   OnClick="OnCmdSaveClick"
+                   Disabled="_isLoading"
+                   Class="mr-2">
+            Save
+        </MudButton>
+        <MudButton Variant="Variant.Outlined"
+                   Color="Color.Default"
+                   StartIcon="@Icons.Material.Filled.Close"
+                   OnClick="OnCmdCloseClick">
+            Close
+        </MudButton>
+    </div>
+
+    @* ── Associated products grid (lvProductsBy) ── *@
+    <MudPaper Elevation="0" Style="flex:1; overflow:auto;">
+        <MudDataGrid T="AssociatedProductRow"
+                     Items="@_associatedProducts"
+                     Dense="true"
+                     Hover="true"
+                     Striped="true"
+                     FixedHeader="true"
+                     Height="100%">
+            <Columns>
+                <TemplateColumn T="AssociatedProductRow" Title="" CellStyle="width:50px;">
+                    <CellTemplate>
+                        <MudCheckBox T="bool"
+                                     Value="@context.Item.IsChecked"
+                                     ValueChanged="@((bool val) => OnAssociatedProductChecked(context.Item, val))"
+                                     Dense="true"
+                                     Color="Color.Primary" />
+                    </CellTemplate>
+                </TemplateColumn>
+                <PropertyColumn Property="x => x.ProductID" Title="Product ID" />
+                <PropertyColumn Property="x => x.ProductName" Title="Product Name" />
+                <PropertyColumn Property="x => x.UnitPrice" Title="Unit Price" Format="C2" />
+                <PropertyColumn Property="x => x.QtyPerUnit" Title="Qty Per Unit" />
+            </Columns>
+        </MudDataGrid>
+    </MudPaper>
+
+    @* ── Status bar ── *@
+    <MudText Typo="Typo.caption" Color="Color.Secondary" Class="mt-1">@_statusMessage</MudText>
+
+    @if (_isLoading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mt-1" />
+    }
+</MudPaper>

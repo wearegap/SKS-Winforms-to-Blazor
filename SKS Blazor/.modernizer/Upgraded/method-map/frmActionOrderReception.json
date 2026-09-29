@@ -1,0 +1,605 @@
+{
+  "formName": "frmActionOrderReception",
+  "formFileName": "frmActionOrderReception.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmActionOrderReception.cs",
+  "legacyLines": 266,
+  "methods": [
+    {
+      "name": "frmActionOrderReception_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "cmdApprove_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 62,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\ttry\n\t\t\t{\n\t\t\t\tif (txtStatus.Text.ToUpper() == \u0022APPROVED\u0022)\n\t\t\t\t{\n\t\t\t\t\tmodMain.LogStatus(\u0022Order is already approved, not need to be approved again\u0022, this);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tif (txtStatus.Text.ToUpper() == \u0022CANCELLED\u0022)\n\t\t\t\t{\n\t\t\t\t\tmodMain.LogStatus($\u0022Order was already approved by {txtChangedBy.Text} on {txtChanged.Text}, it cannot be cancelled\u0022, this);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\t// UPDATE\n\t\t\t\tmodConnection.ExecuteSql($\u0022Update OrderReceptions Set Status = \u0027APPROVED\u0027, ChangedBy = \u0027{modMain.UserId}\u0027, ChangedDate = \u0027{DateTimeHelper.ToString(DateTime.Today)}\u0027\u0022 \u002B\n\t\t\t\t                         $\u0022 Where OrderId = {OrderId.ToString()}\u0022);\n\n\t\t\t\tmodConnection.ExecuteSql($\u0022Select ProductId, Quantity, UnitPrice, LineTotal \u0022 \u002B\n\t\t\t\t                         $\u0022From OrderReceptionDetails Where OrderID = {OrderId.ToString()}\u0022);\n\n\n\t\t\t\tint newId = 0;\n\t\t\t\twhile (!modConnection.rs.EOF)\n\t\t\t\t{\n\n\t\t\t\t\tmodConnection.ExecuteSql2($\u0022Insert Into Stocks \u0022 \u002B\n\t\t\t\t\t                          $\u0022(ProductID, Stock, InitialStock, DateStarted, DateModified, User, UnitPrice, StockPrice) Values \u0022 \u002B\n\t\t\t\t\t                          $\u0022(\u0027{Convert.ToString(modConnection.rs[\u0022ProductId\u0022])}\u0027,{Convert.ToString(modConnection.rs[\u0022Quantity\u0022])},{Convert.ToString(modConnection.rs[\u0022Quantity\u0022])}, \u0027{DateTimeHelper.ToString(DateTime.Today)}\u0027, \u0027{DateTimeHelper.ToString(DateTime.Today)}\u0027, \u0027{modMain.UserId}\u0027, {Convert.ToString(modConnection.rs[\u0022UnitPrice\u0022])},{Convert.ToString(modConnection.rs[\u0022LineTotal\u0022])})\u0022);\n\n\t\t\t\t\tmodConnection.ExecuteSql2(\u0022Select Max(StockID) as NewId From Stocks\u0022);\n\t\t\t\t\tnewId = Convert.ToInt32(modConnection.rs2[\u0022NewId\u0022]);\n\n\t\t\t\t\tmodConnection.ExecuteSql2($\u0022Insert Into StockLog \u0022 \u002B\n\t\t\t\t\t                          $\u0022(Date, DocID, DocType, ProductID, Quantity, StockID, StockPrice, User) Values \u0022 \u002B\n\t\t\t\t\t                          $\u0022(\u0027{DateTimeHelper.ToString(DateTime.Today)}\u0027,\u0027{Convert.ToString(modConnection.rs[\u0022ProductId\u0022])}\u0027,\u0027{Convert.ToString(modConnection.rs[\u0022ProductId\u0022])}\u0027,\u0027{Convert.ToString(modConnection.rs[\u0022ProductId\u0022])}\u0027,\u0027{Convert.ToString(modConnection.rs[\u0022ProductId\u0022])}\u0027,\u0027{Convert.ToString(modConnection.rs[\u0022Quantity\u0022])}\u0027,\u0027{Convert.ToString(modConnection.rs[\u0022ProductID\u0022])}\u0027,\u0027{modMain.UserId}\u0027)\u0022);\n\t\t\t\t\tmodConnection.rs.MoveNext();\n\t\t\t\t}\n\n\t\t\t\tmodConnection.ExecuteSql($\u0022Insert Into Stocks \u0022 \u002B\n\t\t\t\t                         $\u0022(ProductID, Stock, InitialStock, DateStarted, DateModified, User, UnitPrice, StockPrice) \u0022 \u002B\n\t\t\t\t                         $\u0022Select ProductId, Quantity, Quantity, \u0027{DateTimeHelper.ToString(DateTime.Today)}\u0027, \u0027{DateTimeHelper.ToString(DateTime.Today)}\u0027, \u0027{modMain.UserId}\u0027, UnitPrice, LineTotal \u0022 \u002B\n\t\t\t\t                         $\u0022From OrderReceptionDetails \u0022 \u002B\n\t\t\t\t                         $\u0022Where OrderID = {OrderId.ToString()}\u0022);\n\n\t\t\t\tmodConnection.ExecuteSql($\u0022Update Products Set UnitsInStock = UnitsInStock \u002B \u0022 \u002B\n\t\t\t\t                         $\u0022 (Select Sum(Quantity) From OrderReceptionDetails Where OrderID = {OrderId.ToString()} and ProductID = Products.ProductID) \u0022 \u002B\n\t\t\t\t                         $\u0022 Where ProductId in (Select ProductID From OrderReceptionDetails Where OrderID = {OrderId.ToString()})\u0022);\n\n\t\t\t\tLoadData();\n\t\t\t\tMessageBox.Show(\u0022The order was successfully approved\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()));\n\t\t\t\tthis.Close();\n\t\t\t}\n\t\t\tcatch (System.Exception excep)\n\t\t\t{\n\t\t\t\t//UPGRADE_WARNING: (2081) Err.Number has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2081\n\t\t\t\tMessageBox.Show($\u0022An error has occurred adding the data.{Environment.NewLine}Error: ({Information.Err().Number.ToString()}) {excep.Message}\u0022, \u0022Error\u0022, MessageBoxButtons.OK, MessageBoxIcon.Error);\n\t\t\t}\n\n\t\t}\n",
+      "bodyLineCount": 61
+    },
+    {
+      "name": "cmdCancel_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 35,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\ttry\n\t\t\t{\n\t\t\t\tif (txtStatus.Text.ToUpper() == \u0022CANCELLED\u0022)\n\t\t\t\t{\n\t\t\t\t\tmodMain.LogStatus(\u0022Order was already cancelled, not need to be cancelled again\u0022, this);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tif (txtStatus.Text.ToUpper() == \u0022APPROVED\u0022)\n\t\t\t\t{\n\t\t\t\t\tmodMain.LogStatus($\u0022Order was already cancelled by {txtChangedBy.Text} on {txtChanged.Text}, it cannot be approved\u0022, this);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tif (MessageBox.Show(\u0022Do you want to cancel the order reception?\u0022, \u0022Confirm cancellation\u0022, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes)\n\t\t\t\t{\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\t// UPDATE\n\t\t\t\tmodConnection.ExecuteSql($\u0022Update OrderReceptions Set Status = \u0027CANCELLED\u0027, ChangedBy = \u0027{modMain.UserId}\u0027, ChangedDate = \u0027{DateTimeHelper.ToString(DateTime.Today)}\u0027\u0022 \u002B\n\t\t\t\t                         $\u0022 Where OrderId = {OrderId.ToString()}\u0022);\n\n\t\t\t\tLoadData();\n\t\t\t\tMessageBox.Show(\u0022The order was successfully cancelled\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()));\n\t\t\t\tthis.Close();\n\t\t\t}\n\t\t\tcatch (System.Exception excep)\n\t\t\t{\n\t\t\t\t//UPGRADE_WARNING: (2081) Err.Number has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2081\n\t\t\t\tMessageBox.Show($\u0022An error has occurred adding the data.{Environment.NewLine}Error: ({Information.Err().Number.ToString()}) {excep.Message}\u0022, \u0022Error\u0022, MessageBoxButtons.OK, MessageBoxIcon.Error);\n\t\t\t}\n\n\t\t}\n",
+      "bodyLineCount": 34
+    },
+    {
+      "name": "Form_Load",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 17,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\t//LoadData\n\t\t\tif (Action != 0)\n\t\t\t{\n\n\t\t\t\tswitch((Action))\n\t\t\t\t{\n\t\t\t\t\tcase 1 : \n\t\t\t\t\t\tcmdApprove_Click(cmdApprove, new EventArgs()); \n\t\t\t\t\t\tbreak;\n\t\t\t\t\tcase 2 : \n\t\t\t\t\t\tcmdCancel_Click(cmdCancel, new EventArgs()); \n\t\t\t\t\t\tbreak;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 16
+    },
+    {
+      "name": "LoadData",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 59,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tcurrentSubTotal = 0;\n\t\t\tcurrentTotalTax = 0;\n\t\t\tmodConnection.ExecuteSql($\u0022Select o.OrderDate, u.Fullname, o.Status, p.ProviderName, p.ContactFirstName \u002B \u0027 \u0027 \u002B p.ContactLastName as Contact, o.ChangedDate, o.ChangedBy, o.FreightCharge, o.SalesTaxRate, o.Notes \u0022 \u002B\n\t\t\t                         $\u0022From OrderReceptions as o, Users as u, Providers as p \u0022 \u002B\n\t\t\t                         $\u0022Where o.OrderID = {OrderId.ToString()} And u.Username = o.ReceivedBy And p.ProviderId = o.ProviderId\u0022);\n\t\t\tif (modConnection.rs.EOF)\n\t\t\t{\n\t\t\t\tmodMain.LogStatus($\u0022The order with the ID \u0027{OrderId.ToString()}\u0027 does not exist\u0022, this);\n\t\t\t\treturn;\n\t\t\t}\n\t\t\ttxtOrderID.Text = OrderId.ToString();\n\t\t\ttxtReceived.Text = Convert.ToString(modConnection.rs[\u0022OrderDate\u0022]);\n\t\t\ttxtReceivedBy.Text = Convert.ToString(modConnection.rs[\u0022Fullname\u0022]);\n\t\t\t//UPGRADE_WARNING: (1049) Use of Null/IsNull() detected. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-1049\n\t\t\tif (!System.DBNull.Value.Equals(modConnection.rs[\u0022Notes\u0022]))\n\t\t\t{\n\t\t\t\ttxtNotes.Text = Convert.ToString(modConnection.rs[\u0022Notes\u0022]);\n\t\t\t}\n\t\t\ttxtFreightCharge.Text = Convert.ToString(modConnection.rs[\u0022FreightCharge\u0022]);\n\t\t\tcurrentFreightCharge = Convert.ToDouble(modConnection.rs[\u0022FreightCharge\u0022]);\n\t\t\ttxtSalesTax.Text = Convert.ToString(modConnection.rs[\u0022SalesTaxRate\u0022]);\n\t\t\tcurrentTax = Convert.ToDouble(modConnection.rs[\u0022SalesTaxRate\u0022]);\n\t\t\ttxtProviderCompany.Text = Convert.ToString(modConnection.rs[\u0022ProviderName\u0022]);\n\t\t\ttxtProviderContact.Text = Convert.ToString(modConnection.rs[\u0022Contact\u0022]);\n\t\t\ttxtStatus.Text = Convert.ToString(modConnection.rs[\u0022Status\u0022]);\n\t\t\t//UPGRADE_WARNING: (1049) Use of Null/IsNull() detected. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-1049\n\t\t\tif (!System.DBNull.Value.Equals(modConnection.rs[\u0022ChangedDate\u0022]))\n\t\t\t{\n\t\t\t\ttxtChanged.Text = Convert.ToString(modConnection.rs[\u0022ChangedDate\u0022]);\n\t\t\t}\n\t\t\t//UPGRADE_WARNING: (1049) Use of Null/IsNull() detected. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-1049\n\t\t\tif (!System.DBNull.Value.Equals(modConnection.rs[\u0022ChangedBy\u0022]))\n\t\t\t{\n\t\t\t\ttxtChangedBy.Text = Convert.ToString(modConnection.rs[\u0022ChangedBy\u0022]);\n\t\t\t}\n\n\t\t\tbool isReceived = txtStatus.Text == \u0022RECEIVED\u0022;\n\t\t\tlblChanged.Visible = !isReceived;\n\t\t\tlblChangedBy.Visible = !isReceived;\n\t\t\ttxtChanged.Visible = !isReceived;\n\t\t\ttxtChangedBy.Visible = !isReceived;\n\t\t\tcmdApprove.Enabled = true; // Received\n\t\t\tcmdCancel.Enabled = true; // Received\n\n\t\t\tif (txtStatus.Text == \u0022APPROVED\u0022)\n\t\t\t{\n\t\t\t\tlblChanged.Text = \u0022Approved Date:\u0022;\n\t\t\t\tlblChangedBy.Text = \u0022Approved By:\u0022;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tlblChanged.Text = \u0022Cancelled Date:\u0022;\n\t\t\t\tlblChangedBy.Text = \u0022Cancelled By:\u0022;\n\t\t\t}\n\t\t\tLoadDetails();\n\t\t\tDisplayTotals();\n\t\t}\n",
+      "bodyLineCount": 58
+    },
+    {
+      "name": "DisplayTotals",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tcurrentTotal = currentFreightCharge \u002B currentSubTotal \u002B currentTotalTax;\n\t\t\ttxtSubTotal.Text = StringsHelper.Format(currentSubTotal, \u0022#,##0.00\u0022);\n\t\t\ttxtTotalTax.Text = StringsHelper.Format(currentTotalTax, \u0022#,##0.00\u0022);\n\t\t\ttxtTotal.Text = StringsHelper.Format(currentTotal, \u0022#,##0.00\u0022);\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "AddToTotals",
+      "returnType": "void",
+      "params": "double current",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 9,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tcurrentSubTotal \u002B= current;\n\t\t\tcurrentTotalTax = currentSubTotal * currentTax;\n\t\t\tcurrentTotal = currentFreightCharge \u002B currentSubTotal \u002B currentTotalTax;\n\t\t\ttxtSubTotal.Text = StringsHelper.Format(currentSubTotal, \u0022#,##0.00\u0022);\n\t\t\ttxtTotalTax.Text = StringsHelper.Format(currentTotalTax, \u0022#,##0.00\u0022);\n\t\t\ttxtTotal.Text = StringsHelper.Format(currentTotal, \u0022#,##0.00\u0022);\n\t\t}\n",
+      "bodyLineCount": 8
+    },
+    {
+      "name": "cmdClose_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E this.Close()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "LoadDetails",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 40,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\n\t\t\tmodConnection.ExecuteSql($\u0022Select d.Quantity, p.ProductID, p.ProductName, d.UnitPrice, d.SalePrice, p.UnitsInStock, p.UnitsOnOrder, p.QuantityPerUnit \u002B p.Unit, d.LineTotal From Products as p, OrderReceptionDetails as d \u0022 \u002B\n\t\t\t                         $\u0022Where d.OrderID = {OrderId.ToString()} And d.ProductId = p.ProductId\u0022);\n\n\t\t\tint lng = 0;\n\t\t\tint intLoopCount = 0;\n\t\t\tint i = 0;\n\t\t\tfgDetails.RowsCount = 0;\n\t\t\tfgDetails.ColumnsCount = 9;\n\t\t\tfgDetails.FixedColumns = 0;\n\t\t\tfgDetails.AddItem($\u0022Quantity{\u0022\\t\u0022}Code{\u0022\\t\u0022}Product{\u0022\\t\u0022}UnitPrice{\u0022\\t\u0022}Price{\u0022\\t\u0022}Existence{\u0022\\t\u0022}Ordered{\u0022\\t\u0022}Quantity per unit{\u0022\\t\u0022}Line Total\u0022);\n\t\t\tfgDetails.RowsCount = modConnection.rs.RecordCount \u002B 1;\n\t\t\tif (fgDetails.RowsCount == 1)\n\t\t\t{\n\t\t\t\tfgDetails.FixedRows = 0;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tfgDetails.FixedRows = 1;\n\t\t\t}\n\t\t\ti = 1;\n\t\t\twhile (!modConnection.rs.EOF)\n\t\t\t{\n\t\t\t\tint tempForEndVar = modConnection.rs.FieldsMetadata.Count;\n\t\t\t\tfor (int j = 1; j \u003C= tempForEndVar; j\u002B\u002B)\n\t\t\t\t{\n\t\t\t\t\t//UPGRADE_WARNING: (2080) IsEmpty was upgraded to a comparison and has a new behavior. More Information: https://docs.mobilize.net/vbuc/ewis/warnings#id-2080\n\t\t\t\t\tif (!(modConnection.rs.GetField(i) is null))\n\t\t\t\t\t{\n\t\t\t\t\t\tfgDetails[i, j - 1].Value = Convert.ToString(modConnection.rs[j - 1]);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tAddToTotals(Convert.ToDouble(modConnection.rs[\u0022LineTotal\u0022]));\n\t\t\t\tmodConnection.rs.MoveNext();\n\t\t\t\ti\u002B\u002B;\n\t\t\t}\n\n\t\t}\n",
+      "bodyLineCount": 39
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 3,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t}\n",
+      "bodyLineCount": 2
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [],
+  "formsInstantiated": [],
+  "gridDeclarations": [
+    {
+      "fieldName": "fgDetails",
+      "fullType": "UpgradeHelpers.DataGridViewFlex",
+      "simplifiedType": "DataGridViewFlex"
+    }
+  ],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "cmdApprove",
+      "eventName": "Click",
+      "handlerMethod": "cmdApprove_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdCancel",
+      "eventName": "Click",
+      "handlerMethod": "cmdCancel_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdClose",
+      "eventName": "Click",
+      "handlerMethod": "cmdClose_Click",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [
+    {
+      "methodName": "cmdApprove_Click",
+      "columnName": "ProductId",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdApprove_Click",
+      "columnName": "Quantity",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdApprove_Click",
+      "columnName": "UnitPrice",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdApprove_Click",
+      "columnName": "LineTotal",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdApprove_Click",
+      "columnName": "NewId",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs2"
+    },
+    {
+      "methodName": "cmdApprove_Click",
+      "columnName": "ProductID",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "OrderDate",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "Fullname",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "Notes",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "FreightCharge",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "SalesTaxRate",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "ProviderName",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "Contact",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "Status",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "ChangedDate",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadData",
+      "columnName": "ChangedBy",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadDetails",
+      "columnName": "LineTotal",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    }
+  ],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "Frame2",
+    "Label1",
+    "Label10",
+    "Label11",
+    "Label12",
+    "Label19",
+    "Label3",
+    "Label4",
+    "Label5",
+    "Label6",
+    "Label7",
+    "Label8",
+    "Label9",
+    "cmdApprove",
+    "cmdCancel",
+    "cmdClose",
+    "fgDetails",
+    "lblChanged",
+    "lblChangedBy",
+    "sbStatusBar",
+    "txtChanged",
+    "txtChangedBy",
+    "txtEntry",
+    "txtFreightCharge",
+    "txtNotes",
+    "txtOrderID",
+    "txtProviderCompany",
+    "txtProviderContact",
+    "txtReceived",
+    "txtReceivedBy",
+    "txtSalesTax",
+    "txtStatus",
+    "txtSubTotal",
+    "txtTotal",
+    "txtTotalTax"
+  ],
+  "sharedStateFields": [
+    {
+      "name": "currentSubTotal",
+      "declaredType": "double",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData",
+        "DisplayTotals",
+        "AddToTotals"
+      ],
+      "writtenByMethods": [
+        "LoadData",
+        "AddToTotals"
+      ]
+    },
+    {
+      "name": "currentTotal",
+      "declaredType": "double",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DisplayTotals",
+        "AddToTotals"
+      ],
+      "writtenByMethods": [
+        "DisplayTotals",
+        "AddToTotals"
+      ]
+    },
+    {
+      "name": "currentTax",
+      "declaredType": "double",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData",
+        "AddToTotals"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "currentFreightCharge",
+      "declaredType": "double",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData",
+        "DisplayTotals",
+        "AddToTotals"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "currentTotalTax",
+      "declaredType": "double",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData",
+        "DisplayTotals",
+        "AddToTotals"
+      ],
+      "writtenByMethods": [
+        "LoadData",
+        "AddToTotals"
+      ]
+    },
+    {
+      "name": "Action",
+      "declaredType": "int",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Form_Load"
+      ],
+      "writtenByMethods": []
+    },
+    {
+      "name": "OrderId",
+      "declaredType": "int",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": []
+    },
+    {
+      "name": "TxtReceivedByText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtStatusText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdApprove_Click",
+        "cmdCancel_Click",
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtReceivedText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtChangedByText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtChangedText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtOrderIDText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtNotesText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtSubTotalText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DisplayTotals",
+        "AddToTotals"
+      ],
+      "writtenByMethods": [
+        "DisplayTotals",
+        "AddToTotals"
+      ]
+    },
+    {
+      "name": "TxtTotalText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DisplayTotals",
+        "AddToTotals"
+      ],
+      "writtenByMethods": [
+        "DisplayTotals",
+        "AddToTotals"
+      ]
+    },
+    {
+      "name": "TxtTotalTaxText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "DisplayTotals",
+        "AddToTotals"
+      ],
+      "writtenByMethods": [
+        "DisplayTotals",
+        "AddToTotals"
+      ]
+    },
+    {
+      "name": "TxtFreightChargeText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtSalesTaxText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtProviderContactText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "TxtProviderCompanyText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "LblChangedByText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    },
+    {
+      "name": "LblChangedText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "LoadData"
+      ],
+      "writtenByMethods": [
+        "LoadData"
+      ]
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}

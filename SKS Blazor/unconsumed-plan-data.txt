@@ -1,0 +1,52 @@
+Properties the generated application writes and never reads.
+
+Each one is data carried all the way into a DTO that no page or component uses. Some are
+legitimately unused in the target (protocol fields a server-side grid needed and a
+component-based one does not). The rest are legacy capabilities that reached the plan and
+went no further — a user who could export a grid or choose its columns yesterday cannot
+today, and nothing else in the output says so.
+
+Wire it into a view, or drop it from the plan.
+
+ActionOrderReceptionHeaderDto.ApproveEnabled
+ActionOrderReceptionHeaderDto.CancelEnabled
+ActionOrderReceptionHeaderDto.ChangedByLabel
+ActionOrderReceptionHeaderDto.ChangedDateLabel
+ActionOrderReceptionHeaderDto.IsReceived
+ActionOrderReceptionHeaderDto.ProviderCompany
+ActionOrderReceptionHeaderDto.ShowChangedFields
+ActionOrderReceptionLoadResult.ErrorMessage
+ActionOrderReceptionLoadResult.OrderFound
+SaveOrderReceptionResultDto.ErrorMessage
+SaveOrderRequestResultDto.ErrorMessage
+UsersManageInitResultDto.State
+UsersManageStateDto.CboLevelSelectedIndex
+
+
+Types referenced by nothing else in the output.
+
+Each was generated complete and never wired up — the same defect one level larger:
+not a capability half-connected but a whole component nothing calls.
+
+ActionOrderReceptionLoadResult  (ActionOrderReceptionLoadResult.cs)
+AddProductToContextDto  (AddProductToContextDto.cs)
+CustomerSearchResultDto  (CustomerSearchResultDto.cs)
+InvoiceDetailsConfiguration  (InvoiceDetailsConfiguration.cs)
+InvoiceDetailsDto  (InvoiceDetailsDto.cs)
+InvoicesConfiguration  (InvoicesConfiguration.cs)
+InvoicesDto  (InvoicesDto.cs)
+ManualStocksDto  (ManualStocksDto.cs)
+OrderReceptionDetailsConfiguration  (OrderReceptionDetailsConfiguration.cs)
+OrderReceptionsConfiguration  (OrderReceptionsConfiguration.cs)
+OrderRequestDetailsConfiguration  (OrderRequestDetailsConfiguration.cs)
+ProductsByCustomerConfiguration  (ProductsByCustomerConfiguration.cs)
+ProductsByProviderConfiguration  (ProductsByProviderConfiguration.cs)
+ProductsConfiguration  (ProductsConfiguration.cs)
+SaveOrderReceptionResultDto  (SaveOrderReceptionResultDto.cs)
+SaveOrderRequestResultDto  (SaveOrderRequestResultDto.cs)
+StockLogConfiguration  (StockLogConfiguration.cs)
+StocksConfiguration  (StocksConfiguration.cs)
+UsersManageDeleteResultDto  (UsersManageDeleteResultDto.cs)
+UsersManageInitResultDto  (UsersManageInitResultDto.cs)
+UsersManageSaveResultDto  (UsersManageSaveResultDto.cs)
+WarehousesDto  (WarehousesDto.cs)

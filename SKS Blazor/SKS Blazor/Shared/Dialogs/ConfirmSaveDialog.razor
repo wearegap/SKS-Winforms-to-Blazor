@@ -1,0 +1,22 @@
+@using MudBlazor
+
+<MudDialogContent>
+    <MudText Typo="Typo.body1">@Message</MudText>
+</MudDialogContent>
+<MudDialogActions>
+    <MudButton Color="Color.Success"
+               Variant="Variant.Filled"
+               OnClick="OnYes">
+        Yes
+    </MudButton>
+    <MudButton Color="Color.Default"
+               Variant="Variant.Outlined"
+               OnClick="OnNo">
+        No
+    </MudButton>
+    <MudButton Color="Color.Error"
+               Variant="Variant.Text"
+               OnClick="OnCancel">
+        Cancel
+    </MudButton>
+</MudDialogActions>

@@ -1,0 +1,489 @@
+{
+  "formName": "frmUsersManage",
+  "formFileName": "frmUsersManage.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmUsersManage.cs",
+  "legacyLines": 242,
+  "methods": [
+    {
+      "name": "frmUsersManage_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "cmdClear_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 6,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\ttxtUsername.Text = \u0022\u0022;\n\t\t\ttxtUsername.Focus();\n\t\t\tClearFields();\n\t\t}\n",
+      "bodyLineCount": 5
+    },
+    {
+      "name": "cmdDelete_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 18,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tif (modFunctions.NoRecords(lstAccounts, \u0022Please add/select a user\u0022))\n\t\t\t{\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tif (MessageBox.Show($\u0022Are you sure you want to delete the user \u0027{lstAccounts.FocusedItem.Text}\u0027?\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == System.Windows.Forms.DialogResult.Yes)\n\t\t\t{\n\t\t\t\tmodConnection.ExecuteSql(\u0022Select * from Users\u0022);\n\t\t\t\tif (modConnection.rs.RecordCount == 1)\n\t\t\t\t{\n\t\t\t\t\tMessageBox.Show(\u0022You cannot delete the last user\u0022, \u0022Delete error\u0022, MessageBoxButtons.OK, MessageBoxIcon.Error);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tmodConnection.ExecuteSql($\u0022Delete From Users Where Username = \u0027{lstAccounts.FocusedItem.Text}\u0027\u0022);\n\t\t\t\tLoadUsers();\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 17
+    },
+    {
+      "name": "cmdEdit_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 23,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tif (modFunctions.NoRecords(lstAccounts, \u0022Please add/select a user\u0022))\n\t\t\t{\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tmodConnection.ExecuteSql($\u0022Select * from Users where Username = \u0027{lstAccounts.FocusedItem.Text}\u0027\u0022);\n\t\t\ttxtUsername.Text = Convert.ToString(modConnection.rs[\u0022UserName\u0022]);\n\t\t\tif (modConnection.rs.EOF)\n\t\t\t{\n\t\t\t\tMessageBox.Show(\u0022This user does not exist\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()), MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\t\ttxtUsername.Focus();\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\ttxtUsername.Text = Convert.ToString(modConnection.rs[\u0022UserName\u0022]);\n\t\t\t\tCurrentEditedUser = txtUsername.Text;\n\t\t\t\ttxtPassword.Text = Convert.ToString(modConnection.rs[\u0022Password\u0022]);\n\t\t\t\ttxtFullname.Text = Convert.ToString(modConnection.rs[\u0022Fullname\u0022]);\n\t\t\t\tcboLevel.Text = Convert.ToString(modConnection.rs[\u0022Level\u0022]);\n\t\t\t\tcmdSave.Text = \u0022\u0026Update\u0022;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 22
+    },
+    {
+      "name": "cmdSave_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 77,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tstring SecId = \u0022\u0022;\n\t\t\tif (modFunctions.TextBoxEmpty(txtUsername))\n\t\t\t{\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tif (modFunctions.TextBoxEmpty(txtPassword))\n\t\t\t{\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tif (modFunctions.TextBoxEmpty(txtFullname))\n\t\t\t{\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tif (modFunctions.ComboEmpty(cboLevel))\n\t\t\t{\n\t\t\t\treturn;\n\t\t\t}\n\n\t\t\tmodConnection.ExecuteSql($\u0022Select * from Users where Username = \u0027{txtUsername.Text}\u0027\u0022);\n\t\t\tif (cmdSave.Text != \u0022\u0026Update\u0022)\n\t\t\t{\n\t\t\t\tif (!modConnection.rs.EOF)\n\t\t\t\t{\n\t\t\t\t\tMessageBox.Show(\u0022Add failed: Username already exists\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()), MessageBoxButtons.OK, MessageBoxIcon.Error);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tif (cboLevel.Text != \u0022Administrator\u0022)\n\t\t\t\t{\n\t\t\t\t\tmodConnection.ExecuteSql2(\u0022Select * from Users where level = \u0027Administrator\u0027\u0022);\n\t\t\t\t\tif (modConnection.rs2.EOF)\n\t\t\t\t\t{\n\t\t\t\t\t\tMessageBox.Show(\u0022Update failed: No any Administrator found on accounts.  You are not allowed to change the level of this account\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()), MessageBoxButtons.OK, MessageBoxIcon.Error);\n\t\t\t\t\t\treturn;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tif (!modMain.CurrentUserAdmin \u0026\u0026 cboLevel.Text == \u0022Administrator\u0022)\n\t\t\t\t{\n\t\t\t\t\tMessageBox.Show(\u0022You cannot add another level without being \u0027Administrator\u0027\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()), MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\t\t\tcboLevel.Focus();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tmodConnection.rs.AddNew();\n\t\t\t\tmodMain.msg = $\u0022Added new user {txtUsername.Text}\u0022;\n\t\t\t}\n\t\t\telse if (CurrentEditedUser != txtUsername.Text)\n\t\t\t{ \n\t\t\t\tmodConnection.ExecuteSql2($\u0022Select * from Users where username = \u0027{txtUsername.Text}\u0027\u0022);\n\t\t\t\tif (!modConnection.rs2.EOF)\n\t\t\t\t{\n\t\t\t\t\tMessageBox.Show($\u0022Username \u0027{txtUsername.Text}\u0027 already exists.\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()), MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\t\t\ttxtUsername.Focus();\n\t\t\t\t\tmodFunctions.SelectAll(txtUsername);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tmodMain.msg = $\u0022Record for the user {txtUsername.Text} has been successfully updated\u0022;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tmodMain.msg = $\u0022Record for the user {txtUsername.Text} has been successfully updated\u0022;\n\t\t\t}\n\t\t\tmodConnection.rs[\u0022UserName\u0022] = txtUsername.Text;\n\t\t\tmodConnection.rs[\u0022Password\u0022] = txtPassword.Text;\n\t\t\tmodConnection.rs[\u0022Level\u0022] = cboLevel.Text;\n\t\t\tmodConnection.rs[\u0022Fullname\u0022] = txtFullname.Text;\n\t\t\tmodConnection.rs.Update();\n\t\t\tmodMain.LogStatus(modMain.msg);\n\t\t\tClearFields();\n\t\t\tLoadUsers();\n\n\t\t\tif (modMain.CurrentUserAdmin)\n\t\t\t{\n\t\t\t\tthis.Close();\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 76
+    },
+    {
+      "name": "LoadUsers",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 13,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tmodConnection.ExecuteSql(\u0022Select * from Users\u0022);\n\t\t\tlstAccounts.Items.Clear();\n\t\t\tListViewItem x = null;\n\t\t\twhile (!modConnection.rs.EOF)\n\t\t\t{\n\t\t\t\tx = lstAccounts.Items.Add(Convert.ToString(modConnection.rs[\u0022UserName\u0022]));\n\t\t\t\tListViewHelper.GetListViewSubItem(x, 1).Text = Convert.ToString(modConnection.rs[\u0022Fullname\u0022]);\n\t\t\t\tListViewHelper.GetListViewSubItem(x, 2).Text = Convert.ToString(modConnection.rs[\u0022Level\u0022]);\n\t\t\t\tmodConnection.rs.MoveNext();\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 12
+    },
+    {
+      "name": "LoadUsersAvoidingWith",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 13,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tmodConnection.ExecuteSql(\u0022Select * from Users\u0022);\n\t\t\tlstAccounts.Items.Clear();\n\t\t\tListViewItem x = null;\n\t\t\twhile (!modConnection.rs.EOF)\n\t\t\t{\n\t\t\t\tx = lstAccounts.Items.Add(Convert.ToString(modConnection.rs[\u0022UserName\u0022]));\n\t\t\t\tListViewHelper.GetListViewSubItem(x, 1).Text = Convert.ToString(modConnection.rs[\u0022Fullname\u0022]);\n\t\t\t\tListViewHelper.GetListViewSubItem(x, 2).Text = Convert.ToString(modConnection.rs[\u0022Level\u0022]);\n\t\t\t\tmodConnection.rs.MoveNext();\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 12
+    },
+    {
+      "name": "ClearFields",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 8,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\ttxtUsername.Text = \u0022\u0022;\n\t\t\ttxtPassword.Text = \u0022\u0022;\n\t\t\ttxtFullname.Text = \u0022\u0022;\n\t\t\tcboLevel.SelectedIndex = -1;\n\t\t\tcmdSave.Text = \u0022\u0026Save\u0022;\n\t\t}\n",
+      "bodyLineCount": 7
+    },
+    {
+      "name": "cmdClose_Click",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E this.Close()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "Form_Load",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 18,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tmodConnection.ExecuteSql(\u0022Select * from Levels\u0022);\n\t\t\twhile (!modConnection.rs.EOF)\n\t\t\t{\n\t\t\t\tcboLevel.AddItem(Convert.ToString(modConnection.rs[\u0022Level\u0022]));\n\t\t\t\tmodConnection.rs.MoveNext();\n\t\t\t}\n\t\t\tif (modMain.CurrentUserAdmin)\n\t\t\t{\n\t\t\t\tcboLevel.Text = \u0022Administrator\u0022;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tcboLevel.SelectedIndex = -1;\n\t\t\t}\n\t\t\tLoadUsers();\n\t\t}\n",
+      "bodyLineCount": 17
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 15,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (modMain.CurrentUserAdmin)\n\t\t\t{\n\t\t\t\tmodConnection.ExecuteSql(\u0022Select * from Users\u0022);\n\t\t\t\tif (modConnection.rs.EOF)\n\t\t\t\t{\n\t\t\t\t\tMessageBox.Show($\u0022System has failed to initialized. Please contact your administrator{Environment.NewLine}{Environment.NewLine}Status: analysing accounts configuration{Environment.NewLine}\u0022 \u002B\n\t\t\t\t\t                $\u0022Error: No users found\u0022, AssemblyHelper.GetTitle(System.Reflection.Assembly.GetExecutingAssembly()), MessageBoxButtons.OK, MessageBoxIcon.Error);\n\t\t\t\t\tEnvironment.Exit(0);\n\t\t\t\t}\n\t\t\t\t//frmxSplash.tmrLoad.Enabled = True\n\t\t\t}\n\t\t\tmodMain.LogStatus(\u0022\u0022);\n\t\t}\n",
+      "bodyLineCount": 14
+    },
+    {
+      "name": "lstAccounts_DoubleClick",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E cmdEdit_Click(cmdEdit, new EventArgs())",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtFullname_Enter",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E modFunctions.SelectAll(txtFullname)",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtPassword_Enter",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E modFunctions.SelectAll(txtPassword)",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "txtUsername_Enter",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": true,
+      "methodBody": "=\u003E modFunctions.SelectAll(txtUsername)",
+      "bodyLineCount": 1
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [],
+  "formsInstantiated": [],
+  "gridDeclarations": [
+    {
+      "fieldName": "lstAccounts",
+      "fullType": "System.Windows.Forms.ListView",
+      "simplifiedType": "ListView"
+    }
+  ],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "lstAccounts",
+      "eventName": "DoubleClick",
+      "handlerMethod": "lstAccounts_DoubleClick",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdClear",
+      "eventName": "Click",
+      "handlerMethod": "cmdClear_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdSave",
+      "eventName": "Click",
+      "handlerMethod": "cmdSave_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtFullname",
+      "eventName": "Enter",
+      "handlerMethod": "txtFullname_Enter",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtPassword",
+      "eventName": "Enter",
+      "handlerMethod": "txtPassword_Enter",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "txtUsername",
+      "eventName": "Enter",
+      "handlerMethod": "txtUsername_Enter",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdClose",
+      "eventName": "Click",
+      "handlerMethod": "cmdClose_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdEdit",
+      "eventName": "Click",
+      "handlerMethod": "cmdEdit_Click",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "cmdDelete",
+      "eventName": "Click",
+      "handlerMethod": "cmdDelete_Click",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [
+    {
+      "methodName": "cmdEdit_Click",
+      "columnName": "UserName",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdEdit_Click",
+      "columnName": "Password",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdEdit_Click",
+      "columnName": "Fullname",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdEdit_Click",
+      "columnName": "Level",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdSave_Click",
+      "columnName": "UserName",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdSave_Click",
+      "columnName": "Password",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdSave_Click",
+      "columnName": "Level",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "cmdSave_Click",
+      "columnName": "Fullname",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadUsers",
+      "columnName": "UserName",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadUsers",
+      "columnName": "Fullname",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadUsers",
+      "columnName": "Level",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadUsersAvoidingWith",
+      "columnName": "UserName",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadUsersAvoidingWith",
+      "columnName": "Fullname",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "LoadUsersAvoidingWith",
+      "columnName": "Level",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    },
+    {
+      "methodName": "Form_Load",
+      "columnName": "Level",
+      "clrType": null,
+      "recordsetVariable": "modConnection.rs"
+    }
+  ],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "Frame1",
+    "Image1",
+    "Label1",
+    "Label19",
+    "Label4",
+    "_Label1_0",
+    "_Label1_1",
+    "_Label1_2",
+    "_Label1_3",
+    "_Label1_4",
+    "cboLevel",
+    "cmdClear",
+    "cmdClose",
+    "cmdDelete",
+    "cmdEdit",
+    "cmdSave",
+    "ctrlLiner1",
+    "lblId",
+    "lstAccounts",
+    "txtFullname",
+    "txtPassword",
+    "txtUsername"
+  ],
+  "sharedStateFields": [
+    {
+      "name": "CurrentEditedUser",
+      "declaredType": "string",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdEdit_Click",
+        "cmdSave_Click"
+      ],
+      "writtenByMethods": [
+        "cmdEdit_Click"
+      ]
+    },
+    {
+      "name": "CmdSaveText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdEdit_Click",
+        "cmdSave_Click",
+        "ClearFields"
+      ],
+      "writtenByMethods": [
+        "cmdEdit_Click",
+        "ClearFields"
+      ]
+    },
+    {
+      "name": "TxtFullnameText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdEdit_Click",
+        "cmdSave_Click",
+        "ClearFields"
+      ],
+      "writtenByMethods": [
+        "cmdEdit_Click",
+        "ClearFields"
+      ]
+    },
+    {
+      "name": "TxtPasswordText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdEdit_Click",
+        "cmdSave_Click",
+        "ClearFields"
+      ],
+      "writtenByMethods": [
+        "cmdEdit_Click",
+        "ClearFields"
+      ]
+    },
+    {
+      "name": "TxtUsernameText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdClear_Click",
+        "cmdEdit_Click",
+        "cmdSave_Click",
+        "ClearFields"
+      ],
+      "writtenByMethods": [
+        "cmdClear_Click",
+        "cmdEdit_Click",
+        "ClearFields"
+      ]
+    },
+    {
+      "name": "CboLevelText",
+      "declaredType": "string",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "cmdEdit_Click",
+        "cmdSave_Click",
+        "Form_Load"
+      ],
+      "writtenByMethods": [
+        "cmdEdit_Click",
+        "Form_Load"
+      ]
+    },
+    {
+      "name": "CboLevelSelectedIndex",
+      "declaredType": "int",
+      "scope": "Control",
+      "isConstant": false,
+      "referencedByMethods": [
+        "ClearFields",
+        "Form_Load"
+      ],
+      "writtenByMethods": [
+        "ClearFields",
+        "Form_Load"
+      ]
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}

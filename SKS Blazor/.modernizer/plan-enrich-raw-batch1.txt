@@ -1,0 +1,89 @@
+=== ENRICH: ===
+{
+  "relationships": {},
+  "appState": null,
+  "pageDialogs": {
+    "frmAddProductTo": [
+      { "triggerElement":"cmdProducts_Click", "dialogComponent":"ProductsDialog", "passedParameter":"CurrentProductID", "returnAction":"DoSearchProduct" }
+    ],
+    "frmAddStockManual": [
+      { "triggerElement":"cmdProducts_Click", "dialogComponent":"ProductsDialog", "passedParameter":"CurrentProductID", "returnAction":"DoSearchProduct" }
+    ],
+    "frmAdjustStockManual": [
+      { "triggerElement":"cmdProducts_Click", "dialogComponent":"ProductsDialog", "passedParameter":"CurrentProductID", "returnAction":"DoSearchProduct" }
+    ],
+    "frmMain": [
+      { "triggerElement":"MDIForm_Load", "dialogComponent":"SplashDialog", "passedParameter":null, "returnAction":"ShowOrderRequest" },
+      { "triggerElement":"MDIForm_Load", "dialogComponent":"OrderRequestDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuAbout_Click", "dialogComponent":"AboutDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuAddStockManually_Click", "dialogComponent":"AddStockManualDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuAdjustStockManually_Click", "dialogComponent":"AdjustStockManualDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuCreateOrderReception_Click", "dialogComponent":"OrderReceptionDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuCustomer_Click", "dialogComponent":"CustomersDialog", "passedParameter":null, "returnAction":"InitForm" },
+      { "triggerElement":"mnuOrderReceptionsApproval_Click", "dialogComponent":"ReceptionApprovalDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuOrderRequestsApproval_Click", "dialogComponent":"RequestApprovalDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuProducts_Click", "dialogComponent":"ProductsDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuProviders_Click", "dialogComponent":"ProvidersDialog", "passedParameter":null, "returnAction":null },
+      { "triggerElement":"mnuSecurity_Click", "dialogComponent":"UsersManageDialog", "passedParameter":null, "returnAction":null }
+    ],
+    "frmReceptionApproval": [
+      { "triggerElement":"LoadActionOrderReception", "dialogComponent":"ActionOrderReceptionDialog", "passedParameter":"OrderId", "returnAction":"RefreshGrid" },
+      { "triggerElement":"cmdProviders_Click", "dialogComponent":"ProvidersDialog", "passedParameter":"CurrentProviderID", "returnAction":"DoSearchReception" }
+    ],
+    "frmOrderReception": [
+      { "triggerElement":"cmdAddProducts_Click", "dialogComponent":"AddProductToDialog", "passedParameter":"currentIdProvider", "returnAction":"LoadProductsById" },
+      { "triggerElement":"cmdProviders_Click", "dialogComponent":"ProvidersDialog", "passedParameter":"CurrentProviderID", "returnAction":"DoSearchProvider" }
+    ],
+    "frmOrderRequest": [
+      { "triggerElement":"cmdAddProducts_Click", "dialogComponent":"AddProductToDialog", "passedParameter":"currentIdCustomer", "returnAction":"LoadProductsById" },
+      { "triggerElement":"cmdCustomers_Click", "dialogComponent":"CustomersDialog", "passedParameter":"CurrentCustomerID", "returnAction":"DoSearchCustomer" }
+    ],
+    "frmRequestApproval": [
+      { "triggerElement":"LoadActionOrderRequest", "dialogComponent":"ActionOrderRequestDialog", "passedParameter":"OrderId", "returnAction":"RefreshGrid" },
+      { "triggerElement":"cmdCustomers_Click", "dialogComponent":"CustomersDialog", "passedParameter":"CurrentCustomerID", "returnAction":"DoSearchRequest" }
+    ],
+    "frmSearch": [
+      { "triggerElement":"SearchCriteriaCustomers", "dialogComponent":"CustomersDialog", "passedParameter":"field, value", "returnAction":"BindRecordset" },
+      { "triggerElement":"SearchCriteriaProducts", "dialogComponent":"ProductsDialog", "passedParameter":"field, value", "returnAction":"BindRecordset" },
+      { "triggerElement":"SearchCriteriaProviders", "dialogComponent":"ProvidersDialog", "passedParameter":"field, value", "returnAction":"BindRecordset" }
+    ]
+  },
+  "pageEmbeddedViews": {
+    "frmActionOrderReception": [
+      { "name":"fgDetails", "dataSource":"OrderReceptionDetailsDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmActionOrderRequest": [
+      { "name":"fgDetails", "dataSource":"OrderRequestDetailsDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmAddProductTo": [
+      { "name":"lvProducts", "dataSource":"ProductsDto", "displayMode":"Grid", "hostTab":null },
+      { "name":"lvProductsBy", "dataSource":"ProductsByProviderDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmAddStockManual": [
+      { "name":"lvProducts", "dataSource":"ProductsDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmAdjustStockManual": [
+      { "name":"lvStocks", "dataSource":"StocksDto", "displayMode":"Grid", "hostTab":null },
+      { "name":"lvProducts", "dataSource":"ProductsDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmReceptionApproval": [
+      { "name":"fgOrders", "dataSource":"OrderReceptionsDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmOrderReception": [
+      { "name":"fgProducts", "dataSource":"OrderReceptionDetailsDto", "displayMode":"Grid", "hostTab":null },
+      { "name":"lvProviders", "dataSource":"ProvidersDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmOrderRequest": [
+      { "name":"fgProducts", "dataSource":"OrderRequestDetailsDto", "displayMode":"Grid", "hostTab":null },
+      { "name":"lvCustomers", "dataSource":"CustomersDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmRequestApproval": [
+      { "name":"fgOrders", "dataSource":"OrderRequestsDto", "displayMode":"Grid", "hostTab":null }
+    ],
+    "frmUsersManage": [
+      { "name":"lstAccounts", "dataSource":"UsersDto", "displayMode":"Grid", "hostTab":null }
+    ]
+  },
+  "additionalInfrastructure": []
+}
+=== END ENRICH ===

@@ -1,0 +1,87 @@
+{
+  "formName": "modConnection",
+  "formFileName": "modConnection.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\modConnection.cs",
+  "legacyLines": 65,
+  "methods": [
+    {
+      "name": "OpenConnection",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "internal",
+      "isStatic": true,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tCurrentConnection = UpgradeHelpers.DB.AdoFactoryManager.GetFactory().CreateConnection();\n\t\t\t//UPGRADE_TODO: (7010) The connection string must be verified to fullfill the .NET data provider connection string requirements. More Information: https://docs.mobilize.net/vbuc/ewis/todos#id-7010\n\t\t\tCurrentConnection.ConnectionString = modMain.ConnectionString;\n\t\t\tCurrentConnection.Open();\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "ExecuteSql",
+      "returnType": "void",
+      "params": "string Statement",
+      "accessModifier": "internal",
+      "isStatic": true,
+      "isAsync": false,
+      "lineCount": 5,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\trs = new ADORecordSetHelper();\n\t\t\trs.Open(Statement, CurrentConnection, UpgradeHelpers.DB.LockTypeEnum.LockPessimistic);\n\t\t}\n",
+      "bodyLineCount": 4
+    },
+    {
+      "name": "ExecuteSql2",
+      "returnType": "void",
+      "params": "string Statement",
+      "accessModifier": "internal",
+      "isStatic": true,
+      "isAsync": false,
+      "lineCount": 5,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\trs2 = new ADORecordSetHelper();\n\t\t\trs2.Open(Statement, CurrentConnection, UpgradeHelpers.DB.LockTypeEnum.LockPessimistic);\n\t\t}\n",
+      "bodyLineCount": 4
+    }
+  ],
+  "properties": [
+    {
+      "name": "CurrentConnection",
+      "type": "DbConnection",
+      "hasGetter": true,
+      "hasSetter": true,
+      "accessModifier": "internal"
+    },
+    {
+      "name": "rs",
+      "type": "ADORecordSetHelper",
+      "hasGetter": true,
+      "hasSetter": true,
+      "accessModifier": "internal"
+    },
+    {
+      "name": "rs2",
+      "type": "ADORecordSetHelper",
+      "hasGetter": true,
+      "hasSetter": true,
+      "accessModifier": "internal"
+    }
+  ],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [],
+  "formsInstantiated": [],
+  "gridDeclarations": [],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [],
+  "sqlOperations": [],
+  "columnAccesses": [],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [],
+  "sharedStateFields": [],
+  "nativeApiDeclarationCount": 0
+}

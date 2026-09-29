@@ -1,0 +1,351 @@
+{
+  "formName": "frmCustomers",
+  "formFileName": "frmCustomers.cs",
+  "legacySource": "C:\\Users\\JassonNunezCamacho\\Desktop\\SKS\\SKSWinForms-master\\Upgraded\\frmCustomers.cs",
+  "legacyLines": 135,
+  "methods": [
+    {
+      "name": "frmCustomers_Activated",
+      "returnType": "void",
+      "params": "System.Object eventSender, System.EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tif (UpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm != eventSender)\n\t\t\t{\n\t\t\t\tUpgradeHelpers.Gui.Utils.ActivateHelper.myActiveForm = (System.Windows.Forms.Form) eventSender;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "Form_Closed",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": false,
+      "methodBody": "=\u003E CurrentCustomerID = Convert.ToString(dcCustomers.Recordset[\u0022CustomerId\u0022])",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "Form_Load",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 1,
+      "isEventHandler": false,
+      "methodBody": "=\u003E InitForm()",
+      "bodyLineCount": 1
+    },
+    {
+      "name": "InitForm",
+      "returnType": "void",
+      "params": "",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tdcCustomers.ConnectionString = modMain.ConnectionString;\n\t\t\tNewMode = false;\n\t\t\tEditMode = false;\n\t\t\tCancellingMode = false;\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "Toolbar1_ButtonClick",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 47,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tToolStripItem Button = (ToolStripItem) eventSender;\n\t\t\tobject x = null;\n\t\t\tint newCustomerId = 0;\n\t\t\tswitch(Button.Text)\n\t\t\t{\n\t\t\t\tcase \u0022Add\u0022 : \n\t\t\t\t\t//Add new record \n\t\t\t\t\tNewMode = true; \n\t\t\t\t\tdcCustomers.Recordset.AddNew(); \n\t\t\t\t\tbreak;\n\t\t\t\tcase \u0022Edit\u0022 : \n\t\t\t\t\t//Edit mode \n\t\t\t\t\tEditMode = true; \n\t\t\t\t\tbreak;\n\t\t\t\tcase \u0022Save\u0022 : \n\t\t\t\t\t//Save data \n\t\t\t\t\tdcCustomers.Recordset.Update(); \n\t\t\t\t\tdcCustomers.Recordset.Requery();  // SQLite ODBC driver needs to requery the info \n\t\t\t\t\tEditMode = false; \n\t\t\t\t\tNewMode = false; \n\t\t\t\t\tbreak;\n\t\t\t\tcase \u0022Delete\u0022 : \n\t\t\t\t\t//Delete record \n\t\t\t\t\tif (MessageBox.Show(\u0022Are you sure you want to delete this record?\u0022, \u0022Delete record\u0022, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)\n\t\t\t\t\t{\n\t\t\t\t\t\tdcCustomers.Recordset.Delete();\n\t\t\t\t\t\tdcCustomers.Recordset.Requery();\n\t\t\t\t\t} \n\t\t\t\t\tbreak;\n\t\t\t\tcase \u0022Search\u0022 : \n\t\t\t\t\t//Search for records \n\t\t\t\t\tmodFunctions.SearchShow(\u0022Customers\u0022, \u0022CompanyName\u0022, \u0022customer\u0022); \n\t\t\t\t\tbreak;\n\t\t\t\tcase \u0022Cancel\u0022 : \n\t\t\t\t\tCancellingMode = true; \n\t\t\t\t\t//Cancel edited changes \n\t\t\t\t\tEditMode = false; \n\t\t\t\t\tNewMode = false; \n\t\t\t\t\tdcCustomers.Recordset.CancelUpdate(); \n\t\t\t\t\tdcCustomers.Recordset.Requery(); \n\t\t\t\t\tCancellingMode = false; \n\t\t\t\t\tthis.Close(); \n\t\t\t\t\tbreak;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 46
+    },
+    {
+      "name": "txtField_TextChanged",
+      "returnType": "void",
+      "params": "Object eventSender, EventArgs eventArgs",
+      "accessModifier": "private",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 7,
+      "isEventHandler": true,
+      "methodBody": "\t\t{\n\t\t\tif (!CancellingMode)\n\t\t\t{\n\t\t\t\tEditMode = true;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 6
+    },
+    {
+      "name": "SearchCriteriaProducts",
+      "returnType": "void",
+      "params": "string field, string value",
+      "accessModifier": "public",
+      "isStatic": false,
+      "isAsync": false,
+      "lineCount": 13,
+      "isEventHandler": false,
+      "methodBody": "\t\t{\n\t\t\tmodConnection.ExecuteSql($\u0022Select * from Customers where {field} LIKE \u0027{value}%\u0027\u0022);\n\t\t\tif (modConnection.rs.RecordCount == 0)\n\t\t\t{\n\t\t\t\tMessageBox.Show(\u0022There are no records with the selected criteria\u0022, \u0022Search\u0022, MessageBoxButtons.OK, MessageBoxIcon.Information);\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tmodMain.LogStatus($\u0022There are {modConnection.rs.RecordCount.ToString()} that meet with the selected criteria\u0022);\n\t\t\t\tdcCustomers.Recordset = modConnection.rs;\n\t\t\t}\n\t\t}\n",
+      "bodyLineCount": 12
+    }
+  ],
+  "properties": [],
+  "events": [],
+  "toolbarItems": [],
+  "dialogsOpened": [],
+  "formsInstantiated": [],
+  "gridDeclarations": [],
+  "dataBindings": [],
+  "columnDefinitions": [],
+  "selectionLists": [],
+  "staticCaptions": [],
+  "tabDeclarations": [],
+  "eventWirings": [
+    {
+      "controlName": "_txtField_4",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_0",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_6",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_7",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_2",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_1",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_3",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_5",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_11",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_13",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_12",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_8",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_10",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_14",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "_txtField_9",
+      "eventName": "TextChanged",
+      "handlerMethod": "txtField_TextChanged",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "Toolbar1_Buttons_Button1",
+      "eventName": "Click",
+      "handlerMethod": "Toolbar1_ButtonClick",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "Toolbar1_Buttons_Button2",
+      "eventName": "Click",
+      "handlerMethod": "Toolbar1_ButtonClick",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "Toolbar1_Buttons_Button3",
+      "eventName": "Click",
+      "handlerMethod": "Toolbar1_ButtonClick",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "Toolbar1_Buttons_Button4",
+      "eventName": "Click",
+      "handlerMethod": "Toolbar1_ButtonClick",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "Toolbar1_Buttons_Button5",
+      "eventName": "Click",
+      "handlerMethod": "Toolbar1_ButtonClick",
+      "delegateType": "System.EventHandler"
+    },
+    {
+      "controlName": "Toolbar1_Buttons_Button6",
+      "eventName": "Click",
+      "handlerMethod": "Toolbar1_ButtonClick",
+      "delegateType": "System.EventHandler"
+    }
+  ],
+  "sqlOperations": [],
+  "columnAccesses": [
+    {
+      "methodName": "Form_Closed",
+      "columnName": "CustomerId",
+      "clrType": null,
+      "recordsetVariable": "dcCustomers.Recordset"
+    },
+    {
+      "methodName": "InitForm",
+      "columnName": "ConnectionString",
+      "clrType": null,
+      "recordsetVariable": ""
+    },
+    {
+      "methodName": "SearchCriteriaProducts",
+      "columnName": "rs",
+      "clrType": null,
+      "recordsetVariable": ""
+    }
+  ],
+  "scanStatus": "scanned",
+  "ownerModule": null,
+  "plannedAt": null,
+  "builtAt": null,
+  "formControlNames": [
+    "Frame1",
+    "Frame2",
+    "Label1",
+    "Label10",
+    "Label11",
+    "Label12",
+    "Label13",
+    "Label14",
+    "Label15",
+    "Label2",
+    "Label3",
+    "Label4",
+    "Label5",
+    "Label6",
+    "Label7",
+    "Label8",
+    "Label9",
+    "Toolbar1",
+    "_txtField_0",
+    "_txtField_1",
+    "_txtField_10",
+    "_txtField_11",
+    "_txtField_12",
+    "_txtField_13",
+    "_txtField_14",
+    "_txtField_2",
+    "_txtField_3",
+    "_txtField_4",
+    "_txtField_5",
+    "_txtField_6",
+    "_txtField_7",
+    "_txtField_8",
+    "_txtField_9",
+    "dcCustomers",
+    "txtField"
+  ],
+  "sharedStateFields": [
+    {
+      "name": "NewMode",
+      "declaredType": "bool",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "InitForm",
+        "Toolbar1_ButtonClick"
+      ],
+      "writtenByMethods": [
+        "InitForm",
+        "Toolbar1_ButtonClick"
+      ]
+    },
+    {
+      "name": "EditMode",
+      "declaredType": "bool",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "InitForm",
+        "Toolbar1_ButtonClick",
+        "txtField_TextChanged"
+      ],
+      "writtenByMethods": [
+        "InitForm",
+        "Toolbar1_ButtonClick",
+        "txtField_TextChanged"
+      ]
+    },
+    {
+      "name": "CancellingMode",
+      "declaredType": "bool",
+      "scope": "private",
+      "isConstant": false,
+      "referencedByMethods": [
+        "InitForm",
+        "Toolbar1_ButtonClick",
+        "txtField_TextChanged"
+      ],
+      "writtenByMethods": [
+        "InitForm",
+        "Toolbar1_ButtonClick"
+      ]
+    },
+    {
+      "name": "CurrentCustomerID",
+      "declaredType": "string",
+      "scope": "public",
+      "isConstant": false,
+      "referencedByMethods": [
+        "Form_Closed"
+      ],
+      "writtenByMethods": []
+    }
+  ],
+  "nativeApiDeclarationCount": 0
+}
