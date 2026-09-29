@@ -29,4 +29,6 @@ public class OrderRequestStateDto
     public List<OrderRequestProductLineDto> ProductLines { get; set; } = new();
     public DateTime? RequiredByDate { get; set; }
     public DateTime? PromisedByDate { get; set; }
+    /// <summary>Logged-in user (legacy modMain.UserId), set by the page before SaveAsync.</summary>
+    public string CurrentUserId { get; set; } = string.Empty;
 }

@@ -60,7 +60,7 @@ public partial class Customers : ComponentBase, IDisposable
     /// <summary>Port of <c>Form_Load</c> → <c>InitForm</c>.</summary>
     protected override async Task OnInitializedAsync()
     {
-        AppState.OnCommand = HandleAppCommand;
+        AppState.OnCommand += HandleAppCommand;
         _state = new CustomersStateDto();
         _isLoading = true;
 
@@ -94,10 +94,7 @@ public partial class Customers : ComponentBase, IDisposable
             _currentCustomerID = _currentCustomer.CustomerID.ToString();
         }
 
-        if (AppState.OnCommand == HandleAppCommand)
-        {
-            AppState.OnCommand = null;
-        }
+        AppState.OnCommand -= HandleAppCommand;
     }
 
     private async Task HandleAppCommand(string command)

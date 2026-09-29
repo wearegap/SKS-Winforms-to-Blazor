@@ -12,7 +12,6 @@ using SKS_Blazor.Infrastructure.Helpers;
 using SKS_Blazor.Infrastructure.HealthChecks;
 using SKS_Blazor.Infrastructure.Hubs;
 using SKS_Blazor.Infrastructure.Logging;
-using SKS_Blazor.Infrastructure.Security;
 using SKS_Blazor.Middleware;
 
 using SKS_Blazor.Application.Services.About;
@@ -111,7 +110,6 @@ builder.Services.AddScoped<AppState>();
 // ----- Infrastructure helper / engine classes -----
 builder.Services.AddScoped<AuditLogger>();
 builder.Services.AddScoped<ReportExportHelper>();
-builder.Services.AddScoped<SecurityService>();
 builder.Services.AddScoped<StockLevelEngine>();
 
 // ----- Application services (one per domain, per plan's service map) -----

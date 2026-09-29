@@ -68,3 +68,33 @@ interfaces never declared, services using DTO members that were never generated)
 - **Health check** now also requires rows in `Users`, so a wrong file reports Unhealthy.
 - **Verified:** `/health` Healthy; Customers (5), Providers (3), Request approval (17, dates normalised),
   Reception approval (11) render from SQLite; tests 24/24; `Orders.db` integrity ok and unchanged.
+
+## Phase 3 — Login and user context
+
+- **Login could never succeed.** `ILoginService.OkAsync` always returned failure; the working lookup sat on a method the
+  interface did not expose, the dialog was never opened, and nothing populated `AppState`. `OkAsync` now ports
+  `frmLogin.cmdOk_Click` into `LoginStateDto` (UserId, Fullname, Level, admin flag, legacy status and error text).
+  The duplicate, unused `Infrastructure/Security/SecurityService` is deleted.
+- **Decision: real login screen.** The legacy build hard-codes auto-login as `acantillo` in `modMain.Main()`;
+  `.modernizer/decisions.md` chose a login entry point, so this port has one. New `/login` page hosts `LoginDialog` as an
+  undismissable modal. `MainLayout` redirects any other URL to `/login?returnUrl=…` while `AppState.IsLoggedIn` is false.
+  The scoped `AppState` is the session; a new circuit (first load, F5, deep link) starts logged out.
+- **Prerendering off** (`render-mode="Server"`). Prerender ran every page's init twice in a throw-away scope.
+- **User id reaches the writes.** Pages passed `this` where services read `eventSender as string` for the user
+  (ActionOrderRequest approve/cancel, Add/Adjust stock), so writes stored "" or "SYSTEM". Order request/reception headers
+  now store `EmployeeID`/`ReceivedBy` from `AppState.UserId`. UsersManage checked `CurrentUser == "admin"` (never true);
+  it now uses `CurrentUserAdmin`.
+- **Layout.** Status bar repaints on `AppState.OnChange` and shows the full name. `Main` and `Customers` assigned
+  `AppState.OnCommand` with `=`, clobbering other subscribers; now `+=`/`-=`.
+- **Legacy approve is buggy; the port keeps the evident intent.** `frmActionOrderReception.cmdApprove_Click` inserts each
+  stock row twice (loop + bulk insert) and writes the product id into StockLog's DocID/DocType/Quantity/StockID (the two
+  stray legacy rows with DocType `HRS9`/`SH22` came from it). The port inserts one Stocks + one StockLog row per line with
+  `DocType='OrderReception'`, `DocID=<order>`. Review in Phase 4.
+- **Verified in headless Edge (Playwright):** deep link → login with returnUrl; wrong password → legacy error; login →
+  status "User : Allan Cantillo logged at …" and back to the requested page; F5 → login again; approving RECEIVED
+  reception 7 through the grid + dialog wrote `APPROVED / acantillo / 09/29/2026` plus 2 Stocks and 2 StockLog rows;
+  seller `cbastos` logs in. Tests 30/30. DB reset afterwards.
+- **Run it in Development.** MudBlazor and `blazor.server.js` are static web assets, served only in Development or from
+  published output. `dotnet run` uses the launch profile (Development). On .NET 10, `dotnet run --environment X` sets an
+  environment *variable* named X, not the host environment; use `ASPNETCORE_ENVIRONMENT=Development` instead.
+  In any other mode the pages render but never become interactive.

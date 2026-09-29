@@ -151,7 +151,7 @@ public partial class AddStockManual : ComponentBase, IDisposable
 
             // Service handles TRANSACTION (BeginTransaction / Commit / Rollback),
             // inserts into Stocks, ManualStocks, StockLog, updates Products.UnitsInStock
-            _state = await AddStockManualService.SaveAsync(_state, this);
+            _state = await AddStockManualService.SaveAsync(_state, AppState.UserId);
 
             // Port of MessageBox with YesNo — ask user if they want to add another
             var confirmParams = new DialogParameters<ConfirmSaveDialog>
@@ -176,7 +176,7 @@ public partial class AddStockManual : ComponentBase, IDisposable
             // LOCK RETRY — retry once on concurrency conflict
             try
             {
-                _state = await AddStockManualService.SaveAsync(_state!, this);
+                _state = await AddStockManualService.SaveAsync(_state!, AppState.UserId);
                 Snackbar.Add("Saved successfully after retry.", Severity.Success);
             }
             catch (Exception retryEx)

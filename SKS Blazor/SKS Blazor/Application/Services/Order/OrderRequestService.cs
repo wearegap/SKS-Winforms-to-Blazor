@@ -242,7 +242,7 @@ public class OrderRequestService : IOrderRequestService
             var orderRequest = new OrderRequests
             {
                 CustomerID = state.CurrentIdCustomer,
-                EmployeeID = string.Empty,
+                EmployeeID = state.CurrentUserId,
                 OrderDate = LegacyDate.Today(),
                 RequiredByDate = state.RequiredByDate is { } required ? LegacyDate.Format(required) : string.Empty,
                 PromisedByDate = state.PromisedByDate is { } promised ? LegacyDate.Format(promised) : string.Empty,

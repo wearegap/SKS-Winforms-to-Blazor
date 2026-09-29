@@ -2,6 +2,8 @@
 
 <div style="display:flex; flex-direction:column; height:100vh; overflow:hidden">
 
+    @if (AppState.IsLoggedIn)
+    {
     <!-- Menu bar -->
     <div style="flex-shrink:0; height:30px; background-color:#1a237e; display:flex; align-items:center; padding:0 8px; color:white;">
         <MudMenu Label="File" Color="Color.Inherit" Dense="true">
@@ -39,11 +41,16 @@
         <MudIconButton Icon="@Icons.Material.Filled.Logout" Size="Size.Small" OnClick="@Exit" title="Logout" />
     </div>
 
+    }
+
     <!-- Content row: sidebar + body -->
     <div style="flex:1; display:flex; flex-direction:row; overflow:hidden">
+        @if (AppState.IsLoggedIn)
+        {
         <div style="width:220px; flex-shrink:0; overflow-y:auto; border-right:1px solid #e0e0e0; background-color:#fafafa;">
             <NavMenu />
         </div>
+        }
         <div style="flex:1; overflow:auto; padding:8px;">
             @Body
         </div>
@@ -53,7 +60,7 @@
     <div style="flex-shrink:0; height:26px; background-color:#1a237e; color:white; display:flex; align-items:center; padding:0 8px; font-size:12px;">
         <span>@AppState.StatusMessage</span>
         <MudSpacer />
-        <span>@AppState.CurrentUser</span>
+        <span>@(string.IsNullOrEmpty(AppState.UserFullname) ? AppState.CurrentUser : AppState.UserFullname)</span>
         <span style="margin-left:16px;">@AppState.CurrentCompany</span>
         <span style="margin-left:16px;">@AppState.CurrentYear</span>
     </div>

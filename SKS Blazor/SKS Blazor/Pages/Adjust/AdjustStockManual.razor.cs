@@ -417,7 +417,7 @@ public partial class AdjustStockManual : ComponentBase, IDisposable
 
             // Delegate to service — handles UPDATE Stocks, INSERT ManualStocks, INSERT StockLog, UPDATE Products
             // Transaction + lock retry + typed exceptions are handled inside the service
-            _state = await AdjustStockManualService.SaveAsync(_state, this);
+            _state = await AdjustStockManualService.SaveAsync(_state, AppState.UserId);
             _state.EditingData = false;
 
             // Ask if user wants to modify another stock (legacy: MessageBox.Show with YesNo)

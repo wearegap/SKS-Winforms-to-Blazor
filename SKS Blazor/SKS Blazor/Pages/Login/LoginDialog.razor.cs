@@ -60,23 +60,25 @@ public partial class LoginDialog : IDisposable
 
         try
         {
-            // Ensure state is initialized
-            _state ??= new LoginStateDto { LoginSucceeded = false };
-
-            // The service handles the DB lookup and sets LoginSucceeded, UserFullname, UserLevel, etc.
-            // We pass the current state to the service; it returns the updated state.
-            _state = await LoginService.OkAsync(_state, new { UserName = _userName, Password = _password });
+            _state = new LoginStateDto { UserName = _userName, Password = _password };
+            _state = await LoginService.OkAsync(_state);
 
             if (!_state.LoginSucceeded)
             {
                 // Port of: MessageBox.Show("Invalid 'Username' or 'Password', please try again!", ...)
-                _errorMessage = "Invalid 'Username' or 'Password', please try again!";
+                _errorMessage = _state.ErrorMessage;
                 _password = string.Empty;
                 return;
             }
 
-            // Port of: modMain.LogStatus($"User : {modMain.UserFullname} logged at ...")
-            AppState.LogStatus($"User : {AppState.CurrentUser} logged at {DateTime.UtcNow:G}");
+            // Port of the modMain globals set by cmdOk_Click; AppState is scoped to the circuit (one user session).
+            AppState.UserId = _state.UserId;
+            AppState.CurrentUser = _state.UserId;
+            AppState.UserFullname = _state.UserFullname;
+            AppState.UserLevel = _state.UserLevel;
+            AppState.CurrentUserAdmin = _state.CurrentUserAdmin;
+            AppState.IsLoggedIn = true;
+            AppState.LogStatus(_state.StatusMessage);
 
             // Login succeeded — close dialog and return success to the caller
             MudDialog.Close(DialogResult.Ok(true));

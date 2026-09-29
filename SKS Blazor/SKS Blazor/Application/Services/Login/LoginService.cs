@@ -1,106 +1,66 @@
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using SKS_Blazor.Application.DTOs.Login;
-using SKS_Blazor.Domain.Entities.Core;
 using SKS_Blazor.Infrastructure.Data;
 
 namespace SKS_Blazor.Application.Services.Login;
 
-/// <summary>
-/// Port of <c>frmLogin</c> — authenticates users against the existing Users table.
-/// Implements credential validation originally in <c>cmdOk_Click</c>.
-/// </summary>
+/// <summary>Port of <c>frmLogin</c> — authenticates users against the existing Users table.</summary>
 public class LoginService : ILoginService
 {
+    /// <summary>Legacy MessageBox text (frmLogin.cmdOk_Click).</summary>
+    public const string InvalidCredentialsMessage = "Invalid 'Username' or 'Password', please try again!";
+
     private readonly IDbContextFactory<UpgradedDbContext> _dbFactory;
     private readonly ILogger<LoginService> _logger;
 
-    public LoginService(
-        IDbContextFactory<UpgradedDbContext> dbFactory,
-        ILogger<LoginService> logger)
+    public LoginService(IDbContextFactory<UpgradedDbContext> dbFactory, ILogger<LoginService> logger)
     {
         _dbFactory = dbFactory;
         _logger = logger;
     }
 
     /// <summary>
-    /// Port of <c>cmdOk_Click</c> from frmLogin.cs.
-    /// Legacy logic:
-    ///   1. SELECT * FROM Users WHERE username = '{txtUserName.Text}' and password = '{txtPassword.Text}'
-    ///   2. If rs.EOF → show error, return (login failed)
-    ///   3. Read Fullname and Level from the matched row
-    ///   4. Set modMain.CurrentUserAdmin = (Level == "Administrator")
-    ///   5. Set LoginSucceeded = true
-    ///   6. Build a status log message with user fullname and current timestamp
+    /// Port of <c>frmLogin.cmdOk_Click</c>:
+    /// <code>SELECT * FROM Users WHERE username = '..' and password = '..'</code>
+    /// On a match: UserFullname/UserLevel from the row, CurrentUserAdmin = Level == "Administrator",
+    /// LogStatus("User : {Fullname} logged at {now}"). The query is parameterised (the legacy string was not).
     /// </summary>
-    public async Task<LoginStateDto> OkAsync(LoginStateDto state, object eventSender, CancellationToken ct = default)
+    public async Task<LoginStateDto> OkAsync(LoginStateDto state, CancellationToken ct = default)
     {
-        await using var db = await _dbFactory.CreateDbContextAsync(ct);
+        ArgumentNullException.ThrowIfNull(state);
+        state.LoginSucceeded = false;
+        state.ErrorMessage = string.Empty;
 
-        // The actual username/password validation requires the page to pass them.
-        // This method maintains contract compatibility with the plan.
-        // Real authentication is performed via ValidateCredentialsAsync which the page calls directly.
-        _logger.LogDebug("OkAsync called via interface contract");
-
-        return new LoginStateDto
+        var userName = (state.UserName ?? string.Empty).Trim();
+        var password = state.Password ?? string.Empty;
+        if (userName.Length == 0 || password.Length == 0)
         {
-            LoginSucceeded = false
-        };
-    }
-
-    /// <summary>
-    /// Internal helper method to validate username and password against the Users table.
-    /// Called by the login page component after extracting form fields.
-    /// </summary>
-    public async Task<(bool Success, string Fullname, string Level, bool IsAdmin, string StatusMessage, string ErrorMessage)>
-        ValidateCredentialsAsync(string username, string password, CancellationToken ct = default)
-    {
-        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-        {
-            _logger.LogWarning("Login attempted with empty username or password");
-            return (false, string.Empty, string.Empty, false, string.Empty,
-                "Invalid 'Username' or 'Password', please try again!");
+            state.ErrorMessage = InvalidCredentialsMessage;
+            return state;
         }
 
         await using var db = await _dbFactory.CreateDbContextAsync(ct);
+        var user = await db.Users.AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Username == userName && u.Password == password, ct);
 
-        // Legacy: SELECT * FROM Users WHERE username = '...' and password = '...'
-        // Using EF Core LINQ — parameterized, no SQL injection
-        var user = await db.Users
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Username == username && u.Password == password, ct);
-
-        // Legacy: if (modConnection.rs.EOF) → login failed
         if (user is null)
         {
-            _logger.LogWarning("Failed login attempt for username: {Username}", username);
-            return (false, string.Empty, string.Empty, false, string.Empty,
-                "Invalid 'Username' or 'Password', please try again!");
+            _logger.LogWarning("Failed login attempt for {Username}", userName);
+            state.ErrorMessage = InvalidCredentialsMessage;
+            return state;
         }
 
-        // Legacy: modMain.UserFullname = Convert.ToString(modConnection.rs["Fullname"]);
-        var userFullname = user.Fullname ?? string.Empty;
+        state.LoginSucceeded = true;
+        state.UserId = user.Username;
+        state.UserFullname = user.Fullname ?? string.Empty;
+        state.UserLevel = user.Level ?? string.Empty;
+        state.CurrentUserAdmin = string.Equals(state.UserLevel, "Administrator", StringComparison.Ordinal);
+        state.StatusMessage = string.Format(CultureInfo.InvariantCulture, "User : {0} logged at {1:MM/dd/yyyy HH:mm:ss}",
+            state.UserFullname, DateTime.Now);
+        state.Password = string.Empty; // do not keep the secret in circuit state
 
-        // Legacy: modMain.UserLevel = Convert.ToString(modConnection.rs["Level"]);
-        var userLevel = user.Level ?? string.Empty;
-
-        // Legacy: modMain.CurrentUserAdmin = (modMain.UserLevel == "Administrator");
-        var isAdmin = string.Equals(userLevel, "Administrator", StringComparison.Ordinal);
-
-        // Legacy: modMain.LogStatus($"User : {modMain.UserFullname} logged at {DateTime.Now},{DateTime.Now}");
-        var now = DateTime.UtcNow;
-        var statusMessage = string.Format(
-            CultureInfo.InvariantCulture,
-            "User : {0} logged at {1},{2}",
-            userFullname,
-            now.ToString("G", CultureInfo.CurrentCulture),
-            now.ToString("G", CultureInfo.CurrentCulture));
-
-        _logger.LogInformation("User {Username} ({Fullname}) logged in successfully. Level: {Level}, IsAdmin: {IsAdmin}",
-            username, userFullname, userLevel, isAdmin);
-
-        // Legacy: LoginSucceeded = true; this.Close();
-        return (true, userFullname, userLevel, isAdmin, statusMessage, string.Empty);
+        _logger.LogInformation("User {Username} logged in. Level: {Level}", state.UserId, state.UserLevel);
+        return state;
     }
 }

@@ -317,7 +317,7 @@ public partial class ActionOrderRequest : ComponentBase, IDisposable
             }
 
             // Call service — delegates to EF Core update of OrderRequests table
-            await ActionOrderRequestService.ApproveAsync(_state!, this);
+            await ActionOrderRequestService.ApproveAsync(_state!, AppState.UserId);
 
             // Reload data after approve
             await LoadDataAsync();
@@ -333,7 +333,7 @@ public partial class ActionOrderRequest : ComponentBase, IDisposable
             Logger.LogWarning(ex, "Concurrency exception approving order {OrderId}, retrying", OrderId);
             try
             {
-                await ActionOrderRequestService.ApproveAsync(_state!, this);
+                await ActionOrderRequestService.ApproveAsync(_state!, AppState.UserId);
                 await LoadDataAsync();
                 Snackbar.Add("The order was successfully approved", Severity.Success);
                 NavigationManager.NavigateTo("/upgraded/request-approval");
@@ -401,7 +401,7 @@ public partial class ActionOrderRequest : ComponentBase, IDisposable
             }
 
             // Call service — delegates to EF Core update of OrderRequests table
-            await ActionOrderRequestService.CancelAsync(_state!, this);
+            await ActionOrderRequestService.CancelAsync(_state!, AppState.UserId);
 
             // Reload data after cancel
             await LoadDataAsync();
@@ -417,7 +417,7 @@ public partial class ActionOrderRequest : ComponentBase, IDisposable
             Logger.LogWarning(ex, "Concurrency exception cancelling order {OrderId}, retrying", OrderId);
             try
             {
-                await ActionOrderRequestService.CancelAsync(_state!, this);
+                await ActionOrderRequestService.CancelAsync(_state!, AppState.UserId);
                 await LoadDataAsync();
                 Snackbar.Add("The order was successfully cancelled", Severity.Success);
                 NavigationManager.NavigateTo("/upgraded/request-approval");

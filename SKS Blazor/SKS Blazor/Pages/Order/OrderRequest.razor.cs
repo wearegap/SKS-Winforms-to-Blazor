@@ -507,6 +507,7 @@ public partial class OrderRequest : ComponentBase, IDisposable
             _state.ProductLines = _productLines;
             _state.RequiredByDate = _dtRequired;
             _state.PromisedByDate = _dtPromised;
+            _state.CurrentUserId = AppState.UserId;
 
             _state = await OrderRequestService.SaveAsync(_state, this);
 

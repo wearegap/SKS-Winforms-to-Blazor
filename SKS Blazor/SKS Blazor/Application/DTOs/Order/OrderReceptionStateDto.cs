@@ -26,4 +26,6 @@ public class OrderReceptionStateDto
     public string TxtContactNameText { get; set; } = string.Empty;
     public string TxtProviderContactText { get; set; } = string.Empty;
     public string TxtProviderCompanyText { get; set; } = string.Empty;
+    /// <summary>Logged-in user (legacy modMain.UserId), set by the page before SaveAsync.</summary>
+    public string CurrentUserId { get; set; } = string.Empty;
 }

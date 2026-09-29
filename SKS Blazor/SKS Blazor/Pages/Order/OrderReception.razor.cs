@@ -398,6 +398,7 @@ public partial class OrderReception : IDisposable
         {
             // Sync product lines into state for the service to persist
             _state.TxtEntryText = SerializeProductLines();
+            _state.CurrentUserId = AppState.UserId;
 
             // Port of cmdSave_Click — service handles:
             // - Creating OrderReception record (ProviderId, ReceivedBy, OrderDate, Notes, FreightCharge, SalesTaxRate, Status=RECEIVED)

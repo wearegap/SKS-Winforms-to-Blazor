@@ -28,7 +28,7 @@ public partial class Main : ComponentBase, IDisposable
         // the page component lifecycle handles focus. No equivalent needed.
 
         // Subscribe to layout command dispatch (rule #14)
-        _appState.OnCommand = HandleLayoutCommandAsync;
+        _appState.OnCommand += HandleLayoutCommandAsync;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -262,9 +262,6 @@ public partial class Main : ComponentBase, IDisposable
     public void Dispose()
     {
         // Unsubscribe from AppState command dispatch
-        if (_appState.OnCommand == HandleLayoutCommandAsync)
-        {
-            _appState.OnCommand = null;
-        }
+        _appState.OnCommand -= HandleLayoutCommandAsync;
     }
 }

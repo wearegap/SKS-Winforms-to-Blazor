@@ -75,7 +75,7 @@ public partial class UsersManage : ComponentBase, IDisposable
         _levels = distinctLevels;
 
         // Legacy: if CurrentUserAdmin, set to "Administrator"; else selectedIndex = -1
-        if (AppState.IsLoggedIn && string.Equals(AppState.CurrentUser, "admin", StringComparison.OrdinalIgnoreCase))
+        if (AppState.IsLoggedIn && AppState.CurrentUserAdmin)
         {
             _state!.CboLevelText = "Administrator";
         }

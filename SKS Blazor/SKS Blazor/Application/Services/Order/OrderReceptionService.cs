@@ -243,7 +243,7 @@ public class OrderReceptionService : IOrderReceptionService
                 var orderReception = new Domain.Entities.Order.OrderReceptions
                 {
                     ProviderID = state.CurrentIdProvider,
-                    ReceivedBy = string.Empty, // Set by caller via AppState.CurrentUser
+                    ReceivedBy = state.CurrentUserId,
                     OrderDate = LegacyDate.Today(),
                     Notes = state.TxtNotesText ?? string.Empty,
                     FreightCharge = state.CurrentFreightCharge,
