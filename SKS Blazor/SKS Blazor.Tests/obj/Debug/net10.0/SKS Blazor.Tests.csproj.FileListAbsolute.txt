@@ -1,6 +1,0 @@
-C:\Users\JassonNunezCamacho\Desktop\SKS Blazor\SKS Blazor.Tests\bin\Debug\net10.0\.msCoverageSourceRootsMapping_SKS Blazor.Tests
-C:\Users\JassonNunezCamacho\Desktop\SKS Blazor\SKS Blazor.Tests\obj\Debug\net10.0\SKS Blazor.Tests.csproj.AssemblyReference.cache
-C:\Users\JassonNunezCamacho\Desktop\SKS Blazor\SKS Blazor.Tests\obj\Debug\net10.0\SKS Blazor.Tests.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\JassonNunezCamacho\Desktop\SKS Blazor\SKS Blazor.Tests\obj\Debug\net10.0\SKS Blazor.Tests.AssemblyInfoInputs.cache
-C:\Users\JassonNunezCamacho\Desktop\SKS Blazor\SKS Blazor.Tests\obj\Debug\net10.0\SKS Blazor.Tests.AssemblyInfo.cs
-C:\Users\JassonNunezCamacho\Desktop\SKS Blazor\SKS Blazor.Tests\obj\Debug\net10.0\SKS Blazor.Tests.csproj.CoreCompileInputs.cache

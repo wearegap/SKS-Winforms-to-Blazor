@@ -1,0 +1,19 @@
+### .NET build output
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+TestResults/
+Logs/
+
+### SQLite side files
+*.db-journal
+*.db-wal
+*.db-shm
+
+### Windows
+Thumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
