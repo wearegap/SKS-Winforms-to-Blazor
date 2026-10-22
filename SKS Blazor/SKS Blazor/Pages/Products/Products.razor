@@ -6,8 +6,16 @@
 
 <PageTitle>Products</PageTitle>
 
+@*
+    Field order and label captions follow frmProducts (Frame1 "Product information", 433x281):
+    Product (16,24) / Name (16,56) / Desc (16,87) / Category (16,118) / Serial number (16,148) /
+    Discontinued (16,179) / Unit price (16,210) / Qty per unit (16,244) with Unit at (216,244).
+    Field widths keep the legacy ratios (113 / 193 / 305 / 121 / 121 / 105 / 105), scaled for Roboto.
+    Columns the legacy form does not show sit in a separate block below so they stay editable.
+*@
+
 <MudPaper Elevation="2" Class="pa-4" Style="height:100%; display:flex; flex-direction:column; overflow:hidden;">
-    @* Toolbar — Add, Edit, Save, Delete, Search, Cancel (port of Toolbar1_ButtonClick) *@
+    @* Toolbar — Add, Edit, Save, Delete, Search, Cancel (port of Toolbar1_ButtonClick), plus the grid toggle *@
     <MudToolBar Dense="true" Style="flex-shrink:0; min-height:38px;">
         <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Add"
                    OnClick="OnToolbarAdd" Disabled="_isLoading">Add</MudButton>
@@ -21,58 +29,78 @@
                    OnClick="OnToolbarSearch" Disabled="_isLoading">Search</MudButton>
         <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Cancel"
                    OnClick="OnToolbarCancel" Disabled="_isLoading">Cancel</MudButton>
+        <MudDivider Vertical="true" FlexItem="true" Class="mx-2" />
+        @* Not a legacy button: shows every record at once instead of the one-at-a-time navigator. *@
+        <MudButton Variant="Variant.Text"
+                   StartIcon="@(_gridView ? Icons.Material.Filled.Description : Icons.Material.Filled.GridOn)"
+                   Color="@(_gridView ? Color.Primary : Color.Default)"
+                   OnClick="OnToggleGridView" Disabled="_isLoading">
+            @(_gridView ? "View as Form" : "View as Grid")
+        </MudButton>
     </MudToolBar>
 
-    <MudDivider Class="my-1" />
+    <MudDivider Class="my-1" Style="flex:0 0 auto;" />
 
     @if (_isLoading)
     {
         <MudProgressLinear Indeterminate="true" Color="Color.Primary" />
     }
 
-    @* Record navigation bar (port of dcProducts ADO data control nav buttons) *@
-    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0; padding:4px 0;">
-        <MudIconButton Icon="@Icons.Material.Filled.FirstPage" Size="Size.Small"
-                       OnClick="OnFirstRecord" Disabled="@(_isLoading || _products.Count == 0)" />
-        <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" Size="Size.Small"
-                       OnClick="OnPreviousRecord" Disabled="@(_isLoading || _currentIndex <= 0)" />
-        <MudText Typo="Typo.body2">
-            Record @(_products.Count > 0 ? (_currentIndex + 1).ToString() : "0") of @_products.Count
-        </MudText>
-        <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" Size="Size.Small"
-                       OnClick="OnNextRecord" Disabled="@(_isLoading || _currentIndex >= _products.Count - 1)" />
-        <MudIconButton Icon="@Icons.Material.Filled.LastPage" Size="Size.Small"
-                       OnClick="OnLastRecord" Disabled="@(_isLoading || _products.Count == 0)" />
-    </div>
+    @if (!_gridView)
+    {
+        @* Record navigation bar (port of dcProducts ADO data control nav buttons).
+           Hidden in grid view — the grid is how you pick a record there. *@
+        <div style="display:flex; align-items:center; gap:8px; flex-shrink:0; padding:4px 0;">
+            <MudIconButton Icon="@Icons.Material.Filled.FirstPage" Size="Size.Small"
+                           OnClick="OnFirstRecord" Disabled="@(_isLoading || _products.Count == 0)" />
+            <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" Size="Size.Small"
+                           OnClick="OnPreviousRecord" Disabled="@(_isLoading || _currentIndex <= 0)" />
+            <MudText Typo="Typo.body2">
+                Record @(_products.Count > 0 ? (_currentIndex + 1).ToString() : "0") of @_products.Count
+            </MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" Size="Size.Small"
+                           OnClick="OnNextRecord" Disabled="@(_isLoading || _currentIndex >= _products.Count - 1)" />
+            <MudIconButton Icon="@Icons.Material.Filled.LastPage" Size="Size.Small"
+                           OnClick="OnLastRecord" Disabled="@(_isLoading || _products.Count == 0)" />
+        </div>
 
-    <MudDivider Class="my-1" />
+        <MudDivider Class="my-1" Style="flex:0 0 auto;" />
+    }
 
-    @* Product detail form (port of frmProducts bound text fields) *@
+    @* Product detail form (port of frmProducts bound text fields). Shown in both views — grid view
+       keeps this panel and puts the grid underneath it. *@
     <div style="flex:1; overflow:auto; padding:8px 0;">
+        @{
+            var readOnly = !(_state?.EditMode == true || _state?.NewMode == true);
+        }
         @if (_currentProduct != null)
         {
-            var readOnly = !(_state?.EditMode == true || _state?.NewMode == true);
+                <fieldset class="legacy-frame products-form">
+                    <legend>Product information</legend>
 
-            <MudGrid Spacing="2">
-                <MudItem xs="12" sm="6" md="4">
-                    <MudTextField T="string" Label="Product ID" @bind-Value="_currentProduct.ProductID"
+                    @* Label3 "Product " (16,24) + _txtField_0 (104,24,113) *@
+                    <span class="lbl">Product</span>
+                    <MudTextField T="string" @bind-Value="_currentProduct.ProductID"
                                   ReadOnly="@(!(_state?.NewMode == true))"
-                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudTextField T="string" Label="Product Name" @bind-Value="_currentProduct.ProductName"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" Style="width:130px;" />
+
+                    @* Label1 "Name" (16,56) + _txtField_1 (104,56,193) *@
+                    <span class="lbl">Name</span>
+                    <MudTextField T="string" @bind-Value="_currentProduct.ProductName"
                                   ReadOnly="readOnly"
-                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudTextField T="string" Label="Product Description" @bind-Value="_currentProduct.ProductDescription"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" Style="width:222px;" />
+
+                    @* Label4 "Desc" (16,87) + _txtField_2 (104,88,305) *@
+                    <span class="lbl">Desc</span>
+                    <MudTextField T="string" @bind-Value="_currentProduct.ProductDescription"
                                   ReadOnly="readOnly"
-                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudSelect T="int?" Label="Category" @bind-Value="_currentProduct.CategoryID"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" Style="width:351px;" />
+
+                    @* Label11 "Category" (16,118) + cmbCategory (104,117,121) *@
+                    <span class="lbl">Category</span>
+                    <MudSelect T="int?" @bind-Value="_currentProduct.CategoryID"
                                Disabled="readOnly"
-                               Variant="Variant.Outlined" Margin="Margin.Dense"
+                               Variant="Variant.Outlined" Margin="Margin.Dense" Style="width:160px;"
                                @bind-Value:after="OnCategorySelectionChanged">
                         <MudSelectItem T="int?" Value="@((int?)null)">-- None --</MudSelectItem>
                         @foreach (var cat in _categories)
@@ -80,66 +108,124 @@
                             <MudSelectItem T="int?" Value="@((int?)cat.CategoryID)">@cat.CategoryName</MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudNumericField T="decimal?" Label="Unit Price" @bind-Value="_currentProduct.UnitPrice"
-                                     ReadOnly="readOnly" Format="C2"
-                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudNumericField T="int?" Label="Units In Stock" @bind-Value="_currentProduct.UnitsInStock"
-                                     ReadOnly="true"
-                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudNumericField T="int?" Label="Units On Order" @bind-Value="_currentProduct.UnitsOnOrder"
-                                     ReadOnly="true"
-                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudNumericField T="decimal?" Label="Quantity Per Unit" @bind-Value="_currentProduct.QuantityPerUnit"
-                                     ReadOnly="readOnly"
-                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudTextField T="string" Label="Unit" @bind-Value="_currentProduct.Unit"
+
+                    @* Label5 "Serial number" (16,148) + _txtField_3 (104,148,121) *@
+                    <span class="lbl">Serial number</span>
+                    <MudTextField T="string" @bind-Value="_currentProduct.SerialNumber"
                                   ReadOnly="readOnly"
-                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudNumericField T="int?" Label="Reorder Level" @bind-Value="_currentProduct.ReorderLevel"
-                                     ReadOnly="readOnly"
-                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudTextField T="string" Label="Serial Number" @bind-Value="_currentProduct.SerialNumber"
-                                  ReadOnly="readOnly"
-                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudTextField T="string" Label="Lead Time" @bind-Value="_currentProduct.LeadTime"
-                                  ReadOnly="readOnly"
-                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudNumericField T="int?" Label="Supplier ID" @bind-Value="_currentProduct.SupplierID"
-                                     ReadOnly="readOnly"
-                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudCheckBox T="bool" Label="Discontinued"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" Style="width:139px;" />
+
+                    @* Label15 "Discontinued" (16,179) + Check1 (104,181) *@
+                    <span class="lbl">Discontinued</span>
+                    <MudCheckBox T="bool"
                                  Value="@(_currentProduct.Discontinued != 0)"
                                  ValueChanged="OnDiscontinuedChanged"
                                  Disabled="readOnly"
-                                 LabelPlacement="Placement.End" />
-                </MudItem>
-            </MudGrid>
-        }
-        else
-        {
-            <MudText Typo="Typo.body1" Color="Color.Secondary" Class="pa-4">
-                No product records found. Click "Add" to create a new product.
-            </MudText>
-        }
+                                 Dense="true" />
+
+                    @* Label6 "Unit price" (16,210) + _txtField_4 (104,210,105) *@
+                    <span class="lbl">Unit price</span>
+                    <MudNumericField T="decimal?" @bind-Value="_currentProduct.UnitPrice"
+                                     ReadOnly="readOnly" Format="N2" HideSpinButtons="true"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" Style="width:121px;" />
+
+                    @* Label2 "Qty per unit" (16,244) + _txtField_5 (104,240,105), Label7 "Unit" (216,244) + _txtField_6 (256,240,105) *@
+                    <span class="lbl">Qty per unit</span>
+                    <div class="qty-row">
+                        <MudNumericField T="decimal?" @bind-Value="_currentProduct.QuantityPerUnit"
+                                         ReadOnly="readOnly" Format="N2" HideSpinButtons="true"
+                                         Variant="Variant.Outlined" Margin="Margin.Dense" Style="width:121px;" />
+                        <span class="lbl unit-lbl">Unit</span>
+                        <MudTextField T="string" @bind-Value="_currentProduct.Unit"
+                                      ReadOnly="readOnly"
+                                      Variant="Variant.Outlined" Margin="Margin.Dense" Style="width:121px;" />
+                    </div>
+                </fieldset>
+
+            }
+            else
+            {
+                <MudText Typo="Typo.body1" Color="Color.Secondary" Class="pa-4">
+                    No product records found. Click "Add" to create a new product.
+                </MudText>
+            }
+
+            @if (_gridView)
+            {
+                @* Every record at once, in the slot the additional-fields panel used to occupy.
+                   Clicking a row loads that record into the Product information panel above. *@
+                <div class="mt-3">
+                    <MudDataGrid T="ProductsDto"
+                                 Items="@_products"
+                                 Dense="true"
+                                 Hover="true"
+                                 Striped="true"
+                                 FixedHeader="true"
+                                 RowClick="OnGridRowClick"
+                                 SelectedItem="@_gridSelection"
+                                 Loading="_isLoading">
+                        <Columns>
+                            <PropertyColumn Property="x => x.ProductID" Title="Product" />
+                            <PropertyColumn Property="x => x.ProductName" Title="Name" />
+                            <PropertyColumn Property="x => x.ProductDescription" Title="Desc" />
+                            <TemplateColumn Title="Category">
+                                <CellTemplate>@CategoryName(context.Item.CategoryID)</CellTemplate>
+                            </TemplateColumn>
+                            <PropertyColumn Property="x => x.SerialNumber" Title="Serial number" />
+                            <TemplateColumn Title="Discontinued">
+                                <CellTemplate>
+                                    <MudCheckBox T="bool" Value="@(context.Item.Discontinued != 0)" ReadOnly="true" Dense="true" />
+                                </CellTemplate>
+                            </TemplateColumn>
+                            <PropertyColumn Property="x => x.UnitPrice" Title="Unit price" Format="N2" />
+                            <PropertyColumn Property="x => x.QuantityPerUnit" Title="Qty per unit" Format="N2" />
+                            <PropertyColumn Property="x => x.Unit" Title="Unit" />
+                        </Columns>
+                    </MudDataGrid>
+                </div>
+            }
     </div>
 </MudPaper>
+
+<style>
+    .products-form.legacy-frame {
+        border: 1px solid var(--mud-palette-lines-default);
+        border-radius: 4px;
+        padding: 4px 12px 12px;
+        margin: 0;
+        min-width: 0;
+        /* Legacy label gutter: labels at x=16, fields at x=104. */
+        display: grid;
+        grid-template-columns: 104px auto;
+        align-items: center;
+        row-gap: 4px;
+        justify-content: start;
+    }
+
+    .products-form.legacy-frame > legend {
+        padding: 0 4px;
+        font-size: 0.8rem;
+        color: var(--mud-palette-text-secondary);
+    }
+
+    .products-form .lbl {
+        font-size: 0.8125rem;
+        white-space: nowrap;
+    }
+
+    /* Grid headers read as one line ("Serial number", not "Serial / number"). */
+    .mud-paper .mud-table-head th {
+        white-space: nowrap;
+    }
+
+    /* Qty per unit (104,240) then Unit label (216,244) and its field (256,240). */
+    .products-form .qty-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .products-form .qty-row .unit-lbl {
+        margin-left: 12px;
+    }
+</style>

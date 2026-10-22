@@ -78,6 +78,51 @@ public partial class Providers : ComponentBase, IAsyncDisposable
     }
 
     /// <summary>Selects a provider from the grid and populates the detail fields.</summary>
+    // ── Grid view and record navigation (port of the dcProviders data control at 8,408) ──
+
+    /// <summary>Grid view shows every record at once; the record navigator is hidden while it is on.</summary>
+    private bool _gridView;
+
+    private int CurrentIndex =>
+        _currentProvider is null ? -1 : _providersList.FindIndex(p => p.ProviderID == _currentProvider.ProviderID);
+
+    /// <summary>
+    /// Toggles the grid below the Supplier information panel. Refuses to leave the form mid-edit,
+    /// because the grid has no Save and the pending edit would be lost.
+    /// </summary>
+    private void OnToggleGridView()
+    {
+        if (!_gridView && (_state?.EditMode == true || _state?.NewMode == true))
+        {
+            Snackbar.Add("Save or cancel the current record before switching to grid view.", Severity.Warning);
+            return;
+        }
+
+        _gridView = !_gridView;
+        StateHasChanged();
+    }
+
+    private void MoveTo(int index)
+    {
+        if (index >= 0 && index < _providersList.Count)
+        {
+            SelectProvider(_providersList[index]);
+        }
+    }
+
+    private void OnFirstRecord() => MoveTo(0);
+    private void OnPreviousRecord() => MoveTo(CurrentIndex - 1);
+    private void OnNextRecord() => MoveTo(CurrentIndex + 1);
+    private void OnLastRecord() => MoveTo(_providersList.Count - 1);
+
+    private void OnGridRowClick(DataGridRowClickEventArgs<ProvidersDto> args)
+    {
+        if (args.Item is not null)
+        {
+            SelectProvider(args.Item);
+        }
+    }
+
     private void SelectProvider(ProvidersDto provider)
     {
         _currentProvider = new ProvidersDto

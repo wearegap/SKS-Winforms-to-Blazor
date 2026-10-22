@@ -19,18 +19,6 @@ public interface IProductsService
     Task<ProductsStateDto> CategoryAsync(ProductsStateDto state, object eventSender, CancellationToken ct = default);
 
     /// <summary>
-    /// Persists a product record (insert or update) to the database.
-    /// Port of <c>Toolbar1_ButtonClick</c> "Save" case.
-    /// </summary>
-    Task SaveAsync(CancellationToken ct = default);
-
-    /// <summary>
-    /// Deletes a product record by ProductID.
-    /// Port of <c>Toolbar1_ButtonClick</c> "Delete" case.
-    /// </summary>
-    Task DeleteAsync(CancellationToken ct = default);
-
-    /// <summary>
     /// Returns all ProductsByCustomer junction records with product details.
     /// </summary>
     Task<List<ProductsByCustomerDto>> GetProductsByCustomerAsync(CancellationToken ct = default);

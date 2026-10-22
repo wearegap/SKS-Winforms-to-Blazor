@@ -2,54 +2,62 @@
 @using SKS_Blazor.Application.DTOs.Core
 @using SKS_Blazor.Application.DTOs.Order
 
-<!-- Columns: CustomerID, CompanyName, ContactFirstName, ContactLastName, City, StateOrProvince, Country/Region -->
-<!-- Columns: Quantity, Code, Product, UnitPrice, Price, Existence, Ordered, Quantity per unit -->
+@*
+    Layout mirrors frmOrderRequest (ClientSize 523x703). Legacy coordinates drive the grid tracks:
+    content is 489 wide inside frames at x=8; labels sit in the gutter left of each field at the
+    legacy offsets, fields keep their legacy widths (145 / 97 / 209). Vertical pitch is the one
+    dimension that cannot match — legacy rows are 24px apart with 20px controls, MudBlazor's dense
+    fields are ~40px tall — so rows are stacked in legacy order at MudBlazor's natural height.
+*@
 
-<MudPaper Class="pa-4" Style="height:100%; display:flex; flex-direction:column; overflow:hidden;">
-    <MudText Typo="Typo.h5" Class="mb-2">Order Request</MudText>
+<div class="order-request-form">
+    <MudPaper Class="pa-3" Elevation="2">
+        <MudText Typo="Typo.h6" Class="mb-3">Create Order</MudText>
 
-    <div style="display:flex; flex-direction:row; gap:16px; flex:1; overflow:hidden;">
-        @* LEFT PANEL — Customer Search + Customer Grid *@
-        <div style="display:flex; flex-direction:column; width:50%; overflow:hidden;">
-            <MudPaper Outlined="true" Class="pa-2 mb-2">
-                <MudText Typo="Typo.subtitle2" Class="mb-1">Search Customer</MudText>
-                <div style="display:flex; gap:8px;">
-                    <MudTextField T="string"
-                                  Label="Company Name"
-                                  @bind-Value="_companyNameFilter"
-                                  @bind-Value:after="OnCompanyNameChanged"
-                                  Immediate="true"
-                                  Variant="Variant.Outlined"
-                                  Margin="Margin.Dense"
-                                  Style="flex:1;" />
-                    <MudTextField T="string"
-                                  Label="Contact Name"
-                                  @bind-Value="_contactNameFilter"
-                                  @bind-Value:after="OnContactNameChanged"
-                                  Immediate="true"
-                                  Variant="Variant.Outlined"
-                                  Margin="Margin.Dense"
-                                  Style="flex:1;" />
-                    <MudTextField T="string"
-                                  Label="Contact Last Name"
-                                  @bind-Value="_contactLastNameFilter"
-                                  @bind-Value:after="OnContactLastNameChanged"
-                                  Immediate="true"
-                                  Variant="Variant.Outlined"
-                                  Margin="Margin.Dense"
-                                  Style="flex:1;" />
-                </div>
+        @* ---- Frame1: "Search customer" (legacy 8,8 505x249) ---- *@
+        <fieldset class="legacy-frame">
+            <legend>Search customer</legend>
+
+            @* Label4 (8,16) + txtCompanyName (88,16,145) + cmdCustomers (456,16) *@
+            <div class="row-search">
+                <span class="lbl">Company name:</span>
+                <MudTextField T="string"
+                              @bind-Value="_companyNameFilter"
+                              @bind-Value:after="OnCompanyNameChanged"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense" />
+                <span></span>
+                <span></span>
+                <span></span>
                 <MudButton Variant="Variant.Outlined"
-                           Color="Color.Primary"
                            Size="Size.Small"
-                           Class="mt-1"
-                           OnClick="OnCustomersClick">
-                    Customers...
-                </MudButton>
-            </MudPaper>
+                           Class="btn-ellipsis"
+                           OnClick="OnCustomersClick">...</MudButton>
+            </div>
 
-            @* lvCustomers grid *@
-            <MudPaper Outlined="true" Class="pa-1" Style="flex:1; overflow:auto;">
+            @* Label2 (8,48) + txtContactName (88,48,145) | Label3 (240,48) + txtContactLastName (336,48,145) *@
+            <div class="row-search">
+                <span class="lbl">Contact name:</span>
+                <MudTextField T="string"
+                              @bind-Value="_contactNameFilter"
+                              @bind-Value:after="OnContactNameChanged"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense" />
+                <span></span>
+                <span class="lbl">Contact last name:</span>
+                <MudTextField T="string"
+                              @bind-Value="_contactLastNameFilter"
+                              @bind-Value:after="OnContactLastNameChanged"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense" />
+                <span></span>
+            </div>
+
+            @* lvCustomers (8,80) 489x161 *@
+            <div class="grid-customers">
                 <MudDataGrid T="CustomersDto"
                              Items="@_customers"
                              Dense="true"
@@ -57,167 +65,319 @@
                              RowClick="OnCustomerRowClick"
                              SelectedItem="_selectedCustomer"
                              SelectedItemChanged="OnCustomerSelected"
-                             Height="100%"
+                             Height="161px"
                              FixedHeader="true"
                              Striped="true"
                              Loading="_isLoading">
                     <Columns>
-                        <PropertyColumn Property="x => x.CustomerID" Title="ID" />
+                        <PropertyColumn Property="x => x.CustomerID" Title="Customer ID" />
                         <PropertyColumn Property="x => x.CompanyName" Title="Company Name" />
-                        <PropertyColumn Property="x => x.ContactFirstName" Title="First Name" />
-                        <PropertyColumn Property="x => x.ContactLastName" Title="Last Name" />
+                        <PropertyColumn Property="x => x.ContactFirstName" Title="Contact Name" />
+                        <PropertyColumn Property="x => x.ContactLastName" Title="Contact Last Name" />
                         <PropertyColumn Property="x => x.City" Title="City" />
                         <PropertyColumn Property="x => x.StateOrProvince" Title="State" />
-                        <PropertyColumn Property="x => x.CountryRegion" Title="Country/Region" />
+                        <PropertyColumn Property="x => x.CountryRegion" Title="Country" />
                     </Columns>
                 </MudDataGrid>
-            </MudPaper>
-
-            @* Selected customer info *@
-            <MudPaper Outlined="true" Class="pa-2 mt-2">
-                <div style="display:flex; gap:8px;">
-                    <MudTextField T="string"
-                                  Label="Customer Company"
-                                  Value="@(_state?.TxtCustomerCompanyText ?? string.Empty)"
-                                  ReadOnly="true"
-                                  Variant="Variant.Filled"
-                                  Margin="Margin.Dense"
-                                  Style="flex:1;" />
-                    <MudTextField T="string"
-                                  Label="Customer Contact"
-                                  Value="@(_state?.TxtCustomerContactText ?? string.Empty)"
-                                  ReadOnly="true"
-                                  Variant="Variant.Filled"
-                                  Margin="Margin.Dense"
-                                  Style="flex:1;" />
-                </div>
-            </MudPaper>
-        </div>
-
-        @* RIGHT PANEL — Products Grid + Totals *@
-        <div style="display:flex; flex-direction:column; width:50%; overflow:hidden;">
-            @* Dates *@
-            <MudPaper Outlined="true" Class="pa-2 mb-2">
-                <div style="display:flex; gap:8px; align-items:center;">
-                    <MudDatePicker Label="Required By"
-                                   @bind-Date="_dtRequired"
-                                   @bind-Date:after="OnRequiredDateChanged"
-                                   Disabled="@(!_dtRequiredEnabled)"
-                                   Variant="Variant.Outlined"
-                                   Margin="Margin.Dense"
-                                   Style="flex:1;" />
-                    <MudDatePicker Label="Promised By"
-                                   @bind-Date="_dtPromised"
-                                   @bind-Date:after="OnPromisedDateChanged"
-                                   Disabled="@(!_dtPromisedEnabled)"
-                                   Variant="Variant.Outlined"
-                                   Margin="Margin.Dense"
-                                   Style="flex:1;" />
-                    <MudButton Variant="Variant.Outlined"
-                               Color="Color.Secondary"
-                               Size="Size.Small"
-                               Disabled="@(!_cmdAddProductsEnabled)"
-                               OnClick="OnAddProductsClick">
-                        Add Products...
-                    </MudButton>
-                </div>
-            </MudPaper>
-
-            @* fgProducts grid *@
-            <MudPaper Outlined="true" Class="pa-1" Style="flex:1; overflow:auto;">
-                <MudDataGrid T="OrderRequestProductLineDto"
-                             Items="@_productLines"
-                             Dense="true"
-                             Hover="true"
-                             Striped="true"
-                             FixedHeader="true"
-                             Height="100%"
-                             EditMode="DataGridEditMode.Cell"
-                             RowClick="OnProductRowClick"
-                             CanceledEditingItem="OnCanceledEditingItem"
-                             CommittedItemChanges="OnCommittedItemChanges"
-                             Loading="_isLoading">
-                    <Columns>
-                        <PropertyColumn Property="x => x.Quantity" Title="Quantity" Editable="true">
-                            <EditTemplate>
-                                <MudNumericField T="decimal"
-                                                 @bind-Value="context.Item.Quantity"
-                                                 Variant="Variant.Text"
-                                                 Margin="Margin.Dense"
-                                                 Min="0m"
-                                                 Immediate="true" />
-                            </EditTemplate>
-                        </PropertyColumn>
-                        <PropertyColumn Property="x => x.ProductCode" Title="Code" Editable="false" />
-                        <PropertyColumn Property="x => x.ProductName" Title="Product" Editable="false" />
-                        <PropertyColumn Property="x => x.UnitPrice" Title="Unit Price" Format="N2" Editable="false" />
-                        <PropertyColumn Property="x => x.LinePrice" Title="Price" Format="N2" Editable="false" />
-                        <PropertyColumn Property="x => x.UnitsInStock" Title="Existence" Editable="false" />
-                        <PropertyColumn Property="x => x.UnitsOnOrder" Title="Ordered" Editable="false" />
-                        <PropertyColumn Property="x => x.QuantityPerUnit" Title="Quantity per unit" Editable="false" />
-                    </Columns>
-                </MudDataGrid>
-            </MudPaper>
-
-            @* Totals section *@
-            <MudPaper Outlined="true" Class="pa-2 mt-2">
-                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                    <MudTextField T="string"
-                                  Label="Freight Charge"
-                                  @bind-Value="_freightChargeText"
-                                  @bind-Value:after="OnFreightChargeChanged"
-                                  Immediate="true"
-                                  InputType="InputType.Number"
-                                  Variant="Variant.Outlined"
-                                  Margin="Margin.Dense"
-                                  Style="width:120px;" />
-                    <MudTextField T="string"
-                                  Label="Sales Tax %"
-                                  @bind-Value="_salesTaxText"
-                                  @bind-Value:after="OnSalesTaxChanged"
-                                  Immediate="true"
-                                  InputType="InputType.Number"
-                                  Variant="Variant.Outlined"
-                                  Margin="Margin.Dense"
-                                  Style="width:120px;" />
-                    <MudTextField T="string"
-                                  Label="Sub Total"
-                                  Value="@(_state?.TxtSubTotalText ?? string.Empty)"
-                                  ReadOnly="true"
-                                  Variant="Variant.Filled"
-                                  Margin="Margin.Dense"
-                                  Style="width:120px;" />
-                    <MudTextField T="string"
-                                  Label="Total Tax"
-                                  Value="@(_state?.TxtTotalTaxText ?? string.Empty)"
-                                  ReadOnly="true"
-                                  Variant="Variant.Filled"
-                                  Margin="Margin.Dense"
-                                  Style="width:120px;" />
-                    <MudTextField T="string"
-                                  Label="Total"
-                                  Value="@(_state?.TxtTotalText ?? string.Empty)"
-                                  ReadOnly="true"
-                                  Variant="Variant.Filled"
-                                  Margin="Margin.Dense"
-                                  Style="width:120px;" />
-                </div>
-            </MudPaper>
-
-            @* Action buttons *@
-            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
-                <MudButton Variant="Variant.Filled"
-                           Color="Color.Primary"
-                           Disabled="@(!_cmdSaveEnabled)"
-                           OnClick="OnSaveClick">
-                    Save
-                </MudButton>
-                <MudButton Variant="Variant.Outlined"
-                           Color="Color.Default"
-                           OnClick="OnCloseClick">
-                    Close
-                </MudButton>
             </div>
+        </fieldset>
+
+        @* ---- Frame2: "Customer" (legacy 8,256 505x49) ---- *@
+        <fieldset class="legacy-frame">
+            <legend>Customer</legend>
+
+            @* Label5 (8,16) + txtCustomerCompany (72,16,145) | Label1 (232,16) + txtCustomerContact (288,16,209) *@
+            <div class="row-customer">
+                <span class="lbl">Company:</span>
+                <MudTextField T="string"
+                              Value="@(_state?.TxtCustomerCompanyText ?? string.Empty)"
+                              ReadOnly="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense" />
+                <span></span>
+                <span class="lbl">Contact:</span>
+                <MudTextField T="string"
+                              Value="@(_state?.TxtCustomerContactText ?? string.Empty)"
+                              ReadOnly="true"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense" />
+            </div>
+        </fieldset>
+
+        @* ---- Dates row (legacy y=320) + cmdAddProducts (488,336) ---- *@
+        <div class="row-dates">
+            <span class="lbl">Required by date:</span>
+            <MudDatePicker @bind-Date="_dtRequired"
+                           @bind-Date:after="OnRequiredDateChanged"
+                           Disabled="@(!_dtRequiredEnabled)"
+                           Variant="Variant.Outlined"
+                           Margin="Margin.Dense" />
+            <span></span>
+            <span class="lbl">Promised by date:</span>
+            <MudDatePicker @bind-Date="_dtPromised"
+                           @bind-Date:after="OnPromisedDateChanged"
+                           Disabled="@(!_dtPromisedEnabled)"
+                           Variant="Variant.Outlined"
+                           Margin="Margin.Dense" />
+            <MudButton Variant="Variant.Outlined"
+                       Size="Size.Small"
+                       Class="btn-ellipsis"
+                       Disabled="@(!_cmdAddProductsEnabled)"
+                       OnClick="OnAddProductsClick">...</MudButton>
         </div>
-    </div>
-</MudPaper>
+
+        @* ---- fgProducts (legacy 8,360 505x177) ---- *@
+        <div class="grid-products">
+            <MudDataGrid T="OrderRequestProductLineDto"
+                         Items="@_productLines"
+                         Dense="true"
+                         Hover="true"
+                         Striped="true"
+                         FixedHeader="true"
+                         Height="177px"
+                         EditMode="DataGridEditMode.Cell"
+                         RowClick="OnProductRowClick"
+                         CanceledEditingItem="OnCanceledEditingItem"
+                         CommittedItemChanges="OnCommittedItemChanges"
+                         Loading="_isLoading">
+                <Columns>
+                    <PropertyColumn Property="x => x.Quantity" Title="Quantity" Editable="true">
+                        <EditTemplate>
+                            <MudNumericField T="decimal"
+                                             @bind-Value="context.Item.Quantity"
+                                             Variant="Variant.Text"
+                                             Margin="Margin.Dense"
+                                             Min="0m"
+                                             Immediate="true" />
+                        </EditTemplate>
+                    </PropertyColumn>
+                    <PropertyColumn Property="x => x.ProductCode" Title="Code" Editable="false" />
+                    <PropertyColumn Property="x => x.ProductName" Title="Product" Editable="false" />
+                    <PropertyColumn Property="x => x.UnitPrice" Title="UnitPrice" Format="N2" Editable="false" />
+                    <PropertyColumn Property="x => x.LinePrice" Title="Price" Format="N2" Editable="false" />
+                    <PropertyColumn Property="x => x.UnitsInStock" Title="Existence" Editable="false" />
+                    <PropertyColumn Property="x => x.UnitsOnOrder" Title="Ordered" Editable="false" />
+                    <PropertyColumn Property="x => x.QuantityPerUnit" Title="Quantity per unit" Editable="false" />
+                </Columns>
+            </MudDataGrid>
+        </div>
+
+        @* ---- Totals block (legacy y=544/568/592/616, two columns at x=8 and x=272) ---- *@
+        <div class="totals">
+            @* Label13 (8,544) + txtEntry (96,544) — legacy keeps this disabled except while editing
+               a quantity cell; the port edits quantity in the grid, so it mirrors the value only. *@
+            <span class="lbl">Line quantity:</span>
+            <MudTextField T="string"
+                          Value="@(_state?.TxtEntryText ?? string.Empty)"
+                          Disabled="true"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense" />
+            <span></span>
+            <span></span>
+            <span></span>
+
+            @* Label8 (8,568) + txtSalesTax (96,568) *@
+            <span class="lbl">Sales Tax:</span>
+            <MudTextField T="string"
+                          @bind-Value="_salesTaxText"
+                          @bind-Value:after="OnSalesTaxChanged"
+                          Immediate="true"
+                          InputType="InputType.Number"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense" />
+            <span></span>
+            <span></span>
+            <span></span>
+
+            @* Label12 (8,592) + txtFreightCharge | Label10 (272,592) + txtTotalTax *@
+            <span class="lbl">Freight Charge:</span>
+            <MudTextField T="string"
+                          @bind-Value="_freightChargeText"
+                          @bind-Value:after="OnFreightChargeChanged"
+                          Immediate="true"
+                          InputType="InputType.Number"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense" />
+            <span></span>
+            <span class="lbl">Total Tax:</span>
+            <MudTextField T="string"
+                          Value="@(_state?.TxtTotalTaxText ?? string.Empty)"
+                          ReadOnly="true"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          Class="num" />
+
+            @* Label11 (8,616) + txtTotal | Label9 (272,616) + txtSubTotal *@
+            <span class="lbl">Total:</span>
+            <MudTextField T="string"
+                          Value="@(_state?.TxtTotalText ?? string.Empty)"
+                          ReadOnly="true"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          Class="num" />
+            <span></span>
+            <span class="lbl">Sub Total:</span>
+            <MudTextField T="string"
+                          Value="@(_state?.TxtSubTotalText ?? string.Empty)"
+                          ReadOnly="true"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          Class="num" />
+        </div>
+
+        @* ---- cmdSave (320,648) / cmdClose (416,648), 89x25, bottom right ---- *@
+        <div class="actions">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Disabled="@(!_cmdSaveEnabled)"
+                       OnClick="OnSaveClick">Save</MudButton>
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Default"
+                       OnClick="OnCloseClick">Close</MudButton>
+        </div>
+    </MudPaper>
+</div>
+
+<style>
+    /* Legacy form is 523 wide; 489 of content inside frames at x=8. */
+    .order-request-form {
+        width: 100%;
+    }
+
+    .order-request-form .legacy-frame {
+        border: 1px solid var(--mud-palette-lines-default);
+        border-radius: 4px;
+        padding: 4px 8px 8px;
+        margin: 0 0 12px;
+        min-width: 0;
+    }
+
+    .order-request-form .legacy-frame > legend {
+        padding: 0 4px;
+        font-size: 0.8rem;
+        color: var(--mud-palette-text-secondary);
+    }
+
+    .order-request-form .lbl {
+        font-size: 0.8125rem;
+        line-height: 2.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Label gutters stay fixed at the legacy offsets (scaled ~1.15 so Roboto fits where the legacy
+       8.25pt font did); field tracks flex so the form fills the page. The legacy width ratios are
+       kept as fr weights — e.g. Contact (209) against Company (145) in the Customer frame. */
+
+    /* Search rows — legacy label 8/field 88 (145 wide), second label 240/field 336 (145 wide). */
+    .order-request-form .row-search {
+        display: grid;
+        grid-template-columns: 104px minmax(168px, 1fr) 16px 128px minmax(168px, 1fr) 56px;
+        column-gap: 0;
+        row-gap: 4px;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+
+    /* Customer row — legacy label 8/field 72 (145), label 232/field 288 (209). */
+    .order-request-form .row-customer {
+        display: grid;
+        grid-template-columns: 76px minmax(168px, 1fr) 24px 68px minmax(240px, 1.44fr);
+        align-items: center;
+    }
+
+    /* Dates — legacy label 8/dt 120 (97), label 256/dt 352 (97), button far right at 488.
+       Date fields keep a fixed width (legacy 97); the trailing track absorbs the slack so the
+       "..." button stays pinned right as it does on the legacy form. */
+    .order-request-form .row-dates {
+        display: grid;
+        grid-template-columns: 124px 152px 20px 128px 152px 1fr;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    /* Totals — legacy label 8/field 96 (145), label 272/field 352 (145). */
+    .order-request-form .totals {
+        display: grid;
+        grid-template-columns: 104px minmax(168px, 1fr) 32px 100px minmax(168px, 1fr);
+        row-gap: 4px;
+        align-items: center;
+        margin-top: 8px;
+    }
+
+    .order-request-form .grid-customers,
+    .order-request-form .grid-products {
+        margin-top: 4px;
+    }
+
+    .order-request-form .grid-products {
+        margin-bottom: 8px;
+    }
+
+    /* Legacy gives every column a fixed 97px and scrolls; MudBlazor otherwise squeezes all
+       7 (resp. 8) columns into the form width and wraps the headers onto two lines. */
+    .order-request-form .grid-customers .mud-table-container {
+        overflow-x: auto;
+    }
+
+    .order-request-form .grid-products .mud-table-container {
+        overflow-x: auto;
+    }
+
+    .order-request-form .grid-customers table {
+        min-width: 680px;
+    }
+
+    .order-request-form .grid-products table {
+        min-width: 760px;
+    }
+
+    .order-request-form .grid-customers th,
+    .order-request-form .grid-products th {
+        white-space: nowrap;
+    }
+
+    /* Legacy right-aligns the computed money boxes. */
+    .order-request-form .num input {
+        text-align: right;
+    }
+
+    .order-request-form .btn-ellipsis {
+        min-width: 32px;
+        padding: 0 6px;
+        justify-self: end;
+    }
+
+    .order-request-form .actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 12px;
+    }
+
+    /* Legacy captions are "Save" / "Close", not MudBlazor's uppercase. */
+    .order-request-form .actions .mud-button-root {
+        text-transform: none;
+        min-width: 89px;
+    }
+
+    /* Below the legacy form width the fixed gutters stop fitting; stack label over field. */
+    @@media (max-width: 600px) {
+        .order-request-form .row-search,
+        .order-request-form .row-customer,
+        .order-request-form .row-dates,
+        .order-request-form .totals {
+            grid-template-columns: 1fr;
+        }
+
+        .order-request-form .lbl {
+            line-height: 1.6;
+            margin-top: 4px;
+        }
+
+        .order-request-form .btn-ellipsis {
+            justify-self: start;
+        }
+    }
+</style>

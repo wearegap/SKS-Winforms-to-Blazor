@@ -48,19 +48,19 @@ public class OrderReceptionService : IOrderReceptionService
         if (!string.IsNullOrEmpty(state.TxtProviderNameText))
         {
             var providerNameFilter = state.TxtProviderNameText;
-            query = query.Where(p => p.ProviderName != null && p.ProviderName.Contains(providerNameFilter));
+            query = query.Where(p => p.ProviderName != null && EF.Functions.Like(p.ProviderName, "%" + providerNameFilter + "%"));
         }
 
         if (!string.IsNullOrEmpty(state.TxtContactNameText))
         {
             var contactNameFilter = state.TxtContactNameText;
-            query = query.Where(p => p.ContactFirstName != null && p.ContactFirstName.Contains(contactNameFilter));
+            query = query.Where(p => p.ContactFirstName != null && EF.Functions.Like(p.ContactFirstName, "%" + contactNameFilter + "%"));
         }
 
         if (!string.IsNullOrEmpty(state.TxtContactLastNameText))
         {
             var contactLastNameFilter = state.TxtContactLastNameText;
-            query = query.Where(p => p.ContactLastName != null && p.ContactLastName.Contains(contactLastNameFilter));
+            query = query.Where(p => p.ContactLastName != null && EF.Functions.Like(p.ContactLastName, "%" + contactLastNameFilter + "%"));
         }
 
         var entities = await query.ToListAsync(ct);

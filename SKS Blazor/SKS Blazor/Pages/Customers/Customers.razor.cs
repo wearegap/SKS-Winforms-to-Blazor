@@ -435,6 +435,43 @@ public partial class Customers : ComponentBase, IDisposable
     /// <summary>Selects a customer in the grid and populates the edit fields.
     /// Also resets mode flags — port of dcCustomers_MoveComplete (commented out in legacy
     /// but behaviorally equivalent: NewMode=false, EditMode=false, CancellingMode=false).</summary>
+    // ── Grid view and record navigation (port of the dcCustomers data control at 8,400) ──
+
+    /// <summary>Grid view shows every record at once; the record navigator is hidden while it is on.</summary>
+    private bool _gridView;
+
+    private int CurrentIndex =>
+        _currentCustomer is null ? -1 : _customers.FindIndex(c => c.CustomerID == _currentCustomer.CustomerID);
+
+    /// <summary>
+    /// Toggles the grid below the Customer information panel. Refuses to leave the form mid-edit,
+    /// because the grid has no Save and the pending edit would be lost.
+    /// </summary>
+    private void OnToggleGridView()
+    {
+        if (!_gridView && (_state?.EditMode == true || _state?.NewMode == true))
+        {
+            Snackbar.Add("Save or cancel the current record before switching to grid view.", Severity.Warning);
+            return;
+        }
+
+        _gridView = !_gridView;
+        StateHasChanged();
+    }
+
+    private void MoveTo(int index)
+    {
+        if (index >= 0 && index < _customers.Count)
+        {
+            SelectCustomer(_customers[index]);
+        }
+    }
+
+    private void OnFirstRecord() => MoveTo(0);
+    private void OnPreviousRecord() => MoveTo(CurrentIndex - 1);
+    private void OnNextRecord() => MoveTo(CurrentIndex + 1);
+    private void OnLastRecord() => MoveTo(_customers.Count - 1);
+
     private void SelectCustomer(CustomersDto customer)
     {
         _currentCustomer = customer;

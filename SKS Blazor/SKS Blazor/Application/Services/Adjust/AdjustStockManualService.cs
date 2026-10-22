@@ -40,12 +40,12 @@ public class AdjustStockManualService : IAdjustStockManualService
 
         if (!string.IsNullOrEmpty(codeFilter))
         {
-            query = query.Where(p => p.ProductID != null && p.ProductID.Contains(codeFilter));
+            query = query.Where(p => p.ProductID != null && EF.Functions.Like(p.ProductID, "%" + codeFilter + "%"));
         }
 
         if (!string.IsNullOrEmpty(nameFilter))
         {
-            query = query.Where(p => p.ProductName != null && p.ProductName.Contains(nameFilter));
+            query = query.Where(p => p.ProductName != null && EF.Functions.Like(p.ProductName, "%" + nameFilter + "%"));
         }
 
         // Legacy selects: ProductID, ProductName, UnitPrice, UnitsInStock, UnitsOnOrder, QuantityPerUnit, Unit

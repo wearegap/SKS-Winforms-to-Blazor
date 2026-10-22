@@ -1,27 +1,60 @@
+@using SKS_Blazor.Pages.About
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject AppState AppState
+
+@*
+    Mirrors the frmMain menu exactly — same groups, same order, same captions.
+    Captions are the legacy ones even where they do not describe the target: "Create Invoice" opens
+    frmRequestApproval and "Add Stock to Inventory" opens frmReceptionApproval in the legacy app too.
+    Routes come from each mnu*_Click handler in frmMain.cs, not from the caption.
+*@
+
 <MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-
-    <MudNavGroup Title="Master Data" Icon="@Icons.Material.Filled.Folder" Expanded="true">
-        <MudNavLink Href="/upgraded/customers" Icon="@Icons.Material.Filled.People">Customers</MudNavLink>
-        <MudNavLink Href="/upgraded/products" Icon="@Icons.Material.Filled.Inventory">Products</MudNavLink>
-        <MudNavLink Href="/upgraded/providers" Icon="@Icons.Material.Filled.LocalShipping">Providers</MudNavLink>
+    @* mnuFile: mnuCustomer, mnuProviders, mnuExit *@
+    <MudNavGroup Title="File" Icon="@Icons.Material.Filled.Folder" Expanded="true">
+        <MudNavLink Href="/upgraded/customers" Icon="@Icons.Material.Filled.People">Manage Customers</MudNavLink>
+        <MudNavLink Href="/upgraded/providers" Icon="@Icons.Material.Filled.LocalShipping">Manage Suppliers</MudNavLink>
+        @* No Href, so MudNavLink renders a bare div; tabindex makes it keyboard-focusable. MudBlazor
+           strips a role attribute, so these two stay divs to assistive tech. *@
+        <MudNavLink OnClick="@Exit" Icon="@Icons.Material.Filled.Logout" tabindex="0">Exit</MudNavLink>
     </MudNavGroup>
 
+    @* mnuOrders: mnuCreateOrderRequest, mnuOrderRequestsApproval, separator, mnuCreateOrderReception, mnuOrderReceptionsApproval *@
     <MudNavGroup Title="Orders" Icon="@Icons.Material.Filled.ShoppingCart" Expanded="true">
-        <MudNavLink Href="/upgraded/order-request" Icon="@Icons.Material.Filled.Assignment">New Order Request</MudNavLink>
-        <MudNavLink Href="/upgraded/order-reception" Icon="@Icons.Material.Filled.ShoppingCart">New Order Reception</MudNavLink>
-        <MudNavLink Href="/upgraded/request-approval" Icon="@Icons.Material.Filled.CheckCircle">Request Approvals</MudNavLink>
-        <MudNavLink Href="/upgraded/reception-approval" Icon="@Icons.Material.Filled.CheckCircle">Reception Approvals</MudNavLink>
+        <MudNavLink Href="/upgraded/order-request" Icon="@Icons.Material.Filled.Assignment">Create Order</MudNavLink>
+        <MudNavLink Href="/upgraded/request-approval" Icon="@Icons.Material.Filled.CheckCircle">Create Invoice</MudNavLink>
+        <MudDivider Class="my-1" />
+        <MudNavLink Href="/upgraded/order-reception" Icon="@Icons.Material.Filled.AddShoppingCart">Add Stock Order</MudNavLink>
+        <MudNavLink Href="/upgraded/reception-approval" Icon="@Icons.Material.Filled.CheckCircle">Add Stock to Inventory</MudNavLink>
     </MudNavGroup>
 
-    <MudNavGroup Title="Stock" Icon="@Icons.Material.Filled.Inventory" Expanded="false">
-        <MudNavLink Href="/upgraded/add-stock-manual" Icon="@Icons.Material.Filled.Add">Add Stock Manually</MudNavLink>
-        <MudNavLink Href="/upgraded/adjust-stock-manual" Icon="@Icons.Material.Filled.Tune">Adjust Stock Manually</MudNavLink>
+    @* mnuMainInventory: mnuAddStockManually, mnuAdjustStockManually *@
+    <MudNavGroup Title="Inventory" Icon="@Icons.Material.Filled.Inventory" Expanded="true">
+        <MudNavLink Href="/upgraded/add-stock-manual" Icon="@Icons.Material.Filled.Add">Inventory Update</MudNavLink>
+        <MudNavLink Href="/upgraded/adjust-stock-manual" Icon="@Icons.Material.Filled.Tune">Inventory Adjust</MudNavLink>
     </MudNavGroup>
 
-    <MudNavGroup Title="Administration" Icon="@Icons.Material.Filled.Settings" Expanded="false">
+    @* mnuAccounts: mnuProducts, mnuSecurity *@
+    <MudNavGroup Title="Maintenance" Icon="@Icons.Material.Filled.Settings" Expanded="true">
+        <MudNavLink Href="/upgraded/products" Icon="@Icons.Material.Filled.Inventory2">Manage Products</MudNavLink>
         <MudNavLink Href="/upgraded/users-manage" Icon="@Icons.Material.Filled.Group">Manage Users</MudNavLink>
     </MudNavGroup>
 
-    <MudNavLink Href="/upgraded/search" Icon="@Icons.Material.Filled.Search">Search</MudNavLink>
+    @* mnuHelp: mnuAbout *@
+    <MudNavGroup Title="Help" Icon="@Icons.Material.Filled.HelpOutline" Expanded="true">
+        <MudNavLink OnClick="@ShowAbout" Icon="@Icons.Material.Filled.Info" tabindex="0">About</MudNavLink>
+    </MudNavGroup>
 </MudNavMenu>
+
+@code {
+    /// <summary>Port of <c>mnuAbout_Click</c>.</summary>
+    private async Task ShowAbout() => await DialogService.ShowAsync<AboutDialog>("About");
+
+    /// <summary>Port of <c>mnuExit_Click</c>. A forced reload starts a new circuit, which resets AppState.</summary>
+    private void Exit()
+    {
+        AppState.IsLoggedIn = false;
+        NavigationManager.NavigateTo("/login", forceLoad: true);
+    }
+}

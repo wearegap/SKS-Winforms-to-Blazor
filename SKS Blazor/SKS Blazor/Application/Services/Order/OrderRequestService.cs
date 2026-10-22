@@ -49,21 +49,21 @@ public class OrderRequestService : IOrderRequestService
         if (!string.IsNullOrEmpty(state.TxtCompanyNameText))
         {
             var companyFilter = state.TxtCompanyNameText;
-            query = query.Where(c => c.CompanyName != null && c.CompanyName.Contains(companyFilter));
+            query = query.Where(c => c.CompanyName != null && EF.Functions.Like(c.CompanyName, "%" + companyFilter + "%"));
         }
 
         // Filter by ContactFirstName (LIKE '%...%')
         if (!string.IsNullOrEmpty(state.TxtContactNameText))
         {
             var contactFilter = state.TxtContactNameText;
-            query = query.Where(c => c.ContactFirstName != null && c.ContactFirstName.Contains(contactFilter));
+            query = query.Where(c => c.ContactFirstName != null && EF.Functions.Like(c.ContactFirstName, "%" + contactFilter + "%"));
         }
 
         // Filter by ContactLastName (LIKE '%...%')
         if (!string.IsNullOrEmpty(state.TxtContactLastNameText))
         {
             var lastNameFilter = state.TxtContactLastNameText;
-            query = query.Where(c => c.ContactLastName != null && c.ContactLastName.Contains(lastNameFilter));
+            query = query.Where(c => c.ContactLastName != null && EF.Functions.Like(c.ContactLastName, "%" + lastNameFilter + "%"));
         }
 
         // Materialize query, then map to DTOs — avoids nullable coalescing inside IQueryable

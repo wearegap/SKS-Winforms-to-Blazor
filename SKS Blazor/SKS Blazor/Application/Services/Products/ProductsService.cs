@@ -89,15 +89,6 @@ public class ProductsService : IProductsService
     }
 
     /// <inheritdoc />
-    public async Task SaveAsync(CancellationToken ct = default)
-    {
-        // No-op placeholder: the parameterless signature is required by the plan interface.
-        // Real save logic is in SaveProductAsync(ProductSaveDto, CancellationToken).
-        _logger.LogWarning("SaveAsync() called without product data — use SaveProductAsync(dto) instead.");
-        await Task.CompletedTask;
-    }
-
-    /// <inheritdoc />
     public async Task SaveProductAsync(ProductSaveDto dto, CancellationToken ct = default)
     {
         if (dto == null)
@@ -215,15 +206,6 @@ public class ProductsService : IProductsService
             _logger.LogError(ex, "Error saving product {ProductID}", dto.ProductID);
             throw;
         }
-    }
-
-    /// <inheritdoc />
-    public async Task DeleteAsync(CancellationToken ct = default)
-    {
-        // No-op placeholder: the parameterless signature is required by the plan interface.
-        // Real delete logic is in DeleteProductAsync(string, CancellationToken).
-        _logger.LogWarning("DeleteAsync() called without product ID — use DeleteProductAsync(productId) instead.");
-        await Task.CompletedTask;
     }
 
     /// <inheritdoc />

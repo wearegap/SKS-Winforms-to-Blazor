@@ -2,19 +2,18 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using MudBlazor;
 using SKS_Blazor.Infrastructure;
-using SKS_Blazor.Pages.About;
 
 namespace SKS_Blazor.Shared;
 
 /// <summary>
-/// Port of the frmMain shell (menu, toolbar, status bar). Also the login guard: the scoped AppState is the
-/// user session, and it starts empty on every new circuit (first load, F5, deep link), so any page other
-/// than /login redirects there until LoginDialog sets IsLoggedIn.
+/// Port of the frmMain shell (status bar and the sidebar that hosts <see cref="NavMenu"/>, which mirrors
+/// the frmMain menu). Also the login guard: the scoped AppState is the user session, and it starts empty
+/// on every new circuit (first load, F5, deep link), so any page other than /login redirects there until
+/// LoginDialog sets IsLoggedIn.
 /// </summary>
 public partial class MainLayout : IDisposable
 {
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
-    [Inject] private IDialogService DialogService { get; set; } = default!;
     [Inject] private AppState AppState { get; set; } = default!;
 
     private readonly MudTheme _theme = new();
@@ -37,25 +36,6 @@ public partial class MainLayout : IDisposable
         var path = NavigationManager.ToBaseRelativePath(uri).Split('?', 2)[0].Trim('/');
         if (path.Equals("login", StringComparison.OrdinalIgnoreCase)) return;
         NavigationManager.NavigateTo(path.Length == 0 ? "/login" : $"/login?returnUrl={Uri.EscapeDataString(path)}");
-    }
-
-    private void NavigateTo(string url) => NavigationManager.NavigateTo(url);
-
-    private async Task Refresh()
-    {
-        await AppState.SendCommandAsync("Refresh");
-    }
-
-    private async Task ShowAbout()
-    {
-        await DialogService.ShowAsync<AboutDialog>("About");
-    }
-
-    /// <summary>Port of mnuExit_Click. A forced reload starts a new circuit, which resets AppState.</summary>
-    private void Exit()
-    {
-        AppState.IsLoggedIn = false;
-        NavigationManager.NavigateTo("/login", forceLoad: true);
     }
 
     public void Dispose()

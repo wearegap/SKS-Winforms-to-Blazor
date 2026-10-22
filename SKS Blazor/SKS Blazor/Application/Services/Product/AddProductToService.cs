@@ -122,7 +122,7 @@ public class AddProductToService : IAddProductToService
         if (!string.IsNullOrEmpty(state.TxtCodeText))
         {
             var codeFilter = state.TxtCodeText;
-            query = query.Where(p => p.ProductID != null && p.ProductID.Contains(codeFilter));
+            query = query.Where(p => p.ProductID != null && EF.Functions.Like(p.ProductID, "%" + codeFilter + "%"));
         }
 
         // Legacy: if (!String.IsNullOrEmpty(txtName.Text))
@@ -130,7 +130,7 @@ public class AddProductToService : IAddProductToService
         if (!string.IsNullOrEmpty(state.TxtNameText))
         {
             var nameFilter = state.TxtNameText;
-            query = query.Where(p => p.ProductName != null && p.ProductName.Contains(nameFilter));
+            query = query.Where(p => p.ProductName != null && EF.Functions.Like(p.ProductName, "%" + nameFilter + "%"));
         }
 
         var entities = await query.ToListAsync(ct);

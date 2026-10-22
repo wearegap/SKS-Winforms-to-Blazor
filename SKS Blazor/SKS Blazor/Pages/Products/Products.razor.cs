@@ -38,6 +38,10 @@ public partial class Products : ComponentBase, IDisposable
     private bool _isLoading;
     private string _currentProductId = string.Empty;
 
+    /// <summary>Grid view shows every record at once; the record navigator is hidden while it is on.</summary>
+    private bool _gridView;
+    private ProductsDto? _gridSelection;
+
     /// <summary>Port of <c>Form_Load</c>.</summary>
     protected override async Task OnInitializedAsync()
     {
@@ -220,6 +224,45 @@ public partial class Products : ComponentBase, IDisposable
         }
     }
 
+    // ── Grid view (no legacy equivalent: frmProducts only ever shows one record at a time) ──
+
+    /// <summary>
+    /// Toggles between the legacy one-record form plus navigator and a grid of every record.
+    /// Refuses to leave the form mid-edit, because the grid has no Save and the edit would be lost.
+    /// </summary>
+    private void OnToggleGridView()
+    {
+        if (!_gridView && (_state?.EditMode == true || _state?.NewMode == true))
+        {
+            Snackbar.Add("Save or cancel the current record before switching to grid view.", Severity.Warning);
+            return;
+        }
+
+        _gridView = !_gridView;
+        _gridSelection = _gridView && _currentIndex >= 0 && _currentIndex < _products.Count
+            ? _products[_currentIndex]
+            : null;
+        StateHasChanged();
+    }
+
+    /// <summary>Selecting a row makes it the current record, so switching back to the form lands on it.</summary>
+    private void OnGridRowClick(DataGridRowClickEventArgs<ProductsDto> args)
+    {
+        var index = _products.FindIndex(p => string.Equals(p.ProductID, args.Item?.ProductID, StringComparison.Ordinal));
+        if (index < 0) return;
+
+        SetCurrentProduct(index);
+        _gridSelection = _products[index];
+        StateHasChanged();
+    }
+
+    /// <summary>Category name for the grid; the grid shows the name, not the raw CategoryID.</summary>
+    private string CategoryName(int? categoryId)
+    {
+        if (categoryId is null) return string.Empty;
+        return _categories.FirstOrDefault(c => c.CategoryID == categoryId.Value)?.CategoryName ?? string.Empty;
+    }
+
     // ── Record navigation (port of dcProducts ADO data control MoveFirst/MovePrevious/MoveNext/MoveLast) ──
 
     private void OnFirstRecord()
@@ -330,7 +373,24 @@ public partial class Products : ComponentBase, IDisposable
         try
         {
             // Port of dcProducts.Recordset.Update()
-            await ProductsService.SaveAsync(CancellationToken.None);
+            await ProductsService.SaveProductAsync(new ProductSaveDto
+            {
+                ProductID = _currentProduct.ProductID,
+                ProductName = _currentProduct.ProductName,
+                ProductDescription = _currentProduct.ProductDescription,
+                CategoryID = _currentProduct.CategoryID,
+                UnitPrice = _currentProduct.UnitPrice,
+                QuantityPerUnit = _currentProduct.QuantityPerUnit,
+                UnitsInStock = _currentProduct.UnitsInStock,
+                UnitsOnOrder = _currentProduct.UnitsOnOrder,
+                Discontinued = _currentProduct.Discontinued,
+                LeadTime = _currentProduct.LeadTime,
+                SerialNumber = _currentProduct.SerialNumber,
+                SupplierID = _currentProduct.SupplierID,
+                Unit = _currentProduct.Unit,
+                ReorderLevel = _currentProduct.ReorderLevel,
+                IsNew = _state.NewMode
+            }, CancellationToken.None);
 
             // Port of dcProducts.Recordset.Requery()
             _currentProductId = _currentProduct.ProductID ?? string.Empty;
@@ -387,7 +447,7 @@ public partial class Products : ComponentBase, IDisposable
         try
         {
             // Port of dcProducts.Recordset.Delete()
-            await ProductsService.DeleteAsync(CancellationToken.None);
+            await ProductsService.DeleteProductAsync(_currentProduct.ProductID, CancellationToken.None);
 
             // Port of dcProducts.Recordset.Requery()
             await ReloadProductsAsync();

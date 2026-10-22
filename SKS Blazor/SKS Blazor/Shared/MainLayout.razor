@@ -2,52 +2,16 @@
 
 <div style="display:flex; flex-direction:column; height:100vh; overflow:hidden">
 
-    @if (AppState.IsLoggedIn)
-    {
-    <!-- Menu bar -->
-    <div style="flex-shrink:0; height:30px; background-color:#1a237e; display:flex; align-items:center; padding:0 8px; color:white;">
-        <MudMenu Label="File" Color="Color.Inherit" Dense="true">
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/order-reception"))">New Order Reception</MudMenuItem>
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/order-request"))">New Order Request</MudMenuItem>
-            <MudMenuItem OnClick="@Exit">Exit</MudMenuItem>
-        </MudMenu>
-        <MudMenu Label="Stock" Color="Color.Inherit" Dense="true">
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/add-stock-manual"))">Add Stock Manually</MudMenuItem>
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/adjust-stock-manual"))">Adjust Stock Manually</MudMenuItem>
-        </MudMenu>
-        <MudMenu Label="Master Data" Color="Color.Inherit" Dense="true">
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/customers"))">Customers</MudMenuItem>
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/products"))">Products</MudMenuItem>
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/providers"))">Providers</MudMenuItem>
-        </MudMenu>
-        <MudMenu Label="Approvals" Color="Color.Inherit" Dense="true">
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/reception-approval"))">Order Receptions Approval</MudMenuItem>
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/request-approval"))">Order Requests Approval</MudMenuItem>
-        </MudMenu>
-        <MudMenu Label="Security" Color="Color.Inherit" Dense="true">
-            <MudMenuItem OnClick="@(() => NavigateTo("/upgraded/users-manage"))">Manage Users</MudMenuItem>
-        </MudMenu>
-        <MudMenu Label="Help" Color="Color.Inherit" Dense="true">
-            <MudMenuItem OnClick="@ShowAbout">About</MudMenuItem>
-        </MudMenu>
-    </div>
-
-    <!-- Toolbar -->
-    <div style="flex-shrink:0; height:38px; background-color:#e8eaf6; display:flex; align-items:center; padding:0 4px; border-bottom:1px solid #c5cae9;">
-        <MudIconButton Icon="@Icons.Material.Filled.Home" Size="Size.Small" OnClick="@(() => NavigateTo("/"))" title="Home" />
-        <MudIconButton Icon="@Icons.Material.Filled.Refresh" Size="Size.Small" OnClick="@Refresh" title="Refresh" />
-        <MudIconButton Icon="@Icons.Material.Filled.Search" Size="Size.Small" OnClick="@(() => NavigateTo("/upgraded/search"))" title="Search" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.Logout" Size="Size.Small" OnClick="@Exit" title="Logout" />
-    </div>
-
-    }
-
-    <!-- Content row: sidebar + body -->
+    <!-- Content row: sidebar + body. The legacy frmMain has one menu and a status bar, nothing else;
+         every navigation target now lives in NavMenu, which mirrors that menu. -->
     <div style="flex:1; display:flex; flex-direction:row; overflow:hidden">
         @if (AppState.IsLoggedIn)
         {
-        <div style="width:220px; flex-shrink:0; overflow-y:auto; border-right:1px solid #e0e0e0; background-color:#fafafa;">
+        <div style="width:220px; flex-shrink:0; overflow-y:auto; border-right:1px solid #e0e0e0; background-color:#fafafa; display:flex; flex-direction:column;">
+            <!-- frmMain window caption -->
+            <div style="flex-shrink:0; height:30px; background-color:#1a237e; color:white; display:flex; align-items:center; padding:0 12px; font-size:13px; font-weight:500;">
+                Sales Agent
+            </div>
             <NavMenu />
         </div>
         }
