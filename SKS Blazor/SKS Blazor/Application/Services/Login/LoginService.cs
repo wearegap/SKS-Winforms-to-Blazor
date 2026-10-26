@@ -63,4 +63,31 @@ public class LoginService : ILoginService
         _logger.LogInformation("User {Username} logged in. Level: {Level}", state.UserId, state.UserLevel);
         return state;
     }
+
+    /// <inheritdoc />
+    public async Task<LoginStateDto> LoadUserAsync(string userName, CancellationToken ct = default)
+    {
+        var state = new LoginStateDto { UserName = userName ?? string.Empty };
+
+        await using var db = await _dbFactory.CreateDbContextAsync(ct);
+        var user = await db.Users.AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Username == state.UserName, ct);
+
+        if (user is null)
+        {
+            _logger.LogWarning("Auto-login user {Username} is not in the Users table", state.UserName);
+            return state;
+        }
+
+        state.LoginSucceeded = true;
+        state.UserId = user.Username;
+        state.UserFullname = user.Fullname ?? string.Empty;
+        state.UserLevel = user.Level ?? string.Empty;
+        state.CurrentUserAdmin = string.Equals(state.UserLevel, "Administrator", StringComparison.Ordinal);
+        state.StatusMessage = string.Format(CultureInfo.InvariantCulture, "User : {0} logged at {1:MM/dd/yyyy HH:mm:ss}",
+            state.UserFullname, DateTime.Now);
+
+        _logger.LogInformation("Auto-login as {Username}. Level: {Level}", state.UserId, state.UserLevel);
+        return state;
+    }
 }

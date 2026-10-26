@@ -1,7 +1,6 @@
 @using SKS_Blazor.Pages.About
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
-@inject AppState AppState
 
 @*
     Mirrors the frmMain menu exactly — same groups, same order, same captions.
@@ -51,10 +50,10 @@
     /// <summary>Port of <c>mnuAbout_Click</c>.</summary>
     private async Task ShowAbout() => await DialogService.ShowAsync<AboutDialog>("About");
 
-    /// <summary>Port of <c>mnuExit_Click</c>. A forced reload starts a new circuit, which resets AppState.</summary>
-    private void Exit()
-    {
-        AppState.IsLoggedIn = false;
-        NavigationManager.NavigateTo("/login", forceLoad: true);
-    }
+    /// <summary>
+    /// Port of <c>mnuExit_Click</c>, which calls <c>this.Close()</c> and ends the process. A browser tab
+    /// cannot close itself, and there is no login screen to fall back to, so this restarts the session:
+    /// the forced reload drops the circuit and a new one runs the auto-login again.
+    /// </summary>
+    private void Exit() => NavigationManager.NavigateTo("/", forceLoad: true);
 }

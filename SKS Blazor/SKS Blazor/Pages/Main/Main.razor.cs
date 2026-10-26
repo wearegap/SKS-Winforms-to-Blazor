@@ -198,11 +198,10 @@ public partial class Main : ComponentBase, IDisposable
     /// <summary>Port of <c>mnuExit_Click</c>: closes the application. In web, navigates away.</summary>
     private void OnExitClick()
     {
-        // Legacy: this.Close() — closes MDI parent, ending the app.
-        // In Blazor Server, we navigate to a logout/goodbye page.
-        _appState.IsLoggedIn = false;
-        _appState.LogStatus("Application closed by user.");
-        NavigationManager.NavigateTo("/login", forceLoad: true);
+        // Legacy: this.Close() — closes MDI parent, ending the app. A browser tab cannot close itself,
+        // so this restarts the session: the forced reload drops the circuit and a new one auto-logs in.
+        // Exit is reached from NavMenu; this handler is the Main page's own copy.
+        NavigationManager.NavigateTo("/", forceLoad: true);
     }
 
     /// <summary>Port of <c>mnuOrderReceptionsApproval_Click</c>: navigates to Reception Approval.</summary>

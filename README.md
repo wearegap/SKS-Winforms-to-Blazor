@@ -29,7 +29,8 @@ read it:
 
 - **It never shows the login form.** `frmLogin` is compiled but called from nowhere;
   [`modMain.Main()`](SKS/SKSWinForms-master/Upgraded/modMain.cs) hardcodes the session as
-  `acantillo` / Administrator and opens the main window directly.
+  `acantillo` / Administrator and opens the main window directly. The Blazor app matches this — see
+  [Users](#users).
 - **Menu captions do not match what they open.** "Create Invoice" opens the order *request approval*
   form; "Add Stock to Inventory" opens *reception approval*; "Inventory Update" opens *add stock*. Map
   menu items by their `mnu*_Click` handler, never by the caption.
@@ -43,8 +44,6 @@ schema as-is: no migrations, no reshaping of the database.
 
 Differences from the legacy that are deliberate:
 
-- **There is a real login screen.** `MainLayout` redirects to `/login` until you sign in. Session state
-  is per-circuit, so a refresh signs you out.
 - **Screens that only showed one record at a time now also offer "View as Grid"** — Products, Customers
   and Suppliers keep the legacy form and add a toggle that lists every record beneath it.
 - Searches are case-insensitive, and dates are normalised on the way in and out (the legacy stores three
@@ -105,10 +104,17 @@ The output is `SKS\SKSWinForms-master\Upgraded\bin\SKS.exe`. The `MSB3284` "type
 warnings are harmless: no source file references those COM controls any more, and the build falls back to
 the checked-in interop assemblies.
 
-## Signing in
+## Users
 
-The Blazor app authenticates against the `Users` table. The legacy app skips login entirely and always
-runs as Allan Cantillo.
+**Neither app has a login screen.** Both start already signed in as `acantillo` / Allan Cantillo /
+Administrator, which is what the legacy [`modMain.Main()`](SKS/SKSWinForms-master/Upgraded/modMain.cs)
+does — it sets the user globals itself and opens the main window. The Blazor app does the same in
+`MainLayout`, except that it reads the row from the `Users` table instead of hardcoding the strings, so
+the name and level stay true to the data. If the row is missing it falls back to the legacy literals and
+logs a warning.
+
+These are the accounts in the database. They are what **Manage Users** edits and what the order screens
+attribute changes to; none of them is a credential you need in order to get in.
 
 | Username | Password | Level |
 |---|---|---|
@@ -118,13 +124,15 @@ runs as Allan Cantillo.
 | `jbrown` | `jbrown` | Administrator |
 | `cbastos` | `cbastos` | Seller |
 
-Use `cbastos` to exercise the non-administrator path.
+To exercise the non-administrator path, point the auto-login at `cbastos` — the username is the
+`AutoLoginUserName` constant in
+[`MainLayout.razor.cs`](SKS%20Blazor/SKS%20Blazor/Shared/MainLayout.razor.cs).
 
-> **These are sample credentials in a reference application, stored and compared in plain text, and the
-> database file is committed to this repository.** That is inherited from the original sample and is fine
-> for a demo. There is also no authentication or authorization framework in the Blazor app — access
-> control is a layout redirect plus one admin check. Do not put this on a network anyone else can reach
-> without replacing both.
+> **Anyone who can reach either app is an administrator.** There is no sign-in, no authentication or
+> authorization framework, and the passwords in the committed database are stored and compared in plain
+> text. That matches the original sample and is fine for a demo on `localhost`. Putting this anywhere
+> others can reach it means adding real authentication first — `LoginService.OkAsync` still implements
+> the credential check and is still covered by tests, so the screen is the only missing piece.
 
 ## Tests
 

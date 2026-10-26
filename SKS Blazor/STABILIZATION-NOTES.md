@@ -246,3 +246,31 @@ interfaces never declared, services using DTO members that were never generated)
 - **Verified** in headless Edge for both pages: label order matches the designer; form view shows the
   navigator and no grid; grid view hides the navigator and lists all records (5 customers, 3 suppliers);
   clicking a row loads it into the panel.
+
+## Phase 4f — Login screen removed; auto-login as acantillo (reverses Phase 3)
+
+- **Change:** the `/login` page and `LoginDialog` are deleted and the `MainLayout` redirect guard is gone.
+  The app now opens already signed in as `acantillo`, which is what the legacy does —
+  `modMain.Main()` sets `UserId`/`UserFullname`/`UserLevel`/`CurrentUserAdmin` itself and calls
+  `Application.Run(frmMain)`. This reverses the Phase 3 decision to add a login entry point.
+- **Seeded in two steps, on purpose.** `MainLayout.OnInitialized` sets the same literals as
+  `modMain.Main()` so the first paint already has a user; `OnInitializedAsync` then replaces them from
+  the `Users` row via the new `ILoginService.LoadUserAsync`. Without the synchronous step the sidebar and
+  status bar render blank for one frame while the lookup runs. Reading the row rather than hardcoding
+  keeps Fullname, Level and therefore `CurrentUserAdmin` true to the data; a missing row or a failed
+  lookup logs a warning and keeps the legacy literals, because the legacy never consults the database
+  for this and must not be able to fail here.
+- **`LoginService.OkAsync` is kept and still tested** even though nothing calls it now. It is the
+  credential check, and the only thing standing between this and a real sign-in is a screen. Delete it
+  only if that is a decision someone has actually made.
+- **Exit had nowhere to go.** Both `NavMenu.Exit` and the (unwired) `Main.OnExitClick` navigated to
+  `/login`. They now force-reload `/`, which drops the circuit and re-runs the auto-login — the nearest
+  web equivalent of the legacy `this.Close()`, since a tab cannot close itself.
+- **Also removed:** the `LoginDialog` DI registration and the `SKS_Blazor.Pages.Login` using in
+  `Program.cs`, and the now-unused `AppState` injection in `NavMenu`.
+- **Verified** in headless Edge: `/` renders the shell with no login dialog and the status bar reads
+  "User : Allan Cantillo logged at …"; a deep link to `/upgraded/products` loads directly with no
+  redirect; F5 stays on the page instead of bouncing to a login; `/login` no longer routes. The dialog
+  that does appear on `/` is the `frmSplash` port, which dismisses itself after ~3s. Tests 43/44.
+- **Security posture changed, and it is worse.** Anyone who can reach the app is an administrator.
+  `AppState.IsLoggedIn` is now always true, so the `UsersManage` check reduces to `CurrentUserAdmin`.
