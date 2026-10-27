@@ -274,3 +274,16 @@ interfaces never declared, services using DTO members that were never generated)
   that does appear on `/` is the `frmSplash` port, which dismisses itself after ~3s. Tests 43/44.
 - **Security posture changed, and it is worse.** Anyone who can reach the app is an administrator.
   `AppState.IsLoggedIn` is now always true, so the `UsersManage` check reduces to `CurrentUserAdmin`.
+
+## Phase 4g — Exit removed from the menu
+
+- **Change:** the Exit item is gone from `NavMenu`, along with `NavMenu.Exit`, the `mnuExit` case in
+  `Main.HandleLayoutCommandAsync` and `Main.OnExitClick`. The `NavigationManager` injection in `NavMenu`
+  went with it; `Main` still uses its own for the other menu routes.
+- **Why:** `mnuExit_Click` calls `this.Close()` on the MDI parent, which ends the process. The web has no
+  equivalent — a tab cannot close itself, and with the login screen gone (Phase 4f) there is nothing to
+  return to either. The Phase 4f stand-in reloaded `/`, which merely restarted the session the user was
+  already in. An item whose only effect is to re-enter the app is worse than no item.
+- **This is a deliberate divergence from frmMain**, the first in this menu. Everything else in `NavMenu`
+  still maps one-to-one onto a `mnu*_Click` handler; the comment at the top of the file records the
+  exception so the next reader does not "fix" it back.

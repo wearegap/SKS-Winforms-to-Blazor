@@ -72,9 +72,6 @@ public partial class Main : ComponentBase, IDisposable
             case "mnuCustomer":
                 await OnCustomerClick();
                 break;
-            case "mnuExit":
-                OnExitClick();
-                break;
             case "mnuOrderReceptionsApproval":
                 await OnOrderReceptionsApprovalClick();
                 break;
@@ -193,15 +190,6 @@ public partial class Main : ComponentBase, IDisposable
         {
             Logger.LogWarning(ex, "Error re-initializing customers state after dialog close");
         }
-    }
-
-    /// <summary>Port of <c>mnuExit_Click</c>: closes the application. In web, navigates away.</summary>
-    private void OnExitClick()
-    {
-        // Legacy: this.Close() — closes MDI parent, ending the app. A browser tab cannot close itself,
-        // so this restarts the session: the forced reload drops the circuit and a new one auto-logs in.
-        // Exit is reached from NavMenu; this handler is the Main page's own copy.
-        NavigationManager.NavigateTo("/", forceLoad: true);
     }
 
     /// <summary>Port of <c>mnuOrderReceptionsApproval_Click</c>: navigates to Reception Approval.</summary>
