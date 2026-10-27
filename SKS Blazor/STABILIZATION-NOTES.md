@@ -287,3 +287,24 @@ interfaces never declared, services using DTO members that were never generated)
 - **This is a deliberate divergence from frmMain**, the first in this menu. Everything else in `NavMenu`
   still maps one-to-one onto a `mnu*_Click` handler; the comment at the top of the file records the
   exception so the next reader does not "fix" it back.
+
+## Phase 4h — The SKS logo was missing from the Main page and the splash
+
+- **Error:** both `Main.razor` and `SplashDialog.razor` referenced images that were never added —
+  `images/sks-logo.png` and `images/splash-logo.png`. `wwwroot` had no `images` folder at all, so the
+  browser rendered two broken-image placeholders with their alt text.
+- **Fix:** copied the legacy mark from `SKS/SKSWinForms-master/Media/NewLogo.png` (350x350, 32-bit ARGB
+  with a transparent background) to `wwwroot/images/sks-logo.png`, and pointed both components at it.
+  The second filename is gone — one logo, one file, nothing to keep in sync.
+- **Why this file:** it is the artwork the legacy app ships, so the web app is not inventing a brand.
+  Being square and transparent it drops into both slots — 64px on Main, 120px in the splash — without
+  cropping or a white box behind it.
+- **Not ported: the legacy splash artwork.** `frmSplash` is a single 964x642 PictureBox holding a
+  full-bleed fish-market photograph with the lock-up in the corner, embedded as base64 in
+  `frmSplash.resX` under `Image1.Image`. The Blazor splash is a redesigned card (mark, title, progress
+  bar), and that redesign predates this fix; only the missing mark was supplied.
+- **Verified** in headless Edge: `GET /images/sks-logo.png` returns 200 `image/png` (49,169 bytes), both
+  `<img>` elements report `naturalWidth` 350 and render at 120x120 and 64x64, and the page load logs no
+  failed or 4xx requests.
+- **Still missing:** `_Host.cshtml` declares no favicon, so the browser tab shows the default and
+  `/favicon.ico` 404s. `Media/NewLogo.ico` exists if that is wanted.
