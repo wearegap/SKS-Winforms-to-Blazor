@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -172,5 +174,33 @@ app.MapBlazorHub();
 app.MapHub<StockNotificationHub>("/hubs/stock");
 app.MapHub<OrderWorkflowNotificationHub>("/hubs/orderworkflow");
 app.MapFallbackToPage("/_Host");
+
+// ----- Startup banner -----
+// The bound addresses are only known once the server is listening, so read them from the
+// server feature rather than from configuration: this reports the port actually in use.
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    var addresses = app.Services.GetRequiredService<IServer>()
+        .Features.Get<IServerAddressesFeature>()?.Addresses;
+
+    if (addresses is null || addresses.Count == 0)
+    {
+        Log.Warning("SKS Blazor started, but the server reported no bound address");
+        return;
+    }
+
+    foreach (var address in addresses)
+    {
+        if (Uri.TryCreate(address, UriKind.Absolute, out var uri))
+        {
+            Log.Information("SKS Blazor is running on port {Port} - open {Address}", uri.Port, address);
+        }
+        else
+        {
+            // Wildcard bindings such as "http://+:5000" are not valid URIs; still name the binding.
+            Log.Information("SKS Blazor is running on {Address}", address);
+        }
+    }
+});
 
 app.Run();
